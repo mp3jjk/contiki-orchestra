@@ -120,7 +120,7 @@ parent_link_metric(rpl_parent_t *p)
   const struct link_stats *stats = rpl_get_parent_link_stats(p);
   if(stats != NULL) {
 #if RPL_MRHOF_SQUARED_ETX
-    uint32_t squared_etx = ((uint32_t)stats->etx * stats->etx) / LINK_STATS_ETX_DIVISOR;
+	uint32_t squared_etx = ((uint32_t)stats->etx * stats->etx) / LINK_STATS_ETX_DIVISOR;
     return (uint16_t)MIN(squared_etx, 0xffff);
 #else /* RPL_MRHOF_SQUARED_ETX */
   return stats->etx;

@@ -307,9 +307,16 @@ struct rpl_dio {
   rpl_rank_t dag_min_hoprankinc;
   rpl_prefix_t destination_prefix;
   rpl_prefix_t prefix_info;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  uint8_t parent_id;
+  uint8_t received_child_num;
+#endif
   struct rpl_metric_container mc;
 };
 typedef struct rpl_dio rpl_dio_t;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+	uint8_t num_sibling;
+#endif
 
 #if RPL_CONF_STATS
 /* Statistics for fault management. */
@@ -378,6 +385,16 @@ void rpl_move_parent(rpl_dag_t *dag_src, rpl_dag_t *dag_dst, rpl_parent_t *paren
 rpl_parent_t *rpl_select_parent(rpl_dag_t *dag);
 rpl_dag_t *rpl_select_dag(rpl_instance_t *instance,rpl_parent_t *parent);
 void rpl_recalculate_ranks(void);
+
+/* DAG child management function. for
+ * ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+ */
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+rpl_child_t *rpl_add_child(uint8_t info, uip_ipaddr_t *);
+rpl_child_t *rpl_find_child(uip_ipaddr_t *);
+void rpl_remove_child(rpl_child_t *);
+int my_child_number;
+#endif
 
 /* RPL routing table functions. */
 void rpl_remove_routes(rpl_dag_t *dag);

@@ -156,7 +156,7 @@ orchestra_init(void)
   rime_sniffer_add(&orchestra_sniffer);
   linkaddr_copy(&orchestra_parent_linkaddr, &linkaddr_null);
   /* Initialize all Orchestra rules */
-  for(i = 0; i < NUM_RULES; i++) {
+    for(i = 0; i < NUM_RULES; i++) {
     if(all_rules[i]->init != NULL) {
       PRINTF("Orchestra: initializing rule %u\n", i);
       all_rules[i]->init(i);

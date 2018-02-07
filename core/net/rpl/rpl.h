@@ -119,8 +119,20 @@ struct rpl_parent {
   rpl_rank_t rank;
   uint8_t dtsn;
   uint8_t flags;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  uint8_t parent_child_num;
+#endif
 };
 typedef struct rpl_parent rpl_parent_t;
+/*---------------------------------------------------------------------------*/
+/* To store child information for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+struct rpl_child {
+	uint8_t info; // Reserved variable for child information
+};
+typedef struct rpl_child rpl_child_t;
+#endif
+
 /*---------------------------------------------------------------------------*/
 /* RPL DIO prefix suboption */
 struct rpl_prefix {
@@ -286,16 +298,31 @@ uint16_t rpl_get_parent_link_metric(rpl_parent_t *p);
 rpl_rank_t rpl_rank_via_parent(rpl_parent_t *p);
 const linkaddr_t *rpl_get_parent_lladdr(rpl_parent_t *p);
 uip_ipaddr_t *rpl_get_parent_ipaddr(rpl_parent_t *nbr);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+uip_ipaddr_t *rpl_get_child_ipaddr(rpl_child_t *nbr);
+#endif
 rpl_parent_t *rpl_get_parent(uip_lladdr_t *addr);
 rpl_rank_t rpl_get_parent_rank(uip_lladdr_t *addr);
 void rpl_dag_init(void);
 uip_ds6_nbr_t *rpl_get_nbr(rpl_parent_t *parent);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+uip_ds6_nbr_t *rpl_get_nbr_child(rpl_child_t *child);
+#endif
 void rpl_print_neighbor_list(void);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+//void rpl_print_child_neighbor_list(void);
+#endif
 int rpl_process_srh_header(void);
 int rpl_srh_get_next_hop(uip_ipaddr_t *ipaddr);
 
 /* Per-parent RPL information */
 NBR_TABLE_DECLARE(rpl_parents);
+
+/* Per-child RPL information
+ * for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+NBR_TABLE_DECLARE(rpl_children);
+#endif
 
 /**
  * RPL modes

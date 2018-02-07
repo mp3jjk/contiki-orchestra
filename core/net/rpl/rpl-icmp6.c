@@ -326,8 +326,13 @@ dio_input(void)
   dio.preference = buffer[i++] & RPL_DIO_PREFERENCE_MASK;
 
   dio.dtsn = buffer[i++];
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  dio.parent_id = buffer[i++];
+  dio.received_child_num = buffer[i++];
+#else
   /* two reserved bytes */
   i += 2;
+#endif
 
   memcpy(&dio.dag_id, buffer + i, sizeof(dio.dag_id));
   i += sizeof(dio.dag_id);
@@ -461,6 +466,31 @@ dio_input(void)
 
   rpl_process_dio(&from, &dio);
 
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE | 1
+  rpl_child_t *c;
+  c = rpl_find_child(&from);
+  if(c != NULL) {
+	  if(uip_ds6_get_link_local(-1)->ipaddr.u8[15] == dio.parent_id) {
+		  PRINTF("Receive DIO from my child\n");
+	  }
+	  else {
+		  rpl_remove_child(c);
+		  PRINTF("Remove my child in dio num: %d\n",my_child_number);
+	  }
+  }
+  else {
+	  if(uip_ds6_get_link_local(-1)->ipaddr.u8[15] == dio.parent_id) {
+		  c = rpl_add_child(1, &from);
+		  if(c == NULL) {
+			  PRINTF("Fail to add child\n");
+		  }
+		  else {
+			  PRINTF("my_child is added in dio\n");
+		  }
+	  }
+  }
+#endif
+
 discard:
   uip_clear_buf();
 }
@@ -519,10 +549,22 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     RPL_LOLLIPOP_INCREMENT(instance->dtsn_out);
   }
 
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  /* using 2 reserved bytes for
+   * parent_id and my_child_number
+   */
+  if(dag->preferred_parent != NULL) {
+	  buffer[pos++] = rpl_get_parent_ipaddr(dag->preferred_parent)->u8[15]; /* parent_id */
+  }
+  else {
+	  buffer[pos++] = 0;
+  }
+  buffer[pos++] = my_child_number; /* my_child_number */
+#else
   /* reserved 2 bytes */
   buffer[pos++] = 0; /* flags */
   buffer[pos++] = 0; /* reserved */
-
+#endif
   memcpy(buffer + pos, &dag->dag_id, sizeof(dag->dag_id));
   pos += 16;
 
@@ -824,6 +866,13 @@ dao_input_storing(void)
     }
     return;
   }
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  /* Add child in DAO */
+  if(rpl_add_child(1, &dao_sender_addr) == NULL) {
+	  PRINTF("Fail to add child in dao\n");
+	  return;
+  }
+#endif
 
   rep = rpl_add_route(dag, &prefix, prefixlen, &dao_sender_addr);
   if(rep == NULL) {

@@ -82,6 +82,10 @@ static rpl_of_t * const objective_functions[] = RPL_SUPPORTED_OFS;
 /*---------------------------------------------------------------------------*/
 /* Per-parent RPL information */
 NBR_TABLE_GLOBAL(rpl_parent_t, rpl_parents);
+/* Per-child RPL information */
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+NBR_TABLE_GLOBAL(rpl_child_t, rpl_children);
+#endif
 /*---------------------------------------------------------------------------*/
 /* Allocate instance table. */
 rpl_instance_t instance_table[RPL_MAX_INSTANCES];
@@ -134,11 +138,35 @@ nbr_callback(void *ptr)
 {
   rpl_remove_parent(ptr);
 }
-
+/*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+uip_ds6_nbr_t *
+rpl_get_nbr_child(rpl_child_t *child)
+{
+  linkaddr_t *lladdr = NULL;
+  lladdr = nbr_table_get_lladdr(rpl_children, child);
+  if(lladdr != NULL) {
+    return nbr_table_get_from_lladdr(ds6_neighbors, lladdr);
+  } else {
+    return NULL;
+  }
+}
+/*---------------------------------------------------------------------------*/
+static void
+nbr_callback_child(void *ptr)
+{
+  rpl_remove_child(ptr);
+}
+#endif
+/*---------------------------------------------------------------------------*/
 void
 rpl_dag_init(void)
 {
   nbr_table_register(rpl_parents, (nbr_table_callback *)nbr_callback);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  nbr_table_register(rpl_children, (nbr_table_callback *)nbr_callback_child);
+  my_child_number = 0;
+#endif
 }
 /*---------------------------------------------------------------------------*/
 rpl_parent_t *
@@ -195,6 +223,15 @@ rpl_get_parent_ipaddr(rpl_parent_t *p)
   const linkaddr_t *lladdr = rpl_get_parent_lladdr(p);
   return uip_ds6_nbr_ipaddr_from_lladdr((uip_lladdr_t *)lladdr);
 }
+/*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+uip_ipaddr_t *
+rpl_get_child_ipaddr(rpl_child_t *c)
+{
+  linkaddr_t *lladdr = nbr_table_get_lladdr(rpl_children, c);
+  return uip_ds6_nbr_ipaddr_from_lladdr((uip_lladdr_t *)lladdr);
+}
+#endif
 /*---------------------------------------------------------------------------*/
 const struct link_stats *
 rpl_get_parent_link_stats(rpl_parent_t *p)
@@ -706,6 +743,38 @@ rpl_add_parent(rpl_dag_t *dag, rpl_dio_t *dio, uip_ipaddr_t *addr)
   return p;
 }
 /*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+rpl_child_t *
+rpl_add_child(uint8_t info, uip_ipaddr_t *addr)
+{
+  rpl_child_t *c = NULL;
+  /* Is the parent known by ds6? Drop this request if not.
+   * Typically, the parent is added upon receiving a DIO. */
+  const uip_lladdr_t *lladdr = uip_ds6_nbr_lladdr_from_ipaddr(addr);
+  if(lladdr == NULL)
+  {
+	  PRINTF("RPL: rpl_add_child lladdr NULL\n");
+	  return c;
+  }
+  PRINTF("RPL: rpl_add_child lladdr %p ", lladdr);
+  PRINT6ADDR(addr);
+  PRINTF("\n");
+  if(lladdr != NULL) {
+    /* Add child in rpl_children - again this is due to DIO */
+    c = nbr_table_add_lladdr(rpl_children, (linkaddr_t *)lladdr,
+    		NBR_TABLE_REASON_RPL_DIO, &info);
+    if(c == NULL) {
+      PRINTF("RPL: rpl_add_child c NULL\n");
+    } else {
+      c->info = info;
+      my_child_number++;
+    }
+  }
+
+  return c;
+}
+#endif
+/*---------------------------------------------------------------------------*/
 static rpl_parent_t *
 find_parent_any_dag_any_instance(uip_ipaddr_t *addr)
 {
@@ -724,6 +793,28 @@ rpl_find_parent(rpl_dag_t *dag, uip_ipaddr_t *addr)
     return NULL;
   }
 }
+/*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+static rpl_child_t *
+find_child_any_dag_any_instance(uip_ipaddr_t *addr)
+{
+  uip_ds6_nbr_t *ds6_nbr = uip_ds6_nbr_lookup(addr);
+  const uip_lladdr_t *lladdr = uip_ds6_nbr_get_ll(ds6_nbr);
+  return nbr_table_get_from_lladdr(rpl_children, (linkaddr_t *)lladdr);
+}
+/*---------------------------------------------------------------------------*/
+rpl_child_t *
+rpl_find_child(uip_ipaddr_t *addr)
+{
+  rpl_child_t *c = find_child_any_dag_any_instance(addr);
+  if(c != NULL) {
+    return c;
+  } else {
+    return NULL;
+  }
+}
+#endif
+
 /*---------------------------------------------------------------------------*/
 static rpl_dag_t *
 find_parent_dag(rpl_instance_t *instance, uip_ipaddr_t *addr)
@@ -942,6 +1033,19 @@ rpl_remove_parent(rpl_parent_t *parent)
   nbr_table_remove(rpl_parents, parent);
 }
 /*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+void
+rpl_remove_child(rpl_child_t *child)
+{
+  PRINTF("RPL: Removing child ");
+  PRINT6ADDR(rpl_get_child_ipaddr(child));
+  PRINTF("\n");
+
+  nbr_table_remove(rpl_children, child);
+  my_child_number--;
+}
+#endif
+/*---------------------------------------------------------------------------*/
 void
 rpl_nullify_parent(rpl_parent_t *parent)
 {
@@ -1116,6 +1220,13 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
     return;
   }
   p->dtsn = dio->dtsn;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  p->parent_child_num = dio->received_child_num;
+  printf("recv child_num %d\n",p->parent_child_num);
+  if(dag->preferred_parent == p) {
+	  num_sibling = p->parent_child_num;
+  }
+#endif
   PRINTF("succeeded\n");
 
   /* Autoconfigure an address if this node does not already have an address
@@ -1587,6 +1698,13 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
     }
   }
   p->rank = dio->rank;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  p->parent_child_num = dio->received_child_num;
+  printf("recv child_num %d\n",p->parent_child_num);
+  if(dag->preferred_parent == p) {
+	  num_sibling = p->parent_child_num;
+  }
+#endif
 
   if(dio->rank == INFINITE_RANK && p == dag->preferred_parent) {
     /* Our preferred parent advertised an infinite rank, reset DIO timer */
