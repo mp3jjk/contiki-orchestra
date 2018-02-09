@@ -568,6 +568,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   }
   if(child_changed == 1) { // Child list is changed
 	  rpl_get_child_all(list_ordered_child); // Get ordered child list
+	  child_changed = 0;
   }
 #else
   /* reserved 2 bytes */
