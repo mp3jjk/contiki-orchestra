@@ -445,6 +445,10 @@ PROCESS_THREAD(node_process, ev, data)
 	  prob_packet_gen = 1 - exp(-1*INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
 #endif
 	  printf("Ppkt= %f\n",prob_packet_gen);
+
+	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
+	  printf("n_SBS: %d\n",n_SBS);
+
 //	  /* For test packet_interval is fixed 30 seconds */
 //	  packet_interval = 30 * CLOCK_SECOND;
 	  etimer_set(&gen,packet_interval);

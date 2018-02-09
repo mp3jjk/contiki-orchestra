@@ -69,7 +69,7 @@
 #ifdef ORCHESTRA_CONF_UNICAST_PERIOD
 #define ORCHESTRA_UNICAST_PERIOD                  ORCHESTRA_CONF_UNICAST_PERIOD
 #else /* ORCHESTRA_CONF_UNICAST_PERIOD */
-#define ORCHESTRA_UNICAST_PERIOD                  100
+#define ORCHESTRA_UNICAST_PERIOD                  17
 #endif /* ORCHESTRA_CONF_UNICAST_PERIOD */
 
 /* Is the per-neighbor unicast slotframe sender-based (if not, it is receiver-based).
@@ -78,7 +78,7 @@
 #ifdef ORCHESTRA_CONF_UNICAST_SENDER_BASED
 #define ORCHESTRA_UNICAST_SENDER_BASED            ORCHESTRA_CONF_UNICAST_SENDER_BASED
 #else /* ORCHESTRA_CONF_UNICAST_SENDER_BASED */
-#define ORCHESTRA_UNICAST_SENDER_BASED            0
+#define ORCHESTRA_UNICAST_SENDER_BASED            1
 #endif /* ORCHESTRA_CONF_UNICAST_SENDER_BASED */
 
 /* The hash function used to assign timeslot to a given node (based on its link-layer address) */

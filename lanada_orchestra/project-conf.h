@@ -47,9 +47,19 @@
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	1
+#define PERIOD	30
 #else	// If event driven (assume poisson)
 #define INTENSITY 1 // lambda
+#endif
+
+uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
+
+#define ORCHESTRA_RANDOMIZED_TX_SLOT	0 // Mode for randomized TX slot assignment 1 otherwise deterministic mode
+
+#if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
+
+#else 								  // Deterministic TX slot assignment
+	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 #endif
 
 /* Set to enable TSCH security */
@@ -61,12 +71,13 @@
 /********* Enable RPL non-storing mode *****************/
 /*******************************************************/
 
+/* Modified for Orchestra Traffic Adaptive */
 #undef UIP_CONF_MAX_ROUTES
-#define UIP_CONF_MAX_ROUTES 0 /* No need for routes */
+#define UIP_CONF_MAX_ROUTES 30 /* No need for routes */
 #undef RPL_CONF_MOP
-#define RPL_CONF_MOP RPL_MOP_NON_STORING /* Mode of operation*/
+#define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
-#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_ns, &default_common } /* Orchestra in non-storing */
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 
 /*******************************************************/
 /********************* Enable TSCH *********************/

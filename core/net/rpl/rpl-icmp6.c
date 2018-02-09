@@ -466,7 +466,7 @@ dio_input(void)
 
   rpl_process_dio(&from, &dio);
 
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE | 1
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   rpl_child_t *c;
   c = rpl_find_child(&from);
   if(c != NULL) {
@@ -868,9 +868,13 @@ dao_input_storing(void)
   }
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   /* Add child in DAO */
-  if(rpl_add_child(1, &dao_sender_addr) == NULL) {
-	  PRINTF("Fail to add child in dao\n");
-	  return;
+  rpl_child_t *c;
+  c = rpl_find_child(&dao_sender_addr);
+  if(c == NULL) {
+	  if(rpl_add_child(1, &dao_sender_addr) == NULL) {
+		  PRINTF("Fail to add child in dao\n");
+		  return;
+	  }
   }
 #endif
 

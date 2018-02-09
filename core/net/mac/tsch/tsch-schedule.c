@@ -210,8 +210,8 @@ tsch_schedule_add_link(struct tsch_slotframe *slotframe,
         }
         linkaddr_copy(&l->addr, address);
 
-//        PRINTF("TSCH-schedule: add_link %u %u %u %u %u %u\n",
-//               slotframe->handle, link_options, link_type, timeslot, channel_offset, TSCH_LOG_ID_FROM_LINKADDR(address));
+        PRINTF("TSCH-schedule: add_link handle:%u opt:%u type:%u t:%u c:%u addr:%u\n",
+               slotframe->handle, link_options, link_type, timeslot, channel_offset, TSCH_LOG_ID_FROM_LINKADDR(address));
 
         /* Release the lock before we update the neighbor (will take the lock) */
         tsch_release_lock();

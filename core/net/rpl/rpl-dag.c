@@ -58,7 +58,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define DEBUG DEBUG_NONE
+#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 /* A configurable function called after every RPL parent switch */
@@ -1222,10 +1222,11 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
   p->dtsn = dio->dtsn;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   p->parent_child_num = dio->received_child_num;
-  printf("recv child_num %d\n",p->parent_child_num);
+//  printf("recv child_num %d\n",p->parent_child_num);
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
   }
+  printf("current num_sibling %d\n",num_sibling);
 #endif
   PRINTF("succeeded\n");
 
@@ -1700,10 +1701,11 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
   p->rank = dio->rank;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   p->parent_child_num = dio->received_child_num;
-  printf("recv child_num %d\n",p->parent_child_num);
+//  printf("recv child_num %d\n",p->parent_child_num);
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
   }
+  printf("current num_sibling %d\n",num_sibling);
 #endif
 
   if(dio->rank == INFINITE_RANK && p == dag->preferred_parent) {
