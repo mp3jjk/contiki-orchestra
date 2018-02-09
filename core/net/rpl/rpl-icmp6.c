@@ -567,8 +567,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
   if(child_changed == 1) { // Child list is changed
-	  rpl_get_child_all(list_ordered_child);
-	  // Ordering
+	  rpl_get_child_all(list_ordered_child); // Get ordered child list
   }
 #else
   /* reserved 2 bytes */
