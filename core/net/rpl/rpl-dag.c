@@ -140,6 +140,21 @@ nbr_callback(void *ptr)
 }
 /*---------------------------------------------------------------------------*/
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+void
+rpl_get_child_all(uint8_t *list)
+{
+	printf("rpl_get_child_all: ");
+	uint8_t index = 0;
+	rpl_child_t *c = nbr_table_head(rpl_children);
+	while (c != NULL) {
+        list[index] = rpl_get_parent_ipaddr(p)->u8[15];
+        printf("%d ",list[index]);
+        index++;
+        c = nbr_table_next(rpl_children, c);
+	}
+	printf("\n");
+}
+
 uip_ds6_nbr_t *
 rpl_get_nbr_child(rpl_child_t *child)
 {

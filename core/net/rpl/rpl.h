@@ -310,6 +310,7 @@ uip_ds6_nbr_t *rpl_get_nbr_child(rpl_child_t *child);
 #endif
 void rpl_print_neighbor_list(void);
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+void rpl_get_child_all(uint8_t* list);
 //void rpl_print_child_neighbor_list(void);
 #endif
 int rpl_process_srh_header(void);
