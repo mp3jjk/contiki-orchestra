@@ -146,12 +146,25 @@ rpl_get_child_all(uint8_t *list)
 	memset(list,0,MAX_NUMBER_CHILD);
 	printf("rpl_get_child_all: ");
 	uint8_t index = 0;
+	uint8_t i, j, key;
 	rpl_child_t *c = nbr_table_head(rpl_children);
 	while (c != NULL) {
         list[index] = rpl_get_child_ipaddr(c)->u8[15];
-        printf("%d ",list[index]);
+//        printf("%d ",list[index]);
         index++;
         c = nbr_table_next(rpl_children, c);
+	}
+
+	// Sort inserted child ids
+	i = index -1;
+	while(i-- > 0) {
+		key = list[(j=i)];
+		while(++j < index && key > list[j]);
+		if(--j == i) continue;
+		memcpy(list+i, list+i+1, sizeof(uint8_t)*(j-i));
+	}
+	for(i=0; i<index; i++) {
+		printf("%d ",list[i]);
 	}
 	printf("\n");
 }
