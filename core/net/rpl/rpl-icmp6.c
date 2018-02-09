@@ -476,6 +476,7 @@ dio_input(void)
 	  else {
 		  rpl_remove_child(c);
 		  PRINTF("Remove my child in dio num: %d\n",my_child_number);
+		  child_changed = 1;
 	  }
   }
   else {
@@ -486,6 +487,7 @@ dio_input(void)
 		  }
 		  else {
 			  PRINTF("my_child is added in dio\n");
+			  child_changed = 1;
 		  }
 	  }
   }
@@ -563,7 +565,10 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   if(my_child_number != 0 && state_traffic_adaptive_RX == 0) {
 	  state_traffic_adaptive_RX = 1; // After TX non-zero my_child_number start to TRAFFIC ADAPTIVE MODE as a RX
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
-	  rpl_get_child_all();
+  }
+  if(child_changed == 1) { // Child list is changed
+	  rpl_get_child_all(list_ordered_child);
+	  // Ordering
   }
 #else
   /* reserved 2 bytes */
@@ -880,6 +885,7 @@ dao_input_storing(void)
 		  PRINTF("Fail to add child in dao\n");
 		  return;
 	  }
+	  child_changed = 1;
   }
 #endif
 

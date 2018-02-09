@@ -67,6 +67,7 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #define MAX_NUMBER_CHILD	10
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
+	uint8_t child_changed; // Notifying the change of child list
 #endif
 
 /* Set to enable TSCH security */

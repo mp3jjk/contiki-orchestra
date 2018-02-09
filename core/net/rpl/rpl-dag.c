@@ -143,11 +143,12 @@ nbr_callback(void *ptr)
 void
 rpl_get_child_all(uint8_t *list)
 {
+	memset(list,0,MAX_NUMBER_CHILD);
 	printf("rpl_get_child_all: ");
 	uint8_t index = 0;
 	rpl_child_t *c = nbr_table_head(rpl_children);
 	while (c != NULL) {
-        list[index] = rpl_get_parent_ipaddr(p)->u8[15];
+        list[index] = rpl_get_child_ipaddr(c)->u8[15];
         printf("%d ",list[index]);
         index++;
         c = nbr_table_next(rpl_children, c);
