@@ -58,7 +58,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
 #include "net/ip/uip-debug.h"
 
 /* A configurable function called after every RPL parent switch */
@@ -1226,6 +1226,10 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
   }
+  if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
+	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
+  }
   printf("current num_sibling %d\n",num_sibling);
 #endif
   PRINTF("succeeded\n");
@@ -1704,6 +1708,10 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
 //  printf("recv child_num %d\n",p->parent_child_num);
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
+  }
+  if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
+	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
   }
   printf("current num_sibling %d\n",num_sibling);
 #endif

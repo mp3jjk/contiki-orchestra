@@ -317,10 +317,17 @@ tsch_packet_create_eb(uint8_t *buf, int buf_size,
   }
   curr_len += ret;
 
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0 // Not implemented yet
+  memcpy(buf + curr_len, &n_SBS, sizeof(n_SBS));
+  curr_len += sizeof(n_SBS);
+#endif
+
   ies.ie_mlme_len = curr_len - mlme_ie_offset - 2;
   if((ret = frame80215e_create_ie_mlme(buf + mlme_ie_offset, buf_size - mlme_ie_offset, &ies)) == -1) {
     return -1;
   }
+
+
 
   /* Payload IE list termination: optional */
   /*

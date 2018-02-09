@@ -560,6 +560,10 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  buffer[pos++] = 0;
   }
   buffer[pos++] = my_child_number; /* my_child_number */
+  if(my_child_number != 0 && state_traffic_adaptive_RX == 0) {
+	  state_traffic_adaptive_RX = 1; // After TX non-zero my_child_number start to TRAFFIC ADAPTIVE MODE as a RX
+	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
+  }
 #else
   /* reserved 2 bytes */
   buffer[pos++] = 0; /* flags */

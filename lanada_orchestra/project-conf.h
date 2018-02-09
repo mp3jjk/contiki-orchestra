@@ -54,12 +54,19 @@
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
+uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not implemented yet
+
 #define ORCHESTRA_RANDOMIZED_TX_SLOT	0 // Mode for randomized TX slot assignment 1 otherwise deterministic mode
+
+uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
+uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
-#else 								  // Deterministic TX slot assignment
+#else 								// Deterministic TX slot assignment
+#define MAX_NUMBER_CHILD	10
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
+	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
 #endif
 
 /* Set to enable TSCH security */

@@ -324,7 +324,10 @@ PROCESS_THREAD(node_process, ev, data)
 #if TRAFFIC_PATTERN == 1
   static float random_num;
 #endif
+
   PROCESS_BEGIN();
+  state_traffic_adaptive_TX = 0; // Init state as a TX
+  state_traffic_adaptive_RX = 0; // Init state as a RX
 
   /* 3 possible roles:
    * - role_6ln: simple node, will join any network, secured or not
@@ -411,18 +414,6 @@ PROCESS_THREAD(node_process, ev, data)
   while(tsch_is_associated == 0) {
 	  ctimer_set(&poll_timer,CLOCK_SECOND,&application_polling,NULL);
 	  PROCESS_YIELD();
-	  /*if(tsch_is_associated) {
-		  uint8_t state, i;
-		  //for(i = 0; i < UIP_DS6_ADDR_NB; i++) {
-		    state = uip_ds6_if.addr_list[i].state;
-		    if(uip_ds6_if.addr_list[i].isused &&
-		       (state == ADDR_TENTATIVE || state == ADDR_PREFERRED)) {
-		      //PRINTF("-- ");
-		      memcpy(&server_ipaddr,&uip_ds6_if.addr_list[i].ipaddr,16);
-		      //PRINTF("\n");
-		    //}
-		  }
-	  }*/
   }
   ctimer_stop(&poll_timer);
 
