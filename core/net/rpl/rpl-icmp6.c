@@ -56,6 +56,8 @@
 #include "net/ipv6/multicast/uip-mcast6.h"
 #include "random.h"
 
+#include "apps/orchestra/orchestra-conf.h"
+
 #include <limits.h>
 #include <string.h>
 
@@ -440,7 +442,12 @@ dio_input(void)
                dio.default_lifetime, dio.lifetime_unit);
         break;
       case RPL_OPTION_PREFIX_INFO:
-        if(len != 32) {
+//#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0
+//    	if(len != 36)
+//#else
+        if(len != 32)
+//#endif
+        {
           PRINTF("RPL: Invalid DAG prefix info, len != 32\n");
           RPL_STAT(rpl_stats.malformed_msgs++);
           goto discard;
@@ -450,9 +457,15 @@ dio_input(void)
         /* valid lifetime is ingnored for now - at i + 4 */
         /* preferred lifetime stored in lifetime */
         dio.prefix_info.lifetime = get32(buffer, i + 8);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0
+        memcpy(&dio.recv_TX_slot_assignment, &buffer[i + 12], 4);
+        PRINTF("received TX_slot: %x\n",dio.recv_TX_slot_assignment);
+#else
         /* 32-bit reserved at i + 12 */
+#endif
         PRINTF("RPL: Copying prefix information\n");
         memcpy(&dio.prefix_info.prefix, &buffer[i + 16], 16);
+
         break;
       default:
         PRINTF("RPL: Unsupported suboption type in DIO: %u\n",
@@ -566,10 +579,19 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  state_traffic_adaptive_RX = 1; // After TX non-zero my_child_number start to TRAFFIC ADAPTIVE MODE as a RX
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
+#if ORCHESTRA_RANDOMIZED_TX_SLOT == 0
   if(child_changed == 1) { // Child list is changed
 	  rpl_get_child_all(list_ordered_child); // Get ordered child list
 	  child_changed = 0;
+	  TX_slot_assignment = 0; // Initialize slot assignment due to child change
+	  uint8_t i, id_child;
+	  for(i = 0; i < my_child_number; i+=n_SBS) {
+		  id_child = list_ordered_child[i];
+		  TX_slot_assignment |= 1 << (id_child % ORCHESTRA_UNICAST_PERIOD);
+	  }
+	  printf("TX_slot: %x\n",TX_slot_assignment);
   }
+#endif
 #else
   /* reserved 2 bytes */
   buffer[pos++] = 0; /* flags */
@@ -626,17 +648,27 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   /* Check if we have a prefix to send also. */
   if(dag->prefix_info.length > 0) {
     buffer[pos++] = RPL_OPTION_PREFIX_INFO;
+//#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZED_TX_SLOT == 0
+//    buffer[pos++] = 34; /* always 30 bytes + 2 long + 4 bytes TX_slot_assignment */
+//#else
     buffer[pos++] = 30; /* always 30 bytes + 2 long */
+//#endif
     buffer[pos++] = dag->prefix_info.length;
     buffer[pos++] = dag->prefix_info.flags;
     set32(buffer, pos, dag->prefix_info.lifetime);
     pos += 4;
     set32(buffer, pos, dag->prefix_info.lifetime);
     pos += 4;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZED_TX_SLOT == 0
+    memcpy(&buffer[pos], &TX_slot_assignment, 4);
+    pos += 4;
+#else
     memset(&buffer[pos], 0, 4);
     pos += 4;
+#endif
     memcpy(&buffer[pos], &dag->prefix_info.prefix, 16);
     pos += 16;
+
     PRINTF("RPL: Sending prefix info in DIO for ");
     PRINT6ADDR(&dag->prefix_info.prefix);
     PRINTF("\n");

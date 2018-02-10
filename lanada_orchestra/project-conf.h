@@ -52,6 +52,8 @@
 #define INTENSITY 1 // lambda
 #endif
 
+//#define SLOTFRAME_LENGHTH ORCHESTRA_UNICAST_PERIOD
+
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
 uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not implemented yet

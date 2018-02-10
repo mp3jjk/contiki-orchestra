@@ -310,6 +310,9 @@ struct rpl_dio {
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   uint8_t parent_id;
   uint8_t received_child_num;
+#if ORCHESTRA_RANDOMIZED_TX_SLOT == 0
+  int recv_TX_slot_assignment;
+#endif
 #endif
   struct rpl_metric_container mc;
 };

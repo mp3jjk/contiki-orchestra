@@ -328,7 +328,7 @@ PROCESS_THREAD(node_process, ev, data)
   PROCESS_BEGIN();
   state_traffic_adaptive_TX = 0; // Init state as a TX
   state_traffic_adaptive_RX = 0; // Init state as a RX
-
+  n_SBS = 1; // In the init state, operate in n_SBS = 1
   /* 3 possible roles:
    * - role_6ln: simple node, will join any network, secured or not
    * - role_6dr: DAG root, will advertise (unsecured) beacons
@@ -437,8 +437,10 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 	  printf("Ppkt= %f\n",prob_packet_gen);
 
-	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
+//	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
+	  n_SBS = 1; // For debug
 	  printf("n_SBS: %d\n",n_SBS);
+
 
 //	  /* For test packet_interval is fixed 30 seconds */
 //	  packet_interval = 30 * CLOCK_SECOND;
