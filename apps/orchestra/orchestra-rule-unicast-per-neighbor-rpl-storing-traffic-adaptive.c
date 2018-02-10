@@ -155,13 +155,13 @@ remove_uc_link(const linkaddr_t *linkaddr)
 static void
 add_uc_link_by_timeslot(uint8_t timeslot)
 {
-	printf("add_uc_link_by_timeslot\n");
+	printf("add_uc_link_by_timeslot: %d\n",timeslot);
 }
 /*---------------------------------------------------------------------------*/
 static void
 remove_uc_link_by_timeslot(uint8_t timeslot)
 {
-	printf("remove_uc_link_by_timeslot\n");
+	printf("remove_uc_link_by_timeslot: %d\n",timeslot);
 }
 /*---------------------------------------------------------------------------*/
 static void
