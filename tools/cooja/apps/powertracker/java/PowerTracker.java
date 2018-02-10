@@ -80,10 +80,6 @@ public class PowerTracker extends VisPlugin {
   private static final int COLUMN_RADIOON = 1;
   private static final int COLUMN_RADIOTX = 2;
   private static final int COLUMN_RADIORX = 3;
-  private static final int COLUMN_RADIOONLONG = 4;
-  private static final int COLUMN_RADIOTXLONG = 5;
-  private static final int COLUMN_RADIORXLONG = 6;
-
 
   private Simulation simulation;
   private MoteCountListener moteCountListener;
@@ -94,12 +90,7 @@ public class PowerTracker extends VisPlugin {
 
   public PowerTracker(final Simulation simulation, final Cooja gui) {
     super("PowerTracker", gui, false);
-    logger.warn("PowerTracker Started");
     this.simulation = simulation;
-
-    /* HJ */
-    /* add PowerTracker Instance to Simulator */
-
 
     /* Automatically add/delete motes */
     simulation.getEventCentral().addMoteCountListener(moteCountListener = new MoteCountListener() {
@@ -127,31 +118,21 @@ public class PowerTracker extends VisPlugin {
         return moteTrackers.size()+1;
       }
       public int getColumnCount() {
-        return 7;
+        return 4;
       }
       public String getColumnName(int col) {
         if (col == COLUMN_MOTE) {
           return "Mote";
         }
         if (col == COLUMN_RADIOON) {
-          return "Short Radio on (%)";
+          return "Radio on (%)";
         }
         if (col == COLUMN_RADIOTX) {
-          return "Short Radio TX (%)";
+          return "Radio TX (%)";
         }
         if (col == COLUMN_RADIORX) {
-          return "Short Radio RX (%)";
+          return "Radio RX (%)";
         }
-        if (col == COLUMN_RADIOONLONG) {
-          return "Long Radio on (%)";
-        }
-        if (col == COLUMN_RADIOTXLONG) {
-          return "Long Radio TX (%)";
-        }
-        if (col == COLUMN_RADIORXLONG) {
-          return "Long Radio RX (%)";
-        }
-
         return null;
       }
       public Object getValueAt(int rowIndex, int col) {
@@ -164,17 +145,11 @@ public class PowerTracker extends VisPlugin {
           long radioOn = 0;
           long radioTx = 0;
           long radioRx = 0;
-          long radioOnLong = 0;
-          long radioTxLong = 0;
-          long radioRxLong = 0;
           long duration = 0;
           for (MoteTracker mt: moteTrackers) {
             radioOn += mt.radioOn;
             radioTx += mt.radioTx;
             radioRx += mt.radioRx;
-            radioOnLong += mt.radioOnLong;
-            radioTxLong += mt.radioTxLong;
-            radioRxLong += mt.radioRxLong;
 
             duration += mt.duration;
           }
@@ -191,15 +166,6 @@ public class PowerTracker extends VisPlugin {
           if (col == COLUMN_RADIORX) {
             return String.format("%2.2f%%", 100.0*radioRx/duration);
           }
-          if (col == COLUMN_RADIOONLONG) {
-            return String.format("%2.2f%%", 100.0*radioOnLong/duration);
-          }
-          if (col == COLUMN_RADIOTXLONG) {
-            return String.format("%2.2f%%", 100.0*radioTxLong/duration);
-          }
-          if (col == COLUMN_RADIORXLONG) {
-            return String.format("%2.2f%%", 100.0*radioRxLong/duration);
-          }
           return null;
         }
 
@@ -215,15 +181,6 @@ public class PowerTracker extends VisPlugin {
         }
         if (col == COLUMN_RADIORX) {
           return String.format("%2.2f%%", 100.0*rule.getRadioRxRatio());
-        }
-        if (col == COLUMN_RADIOONLONG) {
-          return String.format("%2.2f%%", 100.0*rule.getRadioOnLongRatio());
-        }
-        if (col == COLUMN_RADIOTXLONG) {
-          return String.format("%2.2f%%", 100.0*rule.getRadioTxLongRatio());
-        }
-        if (col == COLUMN_RADIORXLONG) {
-          return String.format("%2.2f%%", 100.0*rule.getRadioRxLongRatio());
         }
         return null;
       }
@@ -260,7 +217,7 @@ public class PowerTracker extends VisPlugin {
 
     this.getContentPane().add(BorderLayout.CENTER, new JScrollPane(table));
     this.getContentPane().add(BorderLayout.SOUTH, control);
-    setSize(950, 400);
+    setSize(400, 400);
 
     repaintTimer.start();
   }
@@ -312,20 +269,12 @@ public class PowerTracker extends VisPlugin {
     long radioTx = 0;
     long radioRx = 0;
     long radioInterfered = 0;
-    long radioOnLong = 0;
-    long radioTxLong = 0;
-    long radioRxLong = 0;
-    long radioInterferedLong = 0;
     long duration = 0;
     for (MoteTracker mt: moteTrackers) {
       radioOn += mt.radioOn;
       radioTx += mt.radioTx;
       radioRx += mt.radioRx;
       radioInterfered += mt.radioInterfered;
-      radioOnLong += mt.radioOnLong;
-      radioTxLong += mt.radioTxLong;
-      radioRxLong += mt.radioRxLong;
-      radioInterferedLong += mt.radioInterferedLong;
 
       duration += mt.duration;
     }
@@ -336,14 +285,6 @@ public class PowerTracker extends VisPlugin {
       sb.append(String.format("AVG" + " TX " + (radioTx + " us ") + "%2.2f %%", 100.0*radioTx/duration) + "\n");
       sb.append(String.format("AVG" + " RX " + (radioRx + " us ") + "%2.2f %%", 100.0*radioRx/duration) + "\n");
       sb.append(String.format("AVG" + " INT " + (radioInterfered + " us ") + "%2.2f %%", 100.0*radioInterfered/duration) + "\n");
-    }
-    if (radioHW) {
-      sb.append(String.format("AVG" + " ON " + (radioOnLong + " us ") + "%2.2f %%", 100.0*radioOnLong/duration) + "\n");
-    }
-    if (radioRXTX) {
-      sb.append(String.format("AVG" + " TX " + (radioTxLong + " us ") + "%2.2f %%", 100.0*radioTxLong/duration) + "\n");
-      sb.append(String.format("AVG" + " RX " + (radioRxLong + " us ") + "%2.2f %%", 100.0*radioRxLong/duration) + "\n");
-      sb.append(String.format("AVG" + " INT " + (radioInterferedLong + " us ") + "%2.2f %%", 100.0*radioInterferedLong/duration) + "\n");
     }
 
     if (onlyAverage) {
@@ -359,9 +300,7 @@ public class PowerTracker extends VisPlugin {
   public static class MoteTracker implements Observer {
     /* last radio state */
     private boolean radioWasOn;
-    private boolean radioWasOnLong;
     private RadioState lastRadioState;
-    private RadioState lastRadioStateLong;
     private long lastUpdateTime;
 
     /* accumulating radio state durations */
@@ -370,20 +309,16 @@ public class PowerTracker extends VisPlugin {
     long radioTx = 0;
     long radioRx = 0;
     long radioInterfered = 0;
-    long radioOnLong = 0;
-    long radioTxLong = 0;
-    long radioRxLong = 0;
-    long radioInterferedLong = 0;
+
     private Simulation simulation;
     private Mote mote;
     private Radio radio;
-    private Radio radioLong;
 
     public MoteTracker(Mote mote) {
       this.simulation = mote.getSimulation();
       this.mote = mote;
       this.radio = mote.getInterfaces().getRadio();
-      this.radioLong = mote.getInterfaces().getLongRangeRadio();
+
       radioWasOn = radio.isRadioOn();
       if (radio.isTransmitting()) {
         lastRadioState = RadioState.TRANSMITTING;
@@ -394,22 +329,9 @@ public class PowerTracker extends VisPlugin {
       } else {
         lastRadioState = RadioState.IDLE;
       }
-      if (radioLong != null){
-        if (radioLong.isTransmitting()){
-          lastRadioStateLong = RadioState.TRANSMITTING;
-        } else if (radioLong.isReceiving()) {
-          lastRadioStateLong = RadioState.RECEIVING;
-        } else if (radioLong.isInterfered()) {
-          lastRadioStateLong = RadioState.INTERFERED;
-        } else {
-          lastRadioStateLong = RadioState.IDLE;
-        }
-      }
-
       lastUpdateTime = simulation.getSimulationTime();
 
       radio.addObserver(this);
-      if(radioLong != null) radioLong.addObserver(this);
     }
 
     public void update(Observable o, Object arg) {
@@ -424,9 +346,6 @@ public class PowerTracker extends VisPlugin {
       if (radioWasOn) {
         accumulateRadioOn(now - lastUpdateTime);
       }
-      if (radioWasOnLong) {
-        accumulateRadioOnLong(now - lastUpdateTime);
-      }
 
       /* Radio tx/rx */
       if (lastRadioState == RadioState.TRANSMITTING) {
@@ -435,13 +354,6 @@ public class PowerTracker extends VisPlugin {
         accumulateRadioRx(now - lastUpdateTime);
       } else if (lastRadioState == RadioState.INTERFERED) {
         accumulateRadioIntefered(now - lastUpdateTime);
-      }
-      if (lastRadioStateLong == RadioState.TRANSMITTING) {
-        accumulateRadioTxLong(now - lastUpdateTime);
-      } else if (lastRadioStateLong == RadioState.RECEIVING) {
-        accumulateRadioRxLong(now - lastUpdateTime);
-      } else if (lastRadioStateLong == RadioState.INTERFERED) {
-        accumulateRadioInteferedLong(now - lastUpdateTime);
       }
 
       /* Await next radio event */
@@ -457,26 +369,7 @@ public class PowerTracker extends VisPlugin {
         lastRadioState = RadioState.IDLE;
       }
       radioWasOn = radio.isRadioOn();
-
-      if (radioLong != null){
-        if (radioLong.isTransmitting()) {
-          lastRadioStateLong = RadioState.TRANSMITTING;
-        } else if (!radioLong.isRadioOn()) {
-          lastRadioStateLong = RadioState.IDLE;
-        } else if (radioLong.isInterfered()) {
-          lastRadioStateLong = RadioState.INTERFERED;
-        } else if (radioLong.isReceiving()) {
-          lastRadioStateLong = RadioState.RECEIVING;
-        } else {
-          lastRadioStateLong = RadioState.IDLE;
-        }
-        radioWasOnLong = radioLong.isRadioOn();
-      }
       lastUpdateTime = now;
-
-      /* HJ */
-      simulation.motepowerinfo.updateMotePowerEntry(getMote().getID(), radioOn, radioTx, radioRx, radioOnLong, radioTxLong, radioRxLong, duration);
-
     }
 
     protected void accumulateDuration(long t) {
@@ -495,20 +388,6 @@ public class PowerTracker extends VisPlugin {
       radioInterfered += t;
     }
 
-    protected void accumulateRadioOnLong(long t) {
-      radioOnLong += t;
-    }
-    protected void accumulateRadioTxLong(long t) {
-      radioTxLong += t;
-    }
-    protected void accumulateRadioRxLong(long t) {
-      radioRxLong += t;
-    }
-    protected void accumulateRadioInteferedLong(long t) {
-      radioInterferedLong += t;
-    }
-
-
     public double getRadioOnRatio() {
       return 1.0*radioOn/duration;
     }
@@ -525,32 +404,13 @@ public class PowerTracker extends VisPlugin {
       return 1.0*radioRx/duration;
     }
 
-    public double getRadioOnLongRatio() {
-      return 1.0*radioOnLong/duration;
-    }
-
-    public double getRadioTxLongRatio() {
-      return 1.0*radioTxLong/duration;
-    }
-
-    public double getRadioInterferedLongRatio() {
-      return 1.0*radioInterferedLong/duration;
-    }
-
-    public double getRadioRxLongRatio() {
-      return 1.0*radioRxLong/duration;
-    }
-
-
     public Mote getMote() {
       return mote;
     }
 
     public void dispose() {
       radio.deleteObserver(this);
-      if(radioLong != null) radioLong.deleteObserver(this);
       radio = null;
-      radioLong = null;
       mote = null;
     }
 
@@ -570,21 +430,11 @@ public class PowerTracker extends VisPlugin {
         sb.append(String.format(moteString + " RX " + (radioRx + " us ") + "%2.2f %%", 100.0*getRadioRxRatio()) + "\n");
         sb.append(String.format(moteString + " INT " + (radioInterfered + " us ") + "%2.2f %%", 100.0*getRadioInterferedRatio()) + "\n");
       }
-      if (radioHW) {
-        sb.append(String.format(moteString + " ONL " + (radioOnLong + " us ") + "%2.2f %%", 100.0*getRadioOnLongRatio()) + "\n");
-      }
-      if (radioRXTX) {
-        sb.append(String.format(moteString + " TXL " + (radioTxLong + " us ") + "%2.2f %%", 100.0*getRadioTxLongRatio()) + "\n");
-        sb.append(String.format(moteString + " RXL " + (radioRxLong + " us ") + "%2.2f %%", 100.0*getRadioRxLongRatio()) + "\n");
-        sb.append(String.format(moteString + " INTL " + (radioInterferedLong + " us ") + "%2.2f %%", 100.0*getRadioInterferedLongRatio()) + "\n");
-      }
       return sb.toString();
     }
   }
 
   private MoteTracker createMoteTracker(Mote mote) {
-    /* assume there is no device without short range and with long range */
-
     final Radio moteRadio = mote.getInterfaces().getRadio();
     if (moteRadio == null) {
       return null;
@@ -595,7 +445,6 @@ public class PowerTracker extends VisPlugin {
     tracker.update(null, null);
     return tracker;
   }
-
 
   public void reset() {
     while (moteTrackers.size() > 0) {

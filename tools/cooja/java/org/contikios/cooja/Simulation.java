@@ -28,7 +28,13 @@
 
 package org.contikios.cooja;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -65,13 +71,12 @@ public class Simulation extends Observable implements Runnable {
   private long speedLimitLastSimtime;
   private long speedLimitLastRealtime;
 
+  private long lastStartTime;
   private long currentSimulationTime = 0;
 
   private String title = null;
 
   private RadioMedium currentRadioMedium = null;
-  /* hwijoon */
-  private RadioMedium currentRadioMedium_LR = null;
 
   private static Logger logger = Logger.getLogger(Simulation.class);
 
@@ -89,7 +94,7 @@ public class Simulation extends Observable implements Runnable {
 
   private long maxMoteStartupDelay = 1000*MILLISECOND;
 
-  private Random randomGenerator = new Random();
+  private SafeRandom randomGenerator;
 
   private boolean hasMillisecondObservers = false;
   private MillisecondObservable millisecondObservable = new MillisecondObservable();
@@ -107,9 +112,6 @@ public class Simulation extends Observable implements Runnable {
   private boolean hasPollRequests = false;
   private ArrayDeque<Runnable> pollRequests = new ArrayDeque<Runnable>();
 
-
-  /* HJ */
-  public MotePowerInfo motepowerinfo = new MotePowerInfo();
 
   /**
    * Request poll from simulation thread.
@@ -247,7 +249,7 @@ public class Simulation extends Observable implements Runnable {
   }
 
   public void run() {
-    long lastStartTime = System.currentTimeMillis();
+    lastStartTime = System.currentTimeMillis();
     logger.info("Simulation main loop started, system time: " + lastStartTime);
     isRunning = true;
     speedLimitLastRealtime = System.currentTimeMillis();
@@ -321,6 +323,7 @@ public class Simulation extends Observable implements Runnable {
    */
   public Simulation(Cooja cooja) {
     this.cooja = cooja;
+    randomGenerator = new SafeRandom(this);
   }
 
   /**
@@ -497,19 +500,13 @@ public class Simulation extends Observable implements Runnable {
     element = new Element("radiomedium");
     element.setText(currentRadioMedium.getClass().getName());
 
-		Collection<Element> radioMediumXML = currentRadioMedium.getConfigXML();
-		if (radioMediumXML != null) {
-			element.addContent(radioMediumXML);
-		}
-		if(currentRadioMedium_LR!=null){
-			Collection<Element> radioMediumXML_lr = currentRadioMedium_LR.getConfigXML();
-			if (radioMediumXML_lr != null) {
-				element.addContent(radioMediumXML_lr);
-			}
-		}
-		config.add(element);
+    Collection<Element> radioMediumXML = currentRadioMedium.getConfigXML();
+    if (radioMediumXML != null) {
+      element.addContent(radioMediumXML);
+    }
+    config.add(element);
 
-		/* Event central */
+    /* Event central */
     element = new Element("events");
     element.addContent(eventCentral.getConfigXML());
     config.add(element);
@@ -547,6 +544,17 @@ public class Simulation extends Observable implements Runnable {
     return config;
   }
 
+  
+  /* indicator to components setting up that they need to respect the fast setup mode */
+  private boolean quick = false;
+  public boolean isQuickSetup() {
+      return quick;
+  }
+  
+  public void setQuickSetup(boolean q) {
+      quick = q;
+  }
+  
   /**
    * Sets the current simulation config depending on the given configuration.
    *
@@ -557,13 +565,12 @@ public class Simulation extends Observable implements Runnable {
    * @throws Exception If configuration could not be loaded
    */
   public boolean setConfigXML(Collection<Element> configXML,
-      boolean visAvailable, Long manualRandomSeed) throws Exception {
+      boolean visAvailable, boolean quick, Long manualRandomSeed) throws Exception {
 
+      setQuickSetup(quick);
     // Parse elements
     for (Element element : configXML) {
-      List l = element.getChildren();
-      for (Object e : l)
-        logger.warn("Parsed Element Child : " + ((Element)e).getValue());
+
       // Title
       if (element.getName().equals("title")) {
         title = element.getText();
@@ -619,25 +626,16 @@ public class Simulation extends Observable implements Runnable {
         if (radioMediumClass != null) {
           // Create radio medium specified in config
           try {
-            /* hwijoon */
-            logger.warn("Trying to Load currentRadioMedium : Class = " + radioMediumClass.getName());
             currentRadioMedium = RadioMedium.generateRadioMedium(radioMediumClass, this);
-            logger.warn("Trying to Load currentRadioMedium_LR");
-            currentRadioMedium_LR = RadioMedium.generateRadioMedium(radioMediumClass, this);
-            currentRadioMedium_LR.setForLongRange(true);
-            logger.warn("Successfully Loaded Two Radio Medium, one for SR and one for LR");
-
           } catch (Exception e) {
             currentRadioMedium = null;
-            currentRadioMedium_LR = null;
             logger.warn("Could not load radio medium class: " + radioMediumClassName);
-            e.printStackTrace();
           }
         }
 
         // Show configure simulation dialog
         boolean createdOK = false;
-        if (visAvailable) {
+        if (visAvailable && !quick) {
           createdOK = CreateSimDialog.showDialog(Cooja.getTopParentContainer(), this);
         } else {
           createdOK = true;
@@ -654,15 +652,6 @@ public class Simulation extends Observable implements Runnable {
         } else {
           logger.info("Radio Medium changed - ignoring radio medium specific config");
         }
-
-				// Check if radio medium specific config should be applied for LR
-        if(currentRadioMedium_LR != null){
-					if (radioMediumClassName.equals(currentRadioMedium_LR.getClass().getName())) {
-						currentRadioMedium_LR.setConfigXML(element.getChildren(), visAvailable);
-					} else {
-					logger.info("Radio Medium changed(LR) - ignoring radio medium specific config");
-					}
-				}
       }
 
       /* Event central */
@@ -680,7 +669,7 @@ public class Simulation extends Observable implements Runnable {
         }
 
         /* Try to recreate simulation using a different mote type */
-        if (visAvailable) {
+        if (visAvailable && !quick) {
           String[] availableMoteTypes = getCooja().getProjectConfig().getStringArrayValue("org.contikios.cooja.Cooja.MOTETYPES");
           String newClass = (String) JOptionPane.showInputDialog(
               Cooja.getTopParentContainer(),
@@ -858,14 +847,8 @@ public class Simulation extends Observable implements Runnable {
 
         motes.add(mote);
         motesUninit.remove(mote);
-
         currentRadioMedium.registerMote(mote, Simulation.this);
-        if(currentRadioMedium_LR==null){
-          logger.fatal("CurrentRadioMedium_LR is NULL !!!!");
-        } else {
 
-          currentRadioMedium_LR.registerMote(mote, Simulation.this);
-        }
         /* Notify mote interfaces that node was added */
         for (MoteInterface i: mote.getInterfaces().getInterfaces()) {
           i.added();
@@ -877,6 +860,9 @@ public class Simulation extends Observable implements Runnable {
       }
     };
 
+    //Add to list of uninitialized motes
+    motesUninit.add(mote);
+
     if (!isRunning()) {
       /* Simulation is stopped, add mote immediately */
       addMote.run();
@@ -884,8 +870,6 @@ public class Simulation extends Observable implements Runnable {
       /* Add mote from simulation thread */
       invokeSimulationThread(addMote);
     }
-    //Add to list of uninitialized motes
-    motesUninit.add(mote);
     
   }
 
@@ -1105,6 +1089,16 @@ public class Simulation extends Observable implements Runnable {
   }
 
   /**
+   * Return the actual time value corresponding to an argument which
+   * is a simulation time value in microseconds.
+   *
+   * @return Actual time (microseconds)
+   */
+  public long convertSimTimeToActualTime(long simTime) {
+    return simTime + lastStartTime * 1000;
+  }
+
+  /**
    * Changes radio medium of this simulation to the given.
    *
    * @param radioMedium
@@ -1123,33 +1117,11 @@ public class Simulation extends Observable implements Runnable {
       logger.fatal("Radio medium could not be created.");
       return;
     }
-    logger.warn("Changed RadioMedium");
-
-    logger.warn("Trying to Load currentRadioMedium : Class = " + radioMedium.getClass().getName());
     this.currentRadioMedium = radioMedium;
-
-    logger.warn("Trying to Load currentRadioMedium_LR");
-    currentRadioMedium_LR = null;
-    try{
-      /* hwijoon */
-      currentRadioMedium_LR = RadioMedium.generateRadioMedium(radioMedium.getClass(), this);
-      currentRadioMedium_LR.setForLongRange(true);
-      logger.warn("Successfully Loaded Two Radio Medium, one for SR and one for LR");
-    }catch (Exception ex){
-      logger.warn("Failure Loading LR Radio Medium");
-      ex.printStackTrace();
-    }
-
 
     // Add all current motes to the new radio medium
     for (int i = 0; i < motes.size(); i++) {
       currentRadioMedium.registerMote(motes.get(i), this);
-    }
-    /* hwijoon */
-    if(currentRadioMedium_LR!=null){
-      for (int i = 0; i < motes.size(); i++) {
-        currentRadioMedium_LR.registerMote(motes.get(i), this);
-      }
     }
   }
 
@@ -1160,16 +1132,6 @@ public class Simulation extends Observable implements Runnable {
    */
   public RadioMedium getRadioMedium() {
     return currentRadioMedium;
-  }
-
-  /**
-   * Get currently used LR radio medium.
-   *
-   * @return Currently used radio medium
-   */
-  /* hwijoon */
-  public RadioMedium getRadioMedium_LR() {
-    return currentRadioMedium_LR;
   }
 
   /**

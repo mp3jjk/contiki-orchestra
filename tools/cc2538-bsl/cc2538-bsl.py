@@ -91,9 +91,7 @@ def mdebug(level, message, attr='\n'):
         print(message, end=attr, file=sys.stderr)
 
 # Takes chip IDs (obtained via Get ID command) to human-readable names
-CHIP_ID_STRS = {0xb964: 'CC2538',
-                0xb965: 'CC2538'
-                }
+CHIP_ID_STRS = {0xb964: 'CC2538'}
 
 RETURN_CMD_STRS =  {0x40: 'Success',
                     0x41: 'Unknown command',
@@ -1029,7 +1027,7 @@ if __name__ == "__main__":
             ports = []
 
             # Get a list of all USB-like names in /dev
-            for name in ['ttyACM', 'tty.usbserial', 'ttyUSB', 'tty.usbmodem', 'tty.SLAB_USBtoUART']:
+            for name in ['tty.usbserial', 'ttyUSB', 'tty.usbmodem', 'tty.SLAB_USBtoUART']:
                 ports.extend(glob.glob('/dev/%s*' % name))
 
             ports = sorted(ports)
@@ -1147,4 +1145,3 @@ if __name__ == "__main__":
         if QUIET >= 10:
             traceback.print_exc()
         exit('ERROR: %s' % str(err))
-

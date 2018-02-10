@@ -45,13 +45,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import org.apache.log4j.Level;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
@@ -69,7 +67,7 @@ import org.contikios.cooja.Simulation;
 import org.contikios.cooja.dialogs.CompileContiki;
 import org.contikios.cooja.dialogs.ContikiMoteCompileDialog;
 import org.contikios.cooja.dialogs.MessageList;
-import org.contikios.cooja.dialogs.MessageList.MessageContainer;
+import org.contikios.cooja.dialogs.MessageContainer;
 import org.contikios.cooja.mote.memory.ArrayMemory;
 import org.contikios.cooja.mote.memory.MemoryInterface;
 import org.contikios.cooja.mote.memory.MemoryInterface.Symbol;
@@ -319,7 +317,7 @@ public class ContikiMoteType implements MoteType {
       if (getCompileCommands() == null) {
         throw new MoteTypeCreationException("No compile commands specified");
       }
-      final MessageList compilationOutput = new MessageList();
+      final MessageList compilationOutput = MessageContainer.createMessageList(visAvailable);
       String[] arr = getCompileCommands().split("\n");
       for (String cmd : arr) {
         if (cmd.trim().isEmpty()) {
@@ -403,7 +401,7 @@ public class ContikiMoteType implements MoteType {
     }
 
     // Allocate core communicator class
-    logger.info("Creating core communicator between Java class " + javaClassName + " and Contiki library '" + getContikiFirmwareFile().getPath() + "");
+    logger.info("Creating core communicator between Java class " + javaClassName + " and Contiki library '" + getContikiFirmwareFile().getPath() + "'");
     myCoreComm = CoreComm.createCoreComm(this.javaClassName, getContikiFirmwareFile());
 
     /* Parse addresses using map file
@@ -1046,7 +1044,6 @@ public class ContikiMoteType implements MoteType {
 
   @Override
   public void setMoteInterfaceClasses(Class<? extends MoteInterface>[] moteInterfaces) {
-    logger.warn("Setting Mote Interfaces!!!!!!!!!!!! ");
     this.moteInterfacesClasses = new ArrayList<>();
     this.moteInterfacesClasses.addAll(Arrays.asList(moteInterfaces));
   }
@@ -1273,8 +1270,6 @@ public class ContikiMoteType implements MoteType {
           break;
         case "moteinterface":
           String intfClass = element.getText().trim();
-
-          logger.warn("Loading Element " + intfClass);
           /* Backwards compatibility: se.sics -> org.contikios */
           if (intfClass.startsWith("se.sics")) {
             intfClass = intfClass.replaceFirst("se\\.sics", "org.contikios");

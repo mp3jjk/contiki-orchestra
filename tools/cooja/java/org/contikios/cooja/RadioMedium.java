@@ -33,11 +33,6 @@ package org.contikios.cooja;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
-import org.contikios.cooja.plugins.Visualizer;
-import org.contikios.cooja.plugins.skins.UDGMLongRangeVisualizerSkin;
-import org.contikios.cooja.plugins.skins.UDGMVisualizerSkin;
-import org.contikios.cooja.radiomediums.UDGM;
 import org.jdom.Element;
 
 import org.contikios.cooja.interfaces.Radio;
@@ -51,21 +46,6 @@ import org.contikios.cooja.interfaces.Radio;
  * @author Fredrik Osterlind
  */
 public abstract class RadioMedium {
-  /* hwijoon */
-  public boolean isForLongRange() {
-    return isForLongRange;
-  }
-
-  /* hwijoon */
-  public void setForLongRange(boolean forLongRange) {
-    isForLongRange = forLongRange;
-    if(this instanceof UDGM){
-      ((UDGM)this).setForLongRange_UDGM(forLongRange);
-      Visualizer.registerVisualizerSkin(UDGMLongRangeVisualizerSkin.class);
-    }
-  }
-
-  protected boolean isForLongRange = false;
 
   /**
    * Registers a mote to this medium.
@@ -120,24 +100,24 @@ public abstract class RadioMedium {
    * Adds an observer which is notified each time a radio connection has finished.
    *
    * @see #getLastConnection()
-   * @see #deleteRadioMediumObserver(Observer)
+   * @see #deleteRadioTransmissionObserver(Observer)
    * @param observer New observer
    */
-  public abstract void addRadioMediumObserver(Observer observer);
+  public abstract void addRadioTransmissionObserver(Observer observer);
 
   /**
    * @return Radio medium observable
    */
-  public abstract Observable getRadioMediumObservable();
+  public abstract Observable getRadioTransmissionObservable();
 
   /**
    * Deletes an radio medium observer.
    *
-   * @see #addRadioMediumObserver(Observer)
+   * @see #addRadioTransmissionObserver(Observer)
    * @param observer
    *          Observer to delete
    */
-  public abstract void deleteRadioMediumObserver(Observer observer);
+  public abstract void deleteRadioTransmissionObserver(Observer observer);
 
   /**
    * @return Last radio connection finished in the radio medium

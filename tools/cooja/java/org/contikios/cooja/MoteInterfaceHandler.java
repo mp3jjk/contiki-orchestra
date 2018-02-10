@@ -33,7 +33,6 @@ package org.contikios.cooja;
 import java.util.*;
 
 import org.apache.log4j.Logger;
-import org.contikios.cooja.contikimote.LongRangeInterface;
 import org.contikios.cooja.interfaces.*;
 
 /**
@@ -65,7 +64,6 @@ public class MoteInterfaceHandler {
   private PIR myPIR;
   private Position myPosition;
   private Radio myRadio;
-  private Radio myRadio_LR;
   private PolledBeforeActiveTicks[] polledBeforeActive = null;
   private PolledAfterActiveTicks[] polledAfterActive = null;
   private PolledBeforeAllTicks[] polledBeforeAll = null;
@@ -107,25 +105,6 @@ public class MoteInterfaceHandler {
   public <N extends MoteInterface> N getInterfaceOfType(Class<N> interfaceType) {
     for (MoteInterface intf : moteInterfaces) {
       if (interfaceType.isInstance(intf)) {
-        return interfaceType.cast(intf);
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Returns interface of given type. Returns the first interface found that
-   * is either of the given class or of a subclass.
-   *
-   * Usage: getInterfaceOfType(Radio.class, AnyClass)
-   *
-   * @param interfaceType Class of interface to return
-   * @return Mote interface, or null if no interface exists of given type
-   */
-  public <N extends MoteInterface> N getInterfaceOfType(Class<N> interfaceType, Class<?> newIntfType) {
-    for (MoteInterface intf : moteInterfaces) {
-      if (interfaceType.isInstance(intf) && newIntfType.isInstance(intf)) {
         return interfaceType.cast(intf);
       }
     }
@@ -290,12 +269,6 @@ public class MoteInterfaceHandler {
       myRadio = getInterfaceOfType(Radio.class);
     }
     return myRadio;
-  }
-  public Radio getLongRangeRadio() {
-    if (myRadio_LR == null) {
-      myRadio_LR = getInterfaceOfType(Radio.class, LongRangeInterface.class);
-    }
-    return myRadio_LR;
   }
 
   /**

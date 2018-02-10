@@ -85,20 +85,12 @@ public class UDGM extends AbstractRadioMedium {
   public double SUCCESS_RATIO_TX = 1.0; /* Success ratio of TX. If this fails, no radios receive the packet */
   public double SUCCESS_RATIO_RX = 1.0; /* Success ratio of RX. If this fails, the single affected receiver does not receive the packet */
   public double TRANSMITTING_RANGE = 50; /* Transmission range. */
-  public double INTERFERENCE_RANGE = 75; /* Interference range. Ignored if below transmission range. */
+  public double INTERFERENCE_RANGE = 100; /* Interference range. Ignored if below transmission range. */
 
   private DirectedGraphMedium dgrm; /* Used only for efficient destination lookup */
 
   private Random random = null;
-  public void setForLongRange_UDGM(boolean forLongRange) {
-    isForLongRange = forLongRange;
-    logger.warn("UDGM setting...");
-    if(isForLongRange){
-      TRANSMITTING_RANGE = 150;
-      INTERFERENCE_RANGE = 175;
-      logger.warn("UDGM set for Long Range");
-    }
-  }
+
   public UDGM(Simulation simulation) {
     super(simulation);
     random = simulation.getRandomGenerator();
@@ -152,7 +144,6 @@ public class UDGM extends AbstractRadioMedium {
     dgrm.requestEdgeAnalysis();
 
     /* Register visualizer skin */
-    logger.warn("Adding Visualizer, isLongRange=" + isForLongRange);
     Visualizer.registerVisualizerSkin(UDGMVisualizerSkin.class);
   }
 
@@ -229,10 +220,9 @@ public class UDGM extends AbstractRadioMedium {
       double distance = senderPos.getDistanceTo(recvPos);
       if (distance <= moteTransmissionRange) {
         /* Within transmission range */
-//	logger.warn("mote: "+recv.getMote()+" RadioOn: "+ recv.isRadioOn());
+
         if (!recv.isRadioOn()) {
           newConnection.addInterfered(recv);
-//	  logger.warn("recv.isRadioOn()");
           recv.interfereAnyReception();
         } else if (recv.isInterfered()) {
           /* Was interfered: keep interfering */
@@ -243,7 +233,6 @@ public class UDGM extends AbstractRadioMedium {
             (random.nextDouble() > getRxSuccessProbability(sender, recv))) {
           /* Was receiving, or reception failed: start interfering */
           newConnection.addInterfered(recv);
-//	  logger.warn("recv.isReceiving()");
           recv.interfereAnyReception();
 
           /* Interfere receiver in all other active radio connections */
@@ -260,7 +249,6 @@ public class UDGM extends AbstractRadioMedium {
       } else if (distance <= moteInterferenceRange) {
         /* Within interference range */
         newConnection.addInterfered(recv);
-//        logger.warn("interference range");
         recv.interfereAnyReception();
       }
     }
@@ -352,7 +340,7 @@ public class UDGM extends AbstractRadioMedium {
         }
 
         if (!intfRadio.isInterfered()) {
-//          logger.warn("Radio was not interfered: " + intfRadio);
+          /*logger.warn("Radio was not interfered: " + intfRadio);*/
           intfRadio.interfereAnyReception();
         }
       }
@@ -361,51 +349,29 @@ public class UDGM extends AbstractRadioMedium {
 
   public Collection<Element> getConfigXML() {
     Collection<Element> config = super.getConfigXML();
-		Element element;
-		if (isForLongRange){
-			/* Transmitting range */
-			element = new Element("transmitting_range_lr");
-			element.setText(Double.toString(TRANSMITTING_RANGE));
-			config.add(element);
+    Element element;
 
-			/* Interference range */
-			element = new Element("interference_range_lr");
-			element.setText(Double.toString(INTERFERENCE_RANGE));
-			config.add(element);
+    /* Transmitting range */
+    element = new Element("transmitting_range");
+    element.setText(Double.toString(TRANSMITTING_RANGE));
+    config.add(element);
 
+    /* Interference range */
+    element = new Element("interference_range");
+    element.setText(Double.toString(INTERFERENCE_RANGE));
+    config.add(element);
 
-			/* Transmission success probability */
-			element = new Element("success_ratio_tx_lr");
-			element.setText("" + SUCCESS_RATIO_TX);
-			config.add(element);
+    /* Transmission success probability */
+    element = new Element("success_ratio_tx");
+    element.setText("" + SUCCESS_RATIO_TX);
+    config.add(element);
 
-			/* Reception success probability */
-			element = new Element("success_ratio_rx_lr");
-			element.setText("" + SUCCESS_RATIO_RX);
-			config.add(element);
-		} else {
-			/* Transmitting range */
-			element = new Element("transmitting_range");
-			element.setText(Double.toString(TRANSMITTING_RANGE));
-			config.add(element);
+    /* Reception success probability */
+    element = new Element("success_ratio_rx");
+    element.setText("" + SUCCESS_RATIO_RX);
+    config.add(element);
 
-			/* Interference range */
-			element = new Element("interference_range");
-			element.setText(Double.toString(INTERFERENCE_RANGE));
-			config.add(element);
-
-			/* Transmission success probability */
-			element = new Element("success_ratio_tx");
-			element.setText("" + SUCCESS_RATIO_TX);
-			config.add(element);
-
-			/* Reception success probability */
-			element = new Element("success_ratio_rx");
-			element.setText("" + SUCCESS_RATIO_RX);
-			config.add(element);
-		}
-
-		return config;
+    return config;
   }
 
   public boolean setConfigXML(Collection<Element> configXML, boolean visAvailable) {
@@ -425,42 +391,13 @@ public class UDGM extends AbstractRadioMedium {
         logger.warn("Loading old Cooja Config, XML element \"sucess_ratio\" parsed at \"sucess_ratio_tx\"");
       }
 
+      if (element.getName().equals("success_ratio_tx")) {
+        SUCCESS_RATIO_TX = Double.parseDouble(element.getText());
+      }
 
-			if (isForLongRange){
-				if (element.getName().equals("transmitting_range_lr")) {
-					TRANSMITTING_RANGE = Double.parseDouble(element.getText());
-				}
-
-				if (element.getName().equals("interference_range_lr")) {
-					INTERFERENCE_RANGE = Double.parseDouble(element.getText());
-				}
-
-
-				if (element.getName().equals("success_ratio_tx_lr")) {
-					SUCCESS_RATIO_TX = Double.parseDouble(element.getText());
-				}
-
-				if (element.getName().equals("success_ratio_rx_lr")) {
-					SUCCESS_RATIO_RX = Double.parseDouble(element.getText());
-				}
-			} else {
-				if (element.getName().equals("transmitting_range")) {
-					TRANSMITTING_RANGE = Double.parseDouble(element.getText());
-				}
-
-				if (element.getName().equals("interference_range")) {
-					INTERFERENCE_RANGE = Double.parseDouble(element.getText());
-				}
-
-
-				if (element.getName().equals("success_ratio_tx")) {
-					SUCCESS_RATIO_TX = Double.parseDouble(element.getText());
-				}
-
-				if (element.getName().equals("success_ratio_rx")) {
-					SUCCESS_RATIO_RX = Double.parseDouble(element.getText());
-				}
-			}
+      if (element.getName().equals("success_ratio_rx")) {
+        SUCCESS_RATIO_RX = Double.parseDouble(element.getText());
+      }
     }
     return true;
   }

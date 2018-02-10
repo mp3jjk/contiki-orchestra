@@ -78,13 +78,12 @@ public abstract class MoteInterface extends Observable {
   public static final MoteInterface generateInterface(
       Class<? extends MoteInterface> interfaceClass, Mote mote) {
     try {
-      logger.warn("Generating Interface " + interfaceClass.getName());
       MoteInterface instance = interfaceClass.getConstructor(
           new Class[] { Mote.class }).newInstance(new Object[] { mote });
 
       return instance;
     } catch (Exception e) {
-      logger.fatal("Exception when CALLING constructor of " + interfaceClass, e);
+      logger.fatal("Exception when calling constructor of " + interfaceClass, e);
       return null;
     }
   }

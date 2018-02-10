@@ -67,15 +67,11 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
   private final int MAX_HISTORY_SIZE = 200;
   private final float TRANSMITTED_COLOR_RGB[] = Color.BLUE.getRGBColorComponents(null);
   private final float UNTRANSMITTED_COLOR_RGB[] = Color.RED.getRGBColorComponents(null);
-  private final float TRANSMITTED_COLOR_RGB_SUB[] = Color.CYAN.getRGBColorComponents(null);
-  private final float UNTRANSMITTED_COLOR_RGB_SUB[] = Color.ORANGE.getRGBColorComponents(null);
 
   private boolean active = false;
   private Simulation simulation = null;
   private Visualizer visualizer = null;
   private AbstractRadioMedium radioMedium = null;
-  private AbstractRadioMedium radioMediumLR = null;
-
 
   private final List<RadioConnectionArrow> historyList = new LinkedList<>();
 
@@ -92,19 +88,6 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
     }
   };
 
-  private Observer radioMediumObserverLR = new Observer() {
-    @Override
-    public void update(Observable obs, Object obj) {
-      if(radioMediumLR==null) return;
-      RadioConnection last = radioMediumLR.getLastConnection();
-      if (last != null && historyList.size() < MAX_HISTORY_SIZE) {
-        synchronized(historyList) {
-          historyList.add(new RadioConnectionArrow(last, true));
-          visualizer.repaint(500);
-        }
-      }
-    }
-  };
   private final TimeEvent ageArrowsTimeEvent = new TimeEvent(0) {
     @Override
     public void execute(long t) {
@@ -140,7 +123,6 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
     this.simulation = simulation;
     this.visualizer = vis;
     this.active = true;
-    this.radioMediumLR = (AbstractRadioMedium) simulation.getRadioMedium_LR();
 
     simulation.invokeSimulationThread(new Runnable() {
       @Override
@@ -148,9 +130,8 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
         historyList.clear();
 
         /* Start observing radio medium for transmissions */
-        radioMedium.addRadioMediumObserver(radioMediumObserver);
-        if(radioMediumLR!=null)
-          radioMediumLR.addRadioMediumObserver(radioMediumObserverLR);
+        radioMedium.addRadioTransmissionObserver(radioMediumObserver);
+
         /* Fade away arrows */
         simulation.scheduleEvent(ageArrowsTimeEvent, simulation.getSimulationTime() + 100*Simulation.MILLISECOND);
       }
@@ -166,8 +147,7 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
     }
 
     /* Stop observing radio medium */
-    radioMedium.deleteRadioMediumObserver(radioMediumObserver);
-    radioMediumLR.deleteRadioMediumObserver(radioMediumObserverLR);
+    radioMedium.deleteRadioTransmissionObserver(radioMediumObserver);
   }
 
   @Override
@@ -214,18 +194,12 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
         Point sourcePoint = visualizer.transformPositionToPixel(source.getPosition());
         /* If there is no destination, paint red circles to indicate untransmitted message */
         if (connArrow.getConnection().getDestinations().length == 0) {
-          if(connArrow.isMainConnection())
-            g.setColor(new Color(UNTRANSMITTED_COLOR_RGB[0], UNTRANSMITTED_COLOR_RGB[1], UNTRANSMITTED_COLOR_RGB[2], colorHistoryIndex));
-          else
-            g.setColor(new Color(UNTRANSMITTED_COLOR_RGB_SUB[0], UNTRANSMITTED_COLOR_RGB_SUB[1], UNTRANSMITTED_COLOR_RGB_SUB[2], colorHistoryIndex));
+          g.setColor(new Color(UNTRANSMITTED_COLOR_RGB[0], UNTRANSMITTED_COLOR_RGB[1], UNTRANSMITTED_COLOR_RGB[2], colorHistoryIndex));
           g.drawOval(sourcePoint.x - 20, sourcePoint.y - 20, 40, 40);
           g.drawOval(sourcePoint.x - 30, sourcePoint.y - 30, 60, 60);
           continue;
         }
-        if(connArrow.isMainConnection())
-          g.setColor(new Color(TRANSMITTED_COLOR_RGB[0], TRANSMITTED_COLOR_RGB[1], TRANSMITTED_COLOR_RGB[2], colorHistoryIndex));
-        else
-          g.setColor(new Color(TRANSMITTED_COLOR_RGB_SUB[0], TRANSMITTED_COLOR_RGB_SUB[1], TRANSMITTED_COLOR_RGB_SUB[2], colorHistoryIndex));
+        g.setColor(new Color(TRANSMITTED_COLOR_RGB[0], TRANSMITTED_COLOR_RGB[1], TRANSMITTED_COLOR_RGB[2], colorHistoryIndex));
         for (Radio destRadio : connArrow.getConnection().getDestinations()) {
           Position destPos = destRadio.getPosition();
           Point destPoint = visualizer.transformPositionToPixel(destPos);
@@ -249,22 +223,10 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
     private static final int MAX_AGE = 10;
     private final RadioConnection conn;
     private int age;
-    enum ConnectionType {Main, Sub};
-    private ConnectionType conntype;
 
     RadioConnectionArrow(RadioConnection conn) {
       this.conn = conn;
       this.age = 0;
-      this.conntype = ConnectionType.Main;
-    }
-
-    RadioConnectionArrow(RadioConnection conn, boolean isSub) {
-      this.conn = conn;
-      this.age = 0;
-      if(isSub)
-        this.conntype = ConnectionType.Sub;
-      else
-        this.conntype = ConnectionType.Main;
     }
 
     /**
@@ -298,15 +260,6 @@ public class TrafficVisualizerSkin implements VisualizerSkin {
      */
     public RadioConnection getConnection() {
       return conn;
-    }
-
-    /**
-     * Returns if Connection Type is Main
-     *
-     * @return true if Connection type is Main, false if Connection type is Sub
-     */
-    public boolean isMainConnection(){
-      return this.conntype == ConnectionType.Main;
     }
   }
 }

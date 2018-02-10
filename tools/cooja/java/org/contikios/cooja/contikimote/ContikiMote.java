@@ -34,10 +34,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.contikios.cooja.*;
-import org.contikios.cooja.mote.memory.VarMemory;
 import org.jdom.Element;
+import org.contikios.cooja.Mote;
+import org.contikios.cooja.MoteInterface;
+import org.contikios.cooja.MoteInterfaceHandler;
+import org.contikios.cooja.MoteType;
 import org.contikios.cooja.mote.memory.SectionMoteMemory;
+import org.contikios.cooja.Simulation;
 import org.contikios.cooja.mote.memory.MemoryInterface;
 import org.contikios.cooja.motes.AbstractWakeupMote;
 
@@ -134,13 +137,16 @@ public class ContikiMote extends AbstractWakeupMote implements Mote {
       scheduleNextWakeup(simTime + -myInterfaceHandler.getClock().getTime());
       return;
     }
+
     /* Copy mote memory to Contiki */
     myType.setCoreMemory(myMemory);
+
     /* Handle a single Contiki events */
     myType.tick();
 
     /* Copy mote memory from Contiki */
     myType.getCoreMemory(myMemory);
+
     /* Poll mote interfaces */
     myMemory.pollForMemoryChanges();
     myInterfaceHandler.doActiveActionsAfterTick();
