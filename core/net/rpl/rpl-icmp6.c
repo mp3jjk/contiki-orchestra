@@ -473,6 +473,9 @@ dio_input(void)
     }
   }
 
+//  RPL_CALLBACK_REMOVE_LINK();
+  RPL_CALLBACK_ADD_LINK();
+
 #ifdef RPL_DEBUG_DIO_INPUT
   RPL_DEBUG_DIO_INPUT(&from, &dio);
 #endif

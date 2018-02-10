@@ -104,4 +104,24 @@ tsch_rpl_callback_parent_switch(rpl_parent_t *old, rpl_parent_t *new)
         rpl_get_parent_ipaddr(new)));
   }
 }
+/*---------------------------------------------------------------------------*/
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+/* Add link by slot in traffic adaptive mode */
+void
+tsch_rpl_add_link_by_slot()
+{
+	printf("test tsch_rpl_add_link_by_slot");
+	if(all_rules[1] != NULL) {
+//		all_rules[1]->add_uc_link_by_timeslot(1);
+	}
+}
+/*---------------------------------------------------------------------------*/
+/* Remove link by slot in traffic adaptive mode */
+void
+tsch_rpl_remove_link_by_slot()
+{
+	printf("test tsch_rpl_remove_link_by_slot");
+}
+/*---------------------------------------------------------------------------*/
+#endif
 #endif /* UIP_CONF_IPV6_RPL */

@@ -438,7 +438,7 @@ PROCESS_THREAD(node_process, ev, data)
 	  printf("Ppkt= %f\n",prob_packet_gen);
 
 //	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
-	  n_SBS = 1; // For debug
+	  n_SBS = 2; // For debug
 	  printf("n_SBS: %d\n",n_SBS);
 
 

@@ -50,15 +50,26 @@ struct orchestra_rule {
   int  (* select_packet)(uint16_t *slotframe, uint16_t *timeslot);
   void (* child_added)(const linkaddr_t *addr);
   void (* child_removed)(const linkaddr_t *addr);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  void (* add_uc_link_by_timeslot)(uint8_t timeslot);
+  void (* remove_uc_link_by_timeslot)(uint8_t timeslot);
+#endif
 };
 
 struct orchestra_rule eb_per_time_source;
 struct orchestra_rule unicast_per_neighbor_rpl_storing;
 struct orchestra_rule unicast_per_neighbor_rpl_ns;
 struct orchestra_rule default_common;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+struct orchestra_rule unicast_per_neighbor_rpl_storing_traffic_adaptive;
+#endif
 
 extern linkaddr_t orchestra_parent_linkaddr;
 extern int orchestra_parent_knows_us;
+
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+extern const struct orchestra_rule *all_rules[];
+#endif
 
 /* Call from application to start Orchestra */
 void orchestra_init(void);

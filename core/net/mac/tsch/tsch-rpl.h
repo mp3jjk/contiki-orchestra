@@ -36,6 +36,9 @@
 
 #include "net/rpl/rpl.h"
 #include "net/mac/tsch/tsch-queue.h"
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#include "apps/orchestra/orchestra.h"
+#endif
 
 /********** Functions *********/
 
@@ -51,5 +54,12 @@ void tsch_rpl_callback_new_dio_interval(uint8_t dio_interval);
 /* Set TSCH time source based on current RPL preferred parent.
  * To use, set #define RPL_CALLBACK_PARENT_SWITCH tsch_rpl_callback_parent_switch */
 void tsch_rpl_callback_parent_switch(rpl_parent_t *old, rpl_parent_t *new);
+
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+/* #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot */
+void tsch_rpl_remove_link_by_slot();
+/* #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot */
+void tsch_rpl_add_link_by_slot();
+#endif /* ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 
 #endif /* __TSCH_RPL_H__ */

@@ -40,6 +40,8 @@
 #define WITH_ORCHESTRA 1
 #endif /* WITH_ORCHESTRA */
 
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common }
+
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
@@ -51,8 +53,6 @@
 #else	// If event driven (assume poisson)
 #define INTENSITY 1 // lambda
 #endif
-
-//#define SLOTFRAME_LENGHTH ORCHESTRA_UNICAST_PERIOD
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -71,6 +71,10 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
 	uint8_t child_changed; // Notifying the change of child list
 #endif
+
+/* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
+#define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
+#define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot
 
 /* Set to enable TSCH security */
 #ifndef WITH_SECURITY
