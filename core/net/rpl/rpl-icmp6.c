@@ -328,7 +328,7 @@ dio_input(void)
   dio.preference = buffer[i++] & RPL_DIO_PREFERENCE_MASK;
 
   dio.dtsn = buffer[i++];
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   dio.parent_id = buffer[i++];
   dio.received_child_num = buffer[i++];
 #else
@@ -457,7 +457,7 @@ dio_input(void)
         /* valid lifetime is ingnored for now - at i + 4 */
         /* preferred lifetime stored in lifetime */
         dio.prefix_info.lifetime = get32(buffer, i + 8);
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0 && ORCHESTRA_UNICAST_SENDER_BASED
         memcpy(&dio.recv_TX_slot_assignment, &buffer[i + 12], 4);
         PRINTF("received TX_slot: %x\n",dio.recv_TX_slot_assignment);
 #else
@@ -479,7 +479,7 @@ dio_input(void)
 
   rpl_process_dio(&from, &dio);
 
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
   	  uint8_t i, timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
   	  /* Remove current installed TX slot */
@@ -579,7 +579,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     RPL_LOLLIPOP_INCREMENT(instance->dtsn_out);
   }
 
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   /* using 2 reserved bytes for
    * parent_id and my_child_number
    */
@@ -720,7 +720,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     uip_icmp6_send(uc_addr, ICMP6_RPL, RPL_CODE_DIO, pos);
   }
 #endif /* RPL_LEAF_ONLY */
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(TX_slot_changed == 1) {
 	  uint8_t i, timeslot = 0;
 	  for(i = 0; i < my_child_number; i++) {
@@ -942,7 +942,7 @@ dao_input_storing(void)
     }
     return;
   }
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   /* Add child in DAO */
   rpl_child_t *c;
   c = rpl_find_child(&dao_sender_addr);
