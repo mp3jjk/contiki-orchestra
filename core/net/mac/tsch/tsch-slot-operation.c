@@ -976,6 +976,9 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 //    	  printf("active_slot\n");
         /* Hop channel */
         current_channel = tsch_calculate_channel(&tsch_current_asn, current_link->channel_offset);
+        if(current_link->slotframe_handle == 0) { // Need to implement properly, for EB with single channel 20
+        	current_channel = 20;
+        }
         NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, current_channel);
         /* Turn the radio on already here if configured so; necessary for radios with slow startup */
         tsch_radio_on(TSCH_RADIO_CMD_ON_START_OF_TIMESLOT);

@@ -42,6 +42,7 @@
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
+#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
@@ -52,7 +53,7 @@
 #define INTENSITY 1 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
