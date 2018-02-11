@@ -1255,6 +1255,10 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
 //  printf("recv child_num %d\n",p->parent_child_num);
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
+	  if(dio->recv_TX_slot_assignment != recv_TX_slot_assignment) {
+		  recv_TX_slot_assignment = dio->recv_TX_slot_assignment;
+		  recv_TX_slot_changed = 1;
+	  }
   }
   if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
 	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
@@ -1738,12 +1742,17 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
 //  printf("recv child_num %d\n",p->parent_child_num);
   if(dag->preferred_parent == p) {
 	  num_sibling = p->parent_child_num;
+	  if(dio->recv_TX_slot_assignment != recv_TX_slot_assignment) {
+		  recv_TX_slot_assignment = dio->recv_TX_slot_assignment;
+		  recv_TX_slot_changed = 1;
+	  }
   }
   if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
 	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
 	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
   }
   printf("current num_sibling %d\n",num_sibling);
+
 #endif
 
   if(dio->rank == INFINITE_RANK && p == dag->preferred_parent) {

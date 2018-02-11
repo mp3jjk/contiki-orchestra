@@ -40,8 +40,6 @@
 #define WITH_ORCHESTRA 1
 #endif /* WITH_ORCHESTRA */
 
-#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common }
-
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
@@ -68,8 +66,13 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #else 								// Deterministic TX slot assignment
 #define MAX_NUMBER_CHILD	10
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
+	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
+	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
+	uint8_t recv_TX_slot_changed; // To check change of received assignment
 	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
 	uint8_t child_changed; // Notifying the change of child list
+	uint8_t current_TX_slot; // To store current TX slot
+	uint8_t prev_TX_slot; // To store previous TX slot
 #endif
 
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
@@ -91,7 +94,7 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #undef RPL_CONF_MOP
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
-#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
 
 /*******************************************************/
 /********************* Enable TSCH *********************/

@@ -364,6 +364,7 @@ tsch_queue_get_packet_for_nbr(const struct tsch_neighbor *n, struct tsch_link *l
     int is_shared_link = link != NULL && link->link_options & LINK_OPTION_SHARED;
     if(n != NULL) {
       int16_t get_index = ringbufindex_peek_get(&n->tx_ringbuf);
+//      printf("tsch_queue_backoff_expired: %d\n",tsch_queue_backoff_expired(n));
       if(get_index != -1 &&
           !(is_shared_link && !tsch_queue_backoff_expired(n))) {    /* If this is a shared link,
                                                                     make sure the backoff has expired */
@@ -373,9 +374,15 @@ tsch_queue_get_packet_for_nbr(const struct tsch_neighbor *n, struct tsch_link *l
         if(packet_attr_slotframe != 0xffff && packet_attr_slotframe != link->slotframe_handle) {
           return NULL;
         }
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+        if(packet_attr_timeslot != 0xffff && packet_attr_timeslot != link->timeslot && packet_attr_timeslot != prev_TX_slot) {
+        	return NULL;
+        }
+#else
         if(packet_attr_timeslot != 0xffff && packet_attr_timeslot != link->timeslot) {
           return NULL;
         }
+#endif
 #endif
         return n->tx_array[get_index];
       }
@@ -400,12 +407,15 @@ struct tsch_packet *
 tsch_queue_get_unicast_packet_for_any(struct tsch_neighbor **n, struct tsch_link *link)
 {
   if(!tsch_is_locked()) {
+//	  printf("tsch_is_not_locked\n");
     struct tsch_neighbor *curr_nbr = list_head(neighbor_list);
     struct tsch_packet *p = NULL;
     while(curr_nbr != NULL) {
+//    	printf("curr_nbr %d %d\n",curr_nbr->is_broadcast, curr_nbr->tx_links_count);
       if(!curr_nbr->is_broadcast && curr_nbr->tx_links_count == 0) {
         /* Only look up for non-broadcast neighbors we do not have a tx link to */
         p = tsch_queue_get_packet_for_nbr(curr_nbr, link);
+//        printf("return packet at get_index2 NULL? %c\n",p == NULL ? 'O':'X');
         if(p != NULL) {
           if(n != NULL) {
             *n = curr_nbr;

@@ -328,6 +328,7 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
 
   /* Is this a Tx link? */
   if(link->link_options & LINK_OPTION_TX) {
+//	  printf("tx link option\n");
     /* is it for advertisement of EB? */
     if(link->link_type == LINK_TYPE_ADVERTISING || link->link_type == LINK_TYPE_ADVERTISING_ONLY) {
       /* fetch EB packets */
@@ -342,6 +343,7 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
         p = tsch_queue_get_packet_for_nbr(n, link);
         /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
+//        	printf("pick unicast packet\n");
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
         }
       }
@@ -482,7 +484,6 @@ PT_THREAD(tsch_tx_slot(struct pt *pt, struct rtimer *t))
   static int packet_ready = 1;
 
   PT_BEGIN(pt);
-
   TSCH_DEBUG_TX_EVENT();
 
   /* First check if we have space to store a newly dequeued packet (in case of
@@ -963,6 +964,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       is_drift_correction_used = 0;
       /* Get a packet ready to be sent */
       current_packet = get_packet_and_neighbor_for_link(current_link, &current_neighbor);
+//      printf("current_packet NULL? %c\n",current_packet == NULL? 'O':'X');
       /* There is no packet to send, and this link does not have Rx flag. Instead of doing
        * nothing, switch to the backup link (has Rx flag) if any. */
       if(current_packet == NULL && !(current_link->link_options & LINK_OPTION_RX) && backup_link != NULL) {
@@ -971,6 +973,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       }
       is_active_slot = current_packet != NULL || (current_link->link_options & LINK_OPTION_RX);
       if(is_active_slot) {
+//    	  printf("active_slot\n");
         /* Hop channel */
         current_channel = tsch_calculate_channel(&tsch_current_asn, current_link->channel_offset);
         NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, current_channel);

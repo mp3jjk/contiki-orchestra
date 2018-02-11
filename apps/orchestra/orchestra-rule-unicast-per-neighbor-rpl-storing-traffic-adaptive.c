@@ -153,26 +153,98 @@ remove_uc_link(const linkaddr_t *linkaddr)
 }
 /*---------------------------------------------------------------------------*/
 static void
-add_uc_link_by_timeslot(uint8_t timeslot)
+add_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 {
-	printf("add_uc_link_by_timeslot: %d\n",timeslot);
+	if(flag == 0) {
+		uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
+
+		if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+			/* This is also our timeslot, add necessary flags */
+			link_options |= ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
+		}
+
+		/* Add/update link */
+		tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
+				timeslot, channel_offset);
+	}
+	else {
+		uint8_t link_options = LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
+		/* Add/update link */
+		tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
+				timeslot, channel_offset);
+		prev_TX_slot = current_TX_slot;
+		current_TX_slot = timeslot;
+	}
 }
 /*---------------------------------------------------------------------------*/
 static void
-remove_uc_link_by_timeslot(uint8_t timeslot)
+remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 {
-	printf("remove_uc_link_by_timeslot: %d\n",timeslot);
+	struct tsch_link *l;
+	if(flag == 0) {
+		l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
+		if(l == NULL) {
+			return;
+		}
+		/* Does our current parent need this timeslot? */
+		if(timeslot == get_node_timeslot(&orchestra_parent_linkaddr)) {
+			/* Yes, this timeslot is being used, return */
+			return;
+		}
+		/* Does any other child need this timeslot?
+		 * (lookup all route next hops) */
+		/*	nbr_table_item_t *item = nbr_table_head(nbr_routes);
+	while(item != NULL) {
+		linkaddr_t *addr = nbr_table_get_lladdr(nbr_routes, item);
+		if(timeslot == get_node_timeslot(addr)) {
+			 Yes, this timeslot is being used, return
+			return;
+		}
+		item = nbr_table_next(nbr_routes, item);
+	}*/
+
+		/* Do we need this timeslot? */
+		if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+			/* This is our link, keep it but update the link options */
+			uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
+			tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
+					timeslot, channel_offset);
+		} else {
+			/* Remove link */
+			tsch_schedule_remove_link(sf_unicast, l);
+		}
+	}
+	else {
+		if(timeslot == (uint8_t)-1) {
+			printf("remove prev assigned TX_slot: %d\n",current_TX_slot);
+			l = tsch_schedule_get_link_by_timeslot(sf_unicast, current_TX_slot);
+			if(l == NULL) {
+				return;
+			}
+			tsch_schedule_remove_link(sf_unicast, l);
+		}
+		else {
+			printf("remove TX_slot: %d\n",timeslot);
+			l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
+			if(l == NULL) {
+				return;
+			}
+			tsch_schedule_remove_link(sf_unicast, l);
+		}
+	}
 }
 /*---------------------------------------------------------------------------*/
 static void
 child_added(const linkaddr_t *linkaddr)
 {
+	printf("child_added\n");
   add_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
 static void
 child_removed(const linkaddr_t *linkaddr)
 {
+	printf("child_removed\n");
   remove_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
@@ -222,6 +294,8 @@ init(uint16_t sf_handle)
             ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX,
             LINK_TYPE_NORMAL, &tsch_broadcast_address,
             timeslot, channel_offset);
+  current_TX_slot = timeslot;
+  prev_TX_slot = current_TX_slot;
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule unicast_per_neighbor_rpl_storing_traffic_adaptive = {

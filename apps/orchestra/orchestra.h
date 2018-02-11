@@ -51,8 +51,8 @@ struct orchestra_rule {
   void (* child_added)(const linkaddr_t *addr);
   void (* child_removed)(const linkaddr_t *addr);
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-  void (* add_uc_link_by_timeslot)(uint8_t timeslot);
-  void (* remove_uc_link_by_timeslot)(uint8_t timeslot);
+  void (* add_uc_link_by_timeslot)(uint8_t timeslot, uint8_t flag);
+  void (* remove_uc_link_by_timeslot)(uint8_t timeslot, uint8_t flag);
 #endif
 };
 

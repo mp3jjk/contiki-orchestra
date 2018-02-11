@@ -446,6 +446,7 @@ PROCESS_THREAD(node_process, ev, data)
 //	  packet_interval = 30 * CLOCK_SECOND;
 	  etimer_set(&gen,packet_interval);
   }
+  n_SBS = 2; // For debug
 
   /* Print out routing tables every minute */
   etimer_set(&et, CLOCK_SECOND * 60);

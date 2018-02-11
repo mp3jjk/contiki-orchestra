@@ -56,10 +56,10 @@ void tsch_rpl_callback_new_dio_interval(uint8_t dio_interval);
 void tsch_rpl_callback_parent_switch(rpl_parent_t *old, rpl_parent_t *new);
 
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-/* #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot */
-void tsch_rpl_remove_link_by_slot();
-/* #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot */
-void tsch_rpl_add_link_by_slot();
+/* #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot flag == 0 for parent, flag == 1 for child */
+void tsch_rpl_remove_link_by_slot(uint8_t slot, uint8_t flag);
+/* #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot flag == 0 for parent, flag == 1 for child */
+void tsch_rpl_add_link_by_slot(uint8_t slot, uint8_t flag);
 #endif /* ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 
 #endif /* __TSCH_RPL_H__ */

@@ -880,6 +880,16 @@ send_packet(mac_callback_t sent, void *ptr)
     mac_call_sent_callback(sent, ptr, ret, 1);
     return;
   }
+/*
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  if(!state_traffic_adaptive_TX) {
+	  printf("TSCH:! not start traffic adaptive yet\n");
+	  ret = MAC_TX_ERR;
+	  mac_call_sent_callback(sent, ptr, ret, 1);
+	  return;
+  }
+#endif
+*/
 
   /* Ask for ACK if we are sending anything other than broadcast */
   if(!linkaddr_cmp(addr, &linkaddr_null)) {
