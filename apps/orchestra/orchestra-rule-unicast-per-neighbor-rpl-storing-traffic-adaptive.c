@@ -93,6 +93,7 @@ neighbor_has_uc_link(const linkaddr_t *linkaddr)
 static void
 add_uc_link(const linkaddr_t *linkaddr)
 {
+//	printf("add_uc_link\n");
   if(linkaddr != NULL) {
     uint16_t timeslot = get_node_timeslot(linkaddr);
     uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
@@ -155,6 +156,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
 static void
 add_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 {
+//	printf("add_uc_link_by_timeslot\n");
 	if(flag == 0) {
 		uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
 
@@ -269,6 +271,7 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
 static void
 new_time_source(const struct tsch_neighbor *old, const struct tsch_neighbor *new)
 {
+//	printf("new_time_source\n");
   if(new != old) {
     const linkaddr_t *old_addr = old != NULL ? &old->addr : NULL;
     const linkaddr_t *new_addr = new != NULL ? &new->addr : NULL;

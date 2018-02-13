@@ -53,7 +53,9 @@
 #define INTENSITY 1 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+
+
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -102,6 +104,9 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #else
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
+
+#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF
+#define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/
 /********************* Enable TSCH *********************/

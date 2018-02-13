@@ -58,14 +58,16 @@
 #include <limits.h>
 #include <string.h>
 
-#define DEBUG DEBUG_PRINT
+#define DEBUG DEBUG_NONE
 #include "net/ip/uip-debug.h"
 
 /* A configurable function called after every RPL parent switch */
 #ifdef RPL_CALLBACK_PARENT_SWITCH
 void RPL_CALLBACK_PARENT_SWITCH(rpl_parent_t *old, rpl_parent_t *new);
 #endif /* RPL_CALLBACK_PARENT_SWITCH */
-
+#ifdef TSCH_CALLBACK_LEAVING_NETWORK
+void TSCH_CALLBACK_LEAVING_NETWORK(void);
+#endif
 /*---------------------------------------------------------------------------*/
 extern rpl_of_t rpl_of0, rpl_mrhof;
 static rpl_of_t * const objective_functions[] = RPL_SUPPORTED_OFS;
@@ -1098,7 +1100,7 @@ rpl_nullify_parent(rpl_parent_t *parent)
           dao_output(parent, RPL_ZERO_LIFETIME);
         }
 #ifdef TSCH_CALLBACK_LEAVING_NETWORK
-        TSCH_CALLBACK_LEAVING_NETWORK();
+//        TSCH_CALLBACK_LEAVING_NETWORK();
 #endif
         rpl_set_preferred_parent(dag, NULL);
       }

@@ -114,7 +114,8 @@ parent_link_metric(rpl_parent_t *p)
 {
   /* OF0 operates without metric container; the only metric we have is ETX */
   const struct link_stats *stats = rpl_get_parent_link_stats(p);
-  return stats != NULL ? stats->etx : 0xffff;
+//  return stats != NULL ? stats->etx : 0xffff;
+  return stats != NULL ? 256 : 0xffff;
 }
 /*---------------------------------------------------------------------------*/
 static uint16_t

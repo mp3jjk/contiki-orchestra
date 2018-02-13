@@ -1,67 +1,453 @@
-[14:44:17 - AWT-EventQueue-0] [Cooja.java:2856] [INFO] - External tools default settings: /external_tools_linux.config
-[14:44:17 - AWT-EventQueue-0] [Cooja.java:2886] [INFO] - External tools user settings: /home/user/.cooja.user.properties
-[14:44:20 - Thread-0] [Simulation.java:422] [INFO] - Simulation random seed: 123456
-[14:44:21 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
-[14:44:22 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib1 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype404.cooja'
-[14:44:22 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x39020 ( 848 == 0x350 bytes)
-[14:44:22 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x39380 ( 84752 == 0x14b10 bytes)
-[14:44:22 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype404.cooja: offsetting Cooja mote address space: 0x86d07000
-[14:44:22 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86d40020 ( 848 == 0x350 bytes)
-[14:44:22 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86d40380 ( 84752 == 0x14b10 bytes)
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:22 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:44:23 - Thread-0] [Visualizer.java:256] [INFO] - Registered external visualizer: org.contikios.cooja.plugins.skins.DGRMVisualizerSkin
-[14:44:23 - Thread-0] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
-[14:44:24 - Thread-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
-[14:44:24 - Thread-0] [LogScriptEngine.java:265] [INFO] - Script timeout in 3600000 ms
-[14:44:24 - Thread-0] [ScriptRunner.java:387] [INFO] - Test script activated
-[14:44:25 - Thread-6] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1518500665163
-[14:44:38 - Thread-6] [LogScriptEngine.java:389] [INFO] - Test script at 5.00%, done in 271.1 sec
-[14:44:45 - Thread-6] [LogScriptEngine.java:389] [INFO] - Test script at 10.00%, done in 190.8 sec
-[14:44:52 - Thread-6] [LogScriptEngine.java:389] [INFO] - Test script at 15.00%, done in 158.1 sec
-[14:45:40 - Thread-5] [LogScriptEngine.java:309] [INFO] - Test script finished
-[14:45:40 - AWT-EventQueue-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
-[14:45:40 - Thread-7] [Simulation.java:422] [INFO] - Simulation random seed: 123456
-[14:45:41 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
-[14:45:41 - Thread-7] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib2 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype70.cooja'
-[14:45:42 - Thread-7] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x39020 ( 848 == 0x350 bytes)
-[14:45:42 - Thread-7] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x39380 ( 84752 == 0x14b10 bytes)
-[14:45:42 - Thread-7] [ContikiMoteType.java:500] [INFO] - mtype70.cooja: offsetting Cooja mote address space: 0x86b60000
-[14:45:42 - Thread-7] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86b99020 ( 848 == 0x350 bytes)
-[14:45:42 - Thread-7] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86b99380 ( 84752 == 0x14b10 bytes)
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[14:45:42 - Thread-7] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
-[14:45:43 - Thread-7] [ScriptRunner.java:430] [INFO] - Test script deactivated
-[14:45:43 - Thread-7] [LogScriptEngine.java:265] [INFO] - Script timeout in 3600000 ms
-[14:45:43 - Thread-7] [ScriptRunner.java:387] [INFO] - Test script activated
-[14:45:43 - Thread-12] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1518500743303
-[14:45:54 - Thread-12] [LogScriptEngine.java:389] [INFO] - Test script at 5.00%, done in 222.1 sec
-[14:46:01 - Thread-12] [LogScriptEngine.java:389] [INFO] - Test script at 10.00%, done in 161.7 sec
-[14:46:07 - Thread-12] [LogScriptEngine.java:389] [INFO] - Test script at 15.00%, done in 138.4 sec
+[16:31:27 - AWT-EventQueue-0] [Cooja.java:2856] [INFO] - External tools default settings: /external_tools_linux.config
+[16:31:27 - AWT-EventQueue-0] [Cooja.java:2886] [INFO] - External tools user settings: /home/user/.cooja.user.properties
+[16:31:29 - Thread-0] [Simulation.java:422] [INFO] - Simulation random seed: 123456
+[16:31:30 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[16:31:31 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib1 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype826.cooja'
+[16:31:31 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x37020 ( 912 == 0x390 bytes)
+[16:31:31 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x373c0 ( 84752 == 0x14b10 bytes)
+[16:31:31 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype826.cooja: offsetting Cooja mote address space: 0x86e75000
+[16:31:31 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86eac020 ( 912 == 0x390 bytes)
+[16:31:31 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86eac3c0 ( 84752 == 0x14b10 bytes)
+[16:31:33 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[16:31:33 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib2 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype960.cooja'
+[16:31:34 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x37020 ( 912 == 0x390 bytes)
+[16:31:34 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x373c0 ( 84752 == 0x14b10 bytes)
+[16:31:34 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype960.cooja: offsetting Cooja mote address space: 0x86e29000
+[16:31:34 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86e60020 ( 912 == 0x390 bytes)
+[16:31:34 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86e603c0 ( 84752 == 0x14b10 bytes)
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[16:31:34 - Thread-0] [Visualizer.java:256] [INFO] - Registered external visualizer: org.contikios.cooja.plugins.skins.DGRMVisualizerSkin
+[16:31:35 - Thread-0] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
+[16:31:35 - Thread-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
+[16:31:35 - Thread-0] [LogScriptEngine.java:265] [INFO] - Script timeout in 3600000 ms
+[16:31:35 - Thread-0] [ScriptRunner.java:387] [INFO] - Test script activated
+[16:31:36 - Thread-9] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1518507096508
+[16:32:02 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 5.00%, done in 515.4 sec
+[16:32:14 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 10.00%, done in 346.0 sec
+[16:32:26 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 15.00%, done in 285.0 sec
+[16:32:38 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 20.00%, done in 252.9 sec
+[16:32:52 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 25.00%, done in 231.3 sec
+[16:33:07 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 30.00%, done in 215.0 sec
+[16:33:24 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 35.00%, done in 201.6 sec
+[16:33:41 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 40.00%, done in 189.1 sec
+[16:34:01 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 45.00%, done in 178.1 sec
+[16:34:21 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 50.00%, done in 166.1 sec
+[16:34:44 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 55.00%, done in 154.3 sec
+[16:35:08 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 60.00%, done in 141.7 sec
+[16:35:33 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 65.00%, done in 128.3 sec
+[16:36:00 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 70.00%, done in 113.6 sec
+[16:36:31 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 75.00%, done in 98.5 sec
+[16:37:03 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 80.00%, done in 81.8 sec
+[16:37:40 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 85.00%, done in 64.4 sec
+[16:41:13 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 90.00%, done in 64.2 sec
+[16:45:41 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 95.00%, done in 44.5 sec
+[16:51:28 - Thread-9] [LogScriptEngine.java:375] [INFO] - Timeout event @ 3600000000
+[16:51:28 - Thread-9] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1518508288647	Duration: 1192139 ms	Simulated time 3600103 ms	Ratio 3.0198684884900167
+[16:51:28 - Thread-8] [LogScriptEngine.java:309] [INFO] - Test script finished
+[16:53:08 - AWT-EventQueue-0] [PowerTracker.java:252] [INFO] - PowerTracker output:
+
+AVG ON 4395189000 us 3.94 %
+AVG TX 328796416 us 0.29 %
+AVG RX 258770176 us 0.23 %
+AVG INT 36128800 us 0.03 %
+Contiki_1 MONITORED 3599978672 us
+Contiki_1 ON 124168224 us 3.45 %
+Contiki_1 TX 7421248 us 0.21 %
+Contiki_1 RX 42528416 us 1.18 %
+Contiki_1 INT 7306240 us 0.20 %
+Contiki_2 MONITORED 3600103020 us
+Contiki_2 ON 163202620 us 4.53 %
+Contiki_2 TX 33910976 us 0.94 %
+Contiki_2 RX 37116160 us 1.03 %
+Contiki_2 INT 11568736 us 0.32 %
+Contiki_3 MONITORED 3599996020 us
+Contiki_3 ON 164454232 us 4.57 %
+Contiki_3 TX 36622624 us 1.02 %
+Contiki_3 RX 38265824 us 1.06 %
+Contiki_3 INT 6755936 us 0.19 %
+Contiki_4 MONITORED 3600006020 us
+Contiki_4 ON 155742244 us 4.33 %
+Contiki_4 TX 32133664 us 0.89 %
+Contiki_4 RX 17626176 us 0.49 %
+Contiki_4 INT 135584 us 0.00 %
+Contiki_5 MONITORED 3600016020 us
+Contiki_5 ON 155476128 us 4.32 %
+Contiki_5 TX 31969120 us 0.89 %
+Contiki_5 RX 17611232 us 0.49 %
+Contiki_5 INT 85856 us 0.00 %
+Contiki_6 MONITORED 3600028928 us
+Contiki_6 ON 151472404 us 4.21 %
+Contiki_6 TX 27372288 us 0.76 %
+Contiki_6 RX 17599744 us 0.49 %
+Contiki_6 INT 4009152 us 0.11 %
+Contiki_7 MONITORED 3600036020 us
+Contiki_7 ON 152077832 us 4.22 %
+Contiki_7 TX 27353696 us 0.76 %
+Contiki_7 RX 17625952 us 0.49 %
+Contiki_7 INT 5876864 us 0.16 %
+Contiki_8 MONITORED 3600046020 us
+Contiki_8 ON 130584776 us 3.63 %
+Contiki_8 TX 8674176 us 0.24 %
+Contiki_8 RX 6332064 us 0.18 %
+Contiki_8 INT 38016 us 0.00 %
+Contiki_9 MONITORED 3600056020 us
+Contiki_9 ON 130618076 us 3.63 %
+Contiki_9 TX 8703136 us 0.24 %
+Contiki_9 RX 6362432 us 0.18 %
+Contiki_9 INT 66688 us 0.00 %
+Contiki_10 MONITORED 3600066020 us
+Contiki_10 ON 134394876 us 3.73 %
+Contiki_10 TX 8611424 us 0.24 %
+Contiki_10 RX 6351680 us 0.18 %
+Contiki_10 INT 56320 us 0.00 %
+Contiki_11 MONITORED 3600076020 us
+Contiki_11 ON 134355688 us 3.73 %
+Contiki_11 TX 8661408 us 0.24 %
+Contiki_11 RX 6327136 us 0.18 %
+Contiki_11 INT 68992 us 0.00 %
+Contiki_12 MONITORED 3600086020 us
+Contiki_12 ON 139498792 us 3.87 %
+Contiki_12 TX 12687936 us 0.35 %
+Contiki_12 RX 6305056 us 0.18 %
+Contiki_12 INT 40416 us 0.00 %
+Contiki_13 MONITORED 3600096020 us
+Contiki_13 ON 139442392 us 3.87 %
+Contiki_13 TX 12637120 us 0.35 %
+Contiki_13 RX 6320032 us 0.18 %
+Contiki_13 INT 69856 us 0.00 %
+Contiki_14 MONITORED 3599936020 us
+Contiki_14 ON 138244012 us 3.84 %
+Contiki_14 TX 14605664 us 0.41 %
+Contiki_14 RX 6350880 us 0.18 %
+Contiki_14 INT 33248 us 0.00 %
+Contiki_15 MONITORED 3599946020 us
+Contiki_15 ON 138312888 us 3.84 %
+Contiki_15 TX 14721856 us 0.41 %
+Contiki_15 RX 6311584 us 0.18 %
+Contiki_15 INT 14528 us 0.00 %
+Contiki_16 MONITORED 3599956020 us
+Contiki_16 ON 137065660 us 3.81 %
+Contiki_16 TX 2664352 us 0.07 %
+Contiki_16 RX 784192 us 0.02 %
+Contiki_16 INT 0 us 0.00 %
+Contiki_17 MONITORED 3599966020 us
+Contiki_17 ON 137072764 us 3.81 %
+Contiki_17 TX 2668256 us 0.07 %
+Contiki_17 RX 780192 us 0.02 %
+Contiki_17 INT 0 us 0.00 %
+Contiki_18 MONITORED 3599976020 us
+Contiki_18 ON 129395660 us 3.59 %
+Contiki_18 TX 2699136 us 0.07 %
+Contiki_18 RX 777376 us 0.02 %
+Contiki_18 INT 0 us 0.00 %
+Contiki_19 MONITORED 3599986020 us
+Contiki_19 ON 129402588 us 3.59 %
+Contiki_19 TX 2701792 us 0.08 %
+Contiki_19 RX 774048 us 0.02 %
+Contiki_19 INT 0 us 0.00 %
+Contiki_20 MONITORED 3599996020 us
+Contiki_20 ON 137096984 us 3.81 %
+Contiki_20 TX 2679456 us 0.07 %
+Contiki_20 RX 779776 us 0.02 %
+Contiki_20 INT 0 us 0.00 %
+Contiki_21 MONITORED 3600006020 us
+Contiki_21 ON 137125508 us 3.81 %
+Contiki_21 TX 2708096 us 0.08 %
+Contiki_21 RX 771360 us 0.02 %
+Contiki_21 INT 0 us 0.00 %
+Contiki_22 MONITORED 3600016020 us
+Contiki_22 ON 136402172 us 3.79 %
+Contiki_22 TX 2686144 us 0.07 %
+Contiki_22 RX 8081376 us 0.22 %
+Contiki_22 INT 0 us 0.00 %
+Contiki_23 MONITORED 3600026020 us
+Contiki_23 ON 133249964 us 3.70 %
+Contiki_23 TX 2677056 us 0.07 %
+Contiki_23 RX 786272 us 0.02 %
+Contiki_23 INT 1184 us 0.00 %
+Contiki_24 MONITORED 3600036020 us
+Contiki_24 ON 152532612 us 4.24 %
+Contiki_24 TX 2653472 us 0.07 %
+Contiki_24 RX 769632 us 0.02 %
+Contiki_24 INT 0 us 0.00 %
+Contiki_25 MONITORED 3600046020 us
+Contiki_25 ON 152487564 us 4.24 %
+Contiki_25 TX 2638688 us 0.07 %
+Contiki_25 RX 764768 us 0.02 %
+Contiki_25 INT 0 us 0.00 %
+Contiki_26 MONITORED 3600056020 us
+Contiki_26 ON 152576688 us 4.24 %
+Contiki_26 TX 2683168 us 0.07 %
+Contiki_26 RX 790144 us 0.02 %
+Contiki_26 INT 0 us 0.00 %
+Contiki_27 MONITORED 3600066020 us
+Contiki_27 ON 152591928 us 4.24 %
+Contiki_27 TX 2685216 us 0.07 %
+Contiki_27 RX 808352 us 0.02 %
+Contiki_27 INT 1184 us 0.00 %
+Contiki_28 MONITORED 3600076020 us
+Contiki_28 ON 137117804 us 3.81 %
+Contiki_28 TX 2642496 us 0.07 %
+Contiki_28 RX 772128 us 0.02 %
+Contiki_28 INT 0 us 0.00 %
+Contiki_29 MONITORED 3600086020 us
+Contiki_29 ON 137115452 us 3.81 %
+Contiki_29 TX 2643488 us 0.07 %
+Contiki_29 RX 765984 us 0.02 %
+Contiki_29 INT 0 us 0.00 %
+Contiki_30 MONITORED 3600096020 us
+Contiki_30 ON 140972100 us 3.92 %
+Contiki_30 TX 2657504 us 0.07 %
+Contiki_30 RX 765248 us 0.02 %
+Contiki_30 INT 0 us 0.00 %
+Contiki_31 MONITORED 3599936020 us
+Contiki_31 ON 140938368 us 3.92 %
+Contiki_31 TX 2621760 us 0.07 %
+Contiki_31 RX 764960 us 0.02 %
+Contiki_31 INT 0 us 0.00 %
+
+[16:53:08 - AWT-EventQueue-0] [PowerTracker.java:252] [INFO] - PowerTracker output:
+
+AVG ON 4395189000 us 3.94 %
+AVG TX 328796416 us 0.29 %
+AVG RX 258770176 us 0.23 %
+AVG INT 36128800 us 0.03 %
+Contiki_1 MONITORED 3599978672 us
+Contiki_1 ON 124168224 us 3.45 %
+Contiki_1 TX 7421248 us 0.21 %
+Contiki_1 RX 42528416 us 1.18 %
+Contiki_1 INT 7306240 us 0.20 %
+Contiki_2 MONITORED 3600103020 us
+Contiki_2 ON 163202620 us 4.53 %
+Contiki_2 TX 33910976 us 0.94 %
+Contiki_2 RX 37116160 us 1.03 %
+Contiki_2 INT 11568736 us 0.32 %
+Contiki_3 MONITORED 3599996020 us
+Contiki_3 ON 164454232 us 4.57 %
+Contiki_3 TX 36622624 us 1.02 %
+Contiki_3 RX 38265824 us 1.06 %
+Contiki_3 INT 6755936 us 0.19 %
+Contiki_4 MONITORED 3600006020 us
+Contiki_4 ON 155742244 us 4.33 %
+Contiki_4 TX 32133664 us 0.89 %
+Contiki_4 RX 17626176 us 0.49 %
+Contiki_4 INT 135584 us 0.00 %
+Contiki_5 MONITORED 3600016020 us
+Contiki_5 ON 155476128 us 4.32 %
+Contiki_5 TX 31969120 us 0.89 %
+Contiki_5 RX 17611232 us 0.49 %
+Contiki_5 INT 85856 us 0.00 %
+Contiki_6 MONITORED 3600028928 us
+Contiki_6 ON 151472404 us 4.21 %
+Contiki_6 TX 27372288 us 0.76 %
+Contiki_6 RX 17599744 us 0.49 %
+Contiki_6 INT 4009152 us 0.11 %
+Contiki_7 MONITORED 3600036020 us
+Contiki_7 ON 152077832 us 4.22 %
+Contiki_7 TX 27353696 us 0.76 %
+Contiki_7 RX 17625952 us 0.49 %
+Contiki_7 INT 5876864 us 0.16 %
+Contiki_8 MONITORED 3600046020 us
+Contiki_8 ON 130584776 us 3.63 %
+Contiki_8 TX 8674176 us 0.24 %
+Contiki_8 RX 6332064 us 0.18 %
+Contiki_8 INT 38016 us 0.00 %
+Contiki_9 MONITORED 3600056020 us
+Contiki_9 ON 130618076 us 3.63 %
+Contiki_9 TX 8703136 us 0.24 %
+Contiki_9 RX 6362432 us 0.18 %
+Contiki_9 INT 66688 us 0.00 %
+Contiki_10 MONITORED 3600066020 us
+Contiki_10 ON 134394876 us 3.73 %
+Contiki_10 TX 8611424 us 0.24 %
+Contiki_10 RX 6351680 us 0.18 %
+Contiki_10 INT 56320 us 0.00 %
+Contiki_11 MONITORED 3600076020 us
+Contiki_11 ON 134355688 us 3.73 %
+Contiki_11 TX 8661408 us 0.24 %
+Contiki_11 RX 6327136 us 0.18 %
+Contiki_11 INT 68992 us 0.00 %
+Contiki_12 MONITORED 3600086020 us
+Contiki_12 ON 139498792 us 3.87 %
+Contiki_12 TX 12687936 us 0.35 %
+Contiki_12 RX 6305056 us 0.18 %
+Contiki_12 INT 40416 us 0.00 %
+Contiki_13 MONITORED 3600096020 us
+Contiki_13 ON 139442392 us 3.87 %
+Contiki_13 TX 12637120 us 0.35 %
+Contiki_13 RX 6320032 us 0.18 %
+Contiki_13 INT 69856 us 0.00 %
+Contiki_14 MONITORED 3599936020 us
+Contiki_14 ON 138244012 us 3.84 %
+Contiki_14 TX 14605664 us 0.41 %
+Contiki_14 RX 6350880 us 0.18 %
+Contiki_14 INT 33248 us 0.00 %
+Contiki_15 MONITORED 3599946020 us
+Contiki_15 ON 138312888 us 3.84 %
+Contiki_15 TX 14721856 us 0.41 %
+Contiki_15 RX 6311584 us 0.18 %
+Contiki_15 INT 14528 us 0.00 %
+Contiki_16 MONITORED 3599956020 us
+Contiki_16 ON 137065660 us 3.81 %
+Contiki_16 TX 2664352 us 0.07 %
+Contiki_16 RX 784192 us 0.02 %
+Contiki_16 INT 0 us 0.00 %
+Contiki_17 MONITORED 3599966020 us
+Contiki_17 ON 137072764 us 3.81 %
+Contiki_17 TX 2668256 us 0.07 %
+Contiki_17 RX 780192 us 0.02 %
+Contiki_17 INT 0 us 0.00 %
+Contiki_18 MONITORED 3599976020 us
+Contiki_18 ON 129395660 us 3.59 %
+Contiki_18 TX 2699136 us 0.07 %
+Contiki_18 RX 777376 us 0.02 %
+Contiki_18 INT 0 us 0.00 %
+Contiki_19 MONITORED 3599986020 us
+Contiki_19 ON 129402588 us 3.59 %
+Contiki_19 TX 2701792 us 0.08 %
+Contiki_19 RX 774048 us 0.02 %
+Contiki_19 INT 0 us 0.00 %
+Contiki_20 MONITORED 3599996020 us
+Contiki_20 ON 137096984 us 3.81 %
+Contiki_20 TX 2679456 us 0.07 %
+Contiki_20 RX 779776 us 0.02 %
+Contiki_20 INT 0 us 0.00 %
+Contiki_21 MONITORED 3600006020 us
+Contiki_21 ON 137125508 us 3.81 %
+Contiki_21 TX 2708096 us 0.08 %
+Contiki_21 RX 771360 us 0.02 %
+Contiki_21 INT 0 us 0.00 %
+Contiki_22 MONITORED 3600016020 us
+Contiki_22 ON 136402172 us 3.79 %
+Contiki_22 TX 2686144 us 0.07 %
+Contiki_22 RX 8081376 us 0.22 %
+Contiki_22 INT 0 us 0.00 %
+Contiki_23 MONITORED 3600026020 us
+Contiki_23 ON 133249964 us 3.70 %
+Contiki_23 TX 2677056 us 0.07 %
+Contiki_23 RX 786272 us 0.02 %
+Contiki_23 INT 1184 us 0.00 %
+Contiki_24 MONITORED 3600036020 us
+Contiki_24 ON 152532612 us 4.24 %
+Contiki_24 TX 2653472 us 0.07 %
+Contiki_24 RX 769632 us 0.02 %
+Contiki_24 INT 0 us 0.00 %
+Contiki_25 MONITORED 3600046020 us
+Contiki_25 ON 152487564 us 4.24 %
+Contiki_25 TX 2638688 us 0.07 %
+Contiki_25 RX 764768 us 0.02 %
+Contiki_25 INT 0 us 0.00 %
+Contiki_26 MONITORED 3600056020 us
+Contiki_26 ON 152576688 us 4.24 %
+Contiki_26 TX 2683168 us 0.07 %
+Contiki_26 RX 790144 us 0.02 %
+Contiki_26 INT 0 us 0.00 %
+Contiki_27 MONITORED 3600066020 us
+Contiki_27 ON 152591928 us 4.24 %
+Contiki_27 TX 2685216 us 0.07 %
+Contiki_27 RX 808352 us 0.02 %
+Contiki_27 INT 1184 us 0.00 %
+Contiki_28 MONITORED 3600076020 us
+Contiki_28 ON 137117804 us 3.81 %
+Contiki_28 TX 2642496 us 0.07 %
+Contiki_28 RX 772128 us 0.02 %
+Contiki_28 INT 0 us 0.00 %
+Contiki_29 MONITORED 3600086020 us
+Contiki_29 ON 137115452 us 3.81 %
+Contiki_29 TX 2643488 us 0.07 %
+Contiki_29 RX 765984 us 0.02 %
+Contiki_29 INT 0 us 0.00 %
+Contiki_30 MONITORED 3600096020 us
+Contiki_30 ON 140972100 us 3.92 %
+Contiki_30 TX 2657504 us 0.07 %
+Contiki_30 RX 765248 us 0.02 %
+Contiki_30 INT 0 us 0.00 %
+Contiki_31 MONITORED 3599936020 us
+Contiki_31 ON 140938368 us 3.92 %
+Contiki_31 TX 2621760 us 0.07 %
+Contiki_31 RX 764960 us 0.02 %
+Contiki_31 INT 0 us 0.00 %
+
+[17:11:06 - AWT-EventQueue-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
+[17:11:07 - Thread-10] [Simulation.java:422] [INFO] - Simulation random seed: 123456
+[17:11:08 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[17:11:13 - Thread-10] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib3 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype72.cooja'
+[17:11:14 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x38020 ( 912 == 0x390 bytes)
+[17:11:15 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x383c0 ( 84752 == 0x14b10 bytes)
+[17:11:15 - Thread-10] [ContikiMoteType.java:500] [INFO] - mtype72.cooja: offsetting Cooja mote address space: 0x869b3000
+[17:11:15 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x869eb020 ( 912 == 0x390 bytes)
+[17:11:15 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x869eb3c0 ( 84752 == 0x14b10 bytes)
+[17:11:16 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[17:11:17 - Thread-10] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib4 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_orchestra/obj_cooja/mtype850.cooja'
+[17:11:17 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x38020 ( 912 == 0x390 bytes)
+[17:11:18 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x383c0 ( 84752 == 0x14b10 bytes)
+[17:11:18 - Thread-10] [ContikiMoteType.java:500] [INFO] - mtype850.cooja: offsetting Cooja mote address space: 0x86966000
+[17:11:18 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x8699e020 ( 912 == 0x390 bytes)
+[17:11:19 - Thread-10] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x8699e3c0 ( 84752 == 0x14b10 bytes)
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[17:11:19 - Thread-10] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
+[17:11:19 - Thread-10] [ScriptRunner.java:430] [INFO] - Test script deactivated
+[17:11:19 - Thread-10] [LogScriptEngine.java:265] [INFO] - Script timeout in 3600000 ms
+[17:11:19 - Thread-10] [ScriptRunner.java:387] [INFO] - Test script activated
+[17:11:20 - Thread-18] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1518509480859
+[17:11:37 - Thread-18] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1518509497596	Duration: 16737 ms	Simulated time 30126 ms	Ratio 1.7999641512815916
