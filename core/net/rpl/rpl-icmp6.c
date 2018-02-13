@@ -485,9 +485,9 @@ dio_input(void)
   	  /* Remove current installed TX slot */
   	  RPL_CALLBACK_REMOVE_LINK(-1, 1); // timeslot = -1 with flag = 1 means remove TX slot to the preferred parent
   	  for(i = timeslot; i >= 1; i--) {
-  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
+//  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
   		  if((recv_TX_slot_assignment & (1 << i)) != 0) {
-  			  printf("ADD link\n");
+//  			  printf("ADD link\n");
   			  RPL_CALLBACK_ADD_LINK(i, 1);
   			  break;
   		  }
@@ -605,7 +605,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 		  id_child = list_ordered_child[i];
 		  TX_slot_assignment |= 1 << (id_child % ORCHESTRA_UNICAST_PERIOD);
 	  }
-	  printf("TX_slot: %x\n",TX_slot_assignment);
+//	  printf("TX_slot: %x\n",TX_slot_assignment);
 	  TX_slot_changed = 1;
   }
 #endif
@@ -726,11 +726,11 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  for(i = 0; i < my_child_number; i++) {
 		  timeslot = list_ordered_child[i] % ORCHESTRA_UNICAST_PERIOD;
 		  if((TX_slot_assignment & (1 << timeslot)) == 0) { // Remove slot link
-			  printf("remove timeslot: %d\n",timeslot);
+//			  printf("remove timeslot: %d\n",timeslot);
 			  RPL_CALLBACK_REMOVE_LINK(timeslot, 0);
 		  }
 		  else { // Add slot link
-			  printf("add timeslot: %d\n",timeslot);
+//			  printf("add timeslot: %d\n",timeslot);
 			  RPL_CALLBACK_ADD_LINK(timeslot, 0);
 		  }
 	  }

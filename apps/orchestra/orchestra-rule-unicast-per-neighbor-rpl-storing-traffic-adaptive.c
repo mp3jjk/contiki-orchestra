@@ -216,7 +216,7 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 	}
 	else {
 		if(timeslot == (uint8_t)-1) {
-			printf("remove prev assigned TX_slot: %d\n",current_TX_slot);
+//			printf("remove prev assigned TX_slot: %d\n",current_TX_slot);
 			l = tsch_schedule_get_link_by_timeslot(sf_unicast, current_TX_slot);
 			if(l == NULL) {
 				return;
@@ -224,7 +224,7 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 			tsch_schedule_remove_link(sf_unicast, l);
 		}
 		else {
-			printf("remove TX_slot: %d\n",timeslot);
+//			printf("remove TX_slot: %d\n",timeslot);
 			l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
 			if(l == NULL) {
 				return;
@@ -237,14 +237,14 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 static void
 child_added(const linkaddr_t *linkaddr)
 {
-	printf("child_added\n");
+//	printf("child_added\n");
   add_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
 static void
 child_removed(const linkaddr_t *linkaddr)
 {
-	printf("child_removed\n");
+//	printf("child_removed\n");
   remove_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/

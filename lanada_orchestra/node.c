@@ -418,7 +418,6 @@ PROCESS_THREAD(node_process, ev, data)
   ctimer_stop(&poll_timer);
 
   /* Start to generate data packets after joining TSCH network */
-  if(!is_coordinator) {
 #if TRAFFIC_PATTERN == 0 // Periodic traffic
 	  packet_interval = CLOCK_SECOND * PERIOD;
 	  if(PERIOD <= (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000) {
@@ -435,31 +434,34 @@ PROCESS_THREAD(node_process, ev, data)
 	  }
 	  prob_packet_gen = 1 - exp(-1*INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
 #endif
+  if(!is_coordinator) {
 	  printf("Ppkt= %f\n",prob_packet_gen);
-
 //	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
-//	  n_SBS = 4; // For debug
 	  printf("n_SBS: %d\n",n_SBS);
-
 
 //	  /* For test packet_interval is fixed 30 seconds */
 //	  packet_interval = 30 * CLOCK_SECOND;
 	  etimer_set(&gen,packet_interval);
   }
+  else {
+	  printf("Ppkt= %f\n",prob_packet_gen);
+//	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
+	  printf("n_SBS: %d\n",n_SBS);
+  }
   n_SBS = 2; // For debug
 
   /* Print out routing tables every minute */
-  etimer_set(&et, CLOCK_SECOND * 60);
+//  etimer_set(&et, CLOCK_SECOND * 60);
 
   while(1) {
 	  PROCESS_YIELD();
 	  if(ev == tcpip_event) {
 		  tcpip_handler();
 	  }
-	  else if(etimer_expired(&et)) { // For debug
+/*	  else if(etimer_expired(&et)) { // For debug
 		  print_network_status();
 		  etimer_reset(&et);
-	  }
+	  }*/
 	  else if(etimer_expired(&gen)) {
 		  send_packet(NULL);
 #if TRAFFIC_PATTERN == 0
