@@ -99,9 +99,14 @@ void
 tsch_rpl_callback_parent_switch(rpl_parent_t *old, rpl_parent_t *new)
 {
   if(tsch_is_associated == 1) {
+//	  if(new != NULL) {
     tsch_queue_update_time_source(
       (const linkaddr_t *)uip_ds6_nbr_lladdr_from_ipaddr(
         rpl_get_parent_ipaddr(new)));
+//	  }
+//	  else { // Old parent is nullified, leave the network
+//		  tsch_rpl_callback_leaving_network();
+//	  }
   }
 }
 /*---------------------------------------------------------------------------*/

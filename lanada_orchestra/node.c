@@ -448,7 +448,7 @@ PROCESS_THREAD(node_process, ev, data)
 //	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
 	  printf("n_SBS: %d\n",n_SBS);
   }
-  n_SBS = 2; // For debug
+  n_SBS = 1; // For debug
 
   /* Print out routing tables every minute */
 //  etimer_set(&et, CLOCK_SECOND * 60);

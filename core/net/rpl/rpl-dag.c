@@ -58,7 +58,7 @@
 #include <limits.h>
 #include <string.h>
 
-#define DEBUG DEBUG_NONE
+#define DEBUG DEBUG_PRINT
 #include "net/ip/uip-debug.h"
 
 /* A configurable function called after every RPL parent switch */
@@ -1097,6 +1097,9 @@ rpl_nullify_parent(rpl_parent_t *parent)
         if(RPL_IS_STORING(dag->instance)) {
           dao_output(parent, RPL_ZERO_LIFETIME);
         }
+#ifdef TSCH_CALLBACK_LEAVING_NETWORK
+        TSCH_CALLBACK_LEAVING_NETWORK();
+#endif
         rpl_set_preferred_parent(dag, NULL);
       }
     }

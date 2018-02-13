@@ -239,6 +239,7 @@ keepalive_send()
 {
   if(tsch_is_associated) {
     struct tsch_neighbor *n = tsch_queue_get_time_source();
+//    if(n-> == NULL)
     /* Simply send an empty packet */
     packetbuf_clear();
     packetbuf_set_addr(PACKETBUF_ADDR_RECEIVER, &n->addr);

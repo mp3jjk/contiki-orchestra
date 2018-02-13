@@ -48,12 +48,12 @@
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	30
+#define PERIOD	5
 #else	// If event driven (assume poisson)
 #define INTENSITY 1 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -97,7 +97,11 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #undef RPL_CONF_MOP
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
+#else
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#endif
 
 /*******************************************************/
 /********************* Enable TSCH *********************/
@@ -142,7 +146,7 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 2
+#define TSCH_LOG_CONF_LEVEL 0
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID
