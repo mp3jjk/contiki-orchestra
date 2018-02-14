@@ -68,8 +68,8 @@ rtimer_set(struct rtimer *rtimer, rtimer_clock_t time,
 	   rtimer_clock_t duration,
 	   rtimer_callback_t func, void *ptr)
 {
-  int first = 0;
 
+  int first = 0;
   PRINTF("rtimer_set time %d\n", time);
 
   if(next_rtimer == NULL) {

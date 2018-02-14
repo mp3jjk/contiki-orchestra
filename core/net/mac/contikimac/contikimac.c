@@ -186,8 +186,6 @@ static int we_are_receiving_burst = 0;
 #endif
 
 
-
-
 /* STROBE_TIME is the maximum amount of time a transmitted packet
    should be repeatedly transmitted as part of a transmission. */
 #define STROBE_TIME                        (CYCLE_TIME + 2 * CHECK_TIME)
@@ -401,7 +399,6 @@ powercycle(struct rtimer *t, void *ptr)
 {
 
   PT_BEGIN(&pt);
-
 #if SYNC_CYCLE_STARTS
   sync_cycle_start = RTIMER_NOW();
 #else
@@ -681,7 +678,7 @@ send_packet(mac_callback_t mac_callback, void *mac_callback_ptr,
       }
       off();
       t0 = RTIMER_NOW();
-      while(RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + CCA_SLEEP_TIME)) { }
+      while(RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + CCA_SLEEP_TIME)) {  }
     }
   }
 
@@ -709,7 +706,6 @@ send_packet(mac_callback_t mac_callback, void *mac_callback_ptr,
   for(strobes = 0, collisions = 0;
       got_strobe_ack == 0 && collisions == 0 &&
       RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + STROBE_TIME); strobes++) {
-
     watchdog_periodic();
 
     if(!is_broadcast && (is_receiver_awake || is_known_receiver) &&
@@ -750,18 +746,21 @@ send_packet(mac_callback_t mac_callback, void *mac_callback_ptr,
           collisions++;
       }
       wt = RTIMER_NOW();
-      while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + INTER_PACKET_INTERVAL)) { }
+      while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + INTER_PACKET_INTERVAL)) {
+      }
 #else /* RDC_CONF_HARDWARE_ACK */
      /* Wait for the ACK packet */
       wt = RTIMER_NOW();
-      while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + INTER_PACKET_INTERVAL)) { }
+      while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + INTER_PACKET_INTERVAL)) {
+      }
 
       if(!is_broadcast && (NETSTACK_RADIO.receiving_packet() ||
                            NETSTACK_RADIO.pending_packet() ||
                            NETSTACK_RADIO.channel_clear() == 0)) {
         uint8_t ackbuf[ACK_LEN];
         wt = RTIMER_NOW();
-        while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + AFTER_ACK_DETECTED_WAIT_TIME)) { }
+        while(RTIMER_CLOCK_LT(RTIMER_NOW(), wt + AFTER_ACK_DETECTED_WAIT_TIME)) {
+        }
 
         len = NETSTACK_RADIO.read(ackbuf, ACK_LEN);
         if(len == ACK_LEN && seqno == ackbuf[ACK_LEN - 1]) {
@@ -1041,11 +1040,8 @@ init(void)
 {
   radio_is_on = 0;
   PT_INIT(&pt);
-
   rtimer_set(&rt, RTIMER_NOW() + CYCLE_TIME, 1, powercycle_wrapper, NULL);
-
   contikimac_is_on = 1;
-
 #if WITH_PHASE_OPTIMIZATION
   phase_init();
 #endif /* WITH_PHASE_OPTIMIZATION */

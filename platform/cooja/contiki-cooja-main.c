@@ -235,11 +235,12 @@ contiki_init()
            longaddr[0], longaddr[1], longaddr[2], longaddr[3],
            longaddr[4], longaddr[5], longaddr[6], longaddr[7]);
   }
-
   queuebuf_init();
 
   /* Initialize communication stack */
+
   netstack_init();
+
   printf("%s/%s/%s, channel check rate %lu Hz\n",
          NETSTACK_NETWORK.name, NETSTACK_MAC.name, NETSTACK_RDC.name,
          CLOCK_SECOND / (NETSTACK_RDC.channel_check_interval() == 0 ? 1:
@@ -323,7 +324,6 @@ contiki_init()
 
   /* Start serial process */
   serial_line_init();
-
   /* Start autostart processes (defined in Contiki application) */
   print_processes(autostart_processes);
   autostart_start(autostart_processes);

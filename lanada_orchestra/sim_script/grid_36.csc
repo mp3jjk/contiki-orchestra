@@ -7,7 +7,7 @@
   <project EXPORT="discard">[APPS_DIR]/collect-view</project>
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
-    <title>tree_c2_h5_t31</title>
+    <title>36grid</title>
     <randomseed>123456</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
@@ -968,12 +968,26 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(3600000);
+TIMEOUT(7200000, log.log("last message: " + msg + "\n"));
+
+var count = 0;
 
 while (true) {
   log.log(time + ":" + id + ":" + msg + "\n");
+  count = count + 1;
+  if (count%500 == 0){
+    plugin = mote.getSimulation().getCooja().getStartedPlugin("PowerTracker");
+    stats = plugin.radioStatistics();
+    log.log("PowerTracker says:\n" + stats + "\n");
+    count = 0;
+  }
+  if (msg.equals('Lifetime of this node ended here!!!')){
+    throw new Error();
+    break;
+  }
   YIELD();
-}</script>
+}
+</script>
       <active>true</active>
     </plugin_config>
     <width>600</width>

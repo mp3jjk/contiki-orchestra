@@ -3,6 +3,8 @@ CONTIKI=../../..
 
 CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
 
+MODULES += core/net/mac/contikimac
+
 ifdef WITH_COMPOWER
 APPS+=powertrace
 CFLAGS+= -DCONTIKIMAC_CONF_COMPOWER=1 -DWITH_COMPOWER=1 -DQUEUEBUF_CONF_NUM=4

@@ -35,27 +35,34 @@
 #ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
+#define TSCH_ENABLED	1
+#define CONTIKIMAC_ENABLED	0
+
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 1
+#define WITH_ORCHESTRA 0 /* jk */
 #endif /* WITH_ORCHESTRA */
+
+#if WITH_ORACHESTRA == 0
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL	1 // For 6TiSCH minimal configuration without orchestra /* jk */
+#endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled /* jk */
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
+#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	5
+#define PERIOD	5 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 1 // lambda
+#define INTENSITY 1 // lambda /* jk */
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED		1 /* jk */
 
-
+#define HARD_CODED_n_SBS	0 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -105,13 +112,14 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
 
-#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF
+#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF /* jk */
 #define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/
 /********************* Enable TSCH *********************/
 /*******************************************************/
 
+#if TSCH_ENABLED
 /* Netstack layers */
 #undef NETSTACK_CONF_MAC
 #define NETSTACK_CONF_MAC     tschmac_driver
@@ -119,6 +127,16 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #define NETSTACK_CONF_RDC     nordc_driver
 #undef NETSTACK_CONF_FRAMER
 #define NETSTACK_CONF_FRAMER  framer_802154
+#elif CONTIKIMAC_ENABLED
+#undef NETSTACK_CONF_MAC
+#define NETSTACK_CONF_MAC     csma_driver
+#undef NETSTACK_CONF_RDC
+#define NETSTACK_CONF_RDC     contikimac_driver
+#undef NETSTACK_CONF_FRAMER
+#define NETSTACK_CONF_FRAMER  framer_802154
+//#define	NETSTACK_CONF_WITH_IPV6	1
+#endif
+
 
 /* IEEE802.15.4 frame version */
 #undef FRAME802154_CONF_VERSION

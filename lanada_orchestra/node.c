@@ -276,7 +276,6 @@ static void
 net_init(uip_ipaddr_t *br_prefix)
 {
   uip_ipaddr_t global_ipaddr;
-
   if(br_prefix) { /* We are RPL root. Will be set automatically
                      as TSCH pan coordinator via the tsch-rpl module */
 //    memcpy(&global_ipaddr, br_prefix, 16);
@@ -409,6 +408,7 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
 
+#if 0
   /* Wait until the node joins the network */
   static struct ctimer poll_timer;
   while(tsch_is_associated == 0) {
@@ -416,23 +416,28 @@ PROCESS_THREAD(node_process, ev, data)
 	  PROCESS_YIELD();
   }
   ctimer_stop(&poll_timer);
+#endif
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic
 	  packet_interval = CLOCK_SECOND * PERIOD;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
 	  if(PERIOD <= (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000) {
 		  prob_packet_gen = 1; /* If Period is less than or equal to slotframe length (in second) */
 	  }
 	  else {
 		  prob_packet_gen = (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000 / PERIOD;
 	  }
+#endif
 #else // Event-driven traffic
 	  random_num = random_rand() / (float)RANDOM_RAND_MAX;
 	  packet_interval = (-1.0/INTENSITY) * logf(random_num) * CLOCK_SECOND;
 	  if(packet_interval == 0) {
 		  packet_interval = 1;
 	  }
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
 	  prob_packet_gen = 1 - exp(-1*INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
+#endif
 #endif
   if(!is_coordinator) {
 	  printf("Ppkt= %f\n",prob_packet_gen);
@@ -448,7 +453,11 @@ PROCESS_THREAD(node_process, ev, data)
 //	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
 	  printf("n_SBS: %d\n",n_SBS);
   }
+#if HARD_CODED_n_SBS == 0
   n_SBS = 1; // For debug
+#else
+  n_SBS = HARD_CODED_n_SBS;
+#endif
 
   /* Print out routing tables every minute */
 //  etimer_set(&et, CLOCK_SECOND * 60);

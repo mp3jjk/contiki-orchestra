@@ -115,7 +115,7 @@ tsch_rpl_callback_parent_switch(rpl_parent_t *old, rpl_parent_t *new)
 void
 tsch_rpl_add_link_by_slot(uint8_t timeslot, uint8_t flag)
 {
-	printf("test tsch_rpl_add_link_by_slot: %d %d\n", timeslot, flag);
+//	printf("test tsch_rpl_add_link_by_slot: %d %d\n", timeslot, flag);
 	if(all_rules[1] != NULL) {
 		all_rules[1]->add_uc_link_by_timeslot(timeslot, flag);
 	}
@@ -125,7 +125,7 @@ tsch_rpl_add_link_by_slot(uint8_t timeslot, uint8_t flag)
 void
 tsch_rpl_remove_link_by_slot(uint8_t timeslot, uint8_t flag)
 {
-	printf("test tsch_rpl_remove_link_by_slot: %d %d\n", timeslot, flag);
+//	printf("test tsch_rpl_remove_link_by_slot: %d %d\n", timeslot, flag);
 	if(all_rules[1] != NULL) {
 		all_rules[1]->remove_uc_link_by_timeslot(timeslot, flag);
 	}
