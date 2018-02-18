@@ -1,4 +1,6 @@
 #!/bin/bash
+app=$5
+
 echo "#ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
@@ -24,4 +26,4 @@ echo "#ifndef __PROJECT_CONF_H__
 #define NETSTACK_CONF_FRAMER  framer_802154
 
 
-#endif" > ../../project-conf.h
+#endif" > ../../../lanada_$app/project-conf.h

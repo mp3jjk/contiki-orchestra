@@ -25,8 +25,9 @@ ORCHESTRA=$9
 RBS_SBS=${10}
 ADAPTIVE=${11}
 n_SBS=${12}
+APP=${13}
 
-sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\.csc 
+sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then
@@ -43,9 +44,9 @@ cd $DIR
 
 if [ $ORCHESTRA -eq 0 ]
 then
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_SBS
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_SBS $APP
 else
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_SBS
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_SBS $APP
 fi
 
 IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_sbs$n_SBS
@@ -59,13 +60,14 @@ cd $IN_DIR
 echo "#########################  We are in $PWD  ########################"
 
 HERE=$PWD
-cd $CONTIKI/lanada_orchestra
+cd $CONTIKI/lanada_$APP
 make clean TARGET=cooja
 cd $HERE
 
 if [ ! -e COOJA.testlog ]
 then
-    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\.csc -contiki="$CONTIKI"
+    java -mx512m -jar $CONTIKI/tools/cooja_$APP/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc -contiki="$CONTIKI"
+#    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\.csc -contiki="$CONTIKI"
 	#	java -mx512m -classpath $CONTIKI/tools/cooja/apps/mrm/lib/mrm.jar: -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada/sim_scripts/scripts/0729_$topology\_$LR_range\.csc -contiki="$CONTIKI"
 		# ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc -Ddir=$PWD
 	#	ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc

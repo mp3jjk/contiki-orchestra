@@ -3,10 +3,10 @@
 # programmed by Joonki Hong
 
 node_count=2
-MAX_NODE_NUMBER=1
-DELAY=0
-ENERGY=0
-PRR=0
+MAX_NODE_NUMBER=50
+DELAY=1
+ENERGY=1
+PRR=1
 COLLISION=0
 
 
@@ -24,10 +24,10 @@ while [ $node_count -le $MAX_NODE_NUMBER ]
 do
 
 	# Sink node receive message 
-	if [ -n "`cat COOJA.testlog | grep "0$node_count\X"`" ]
+	if [ -n "`cat COOJA.testlog | grep "0$node_count"`" ]
 	then
 		#echo "from $node_count"
-		cat COOJA.testlog | grep "0$node_count\X" > parsing/from$node_count.txt
+		cat COOJA.testlog | grep "0$node_count" > parsing/from$node_count.txt
 	fi
 
 	# Source node send message
@@ -38,11 +38,11 @@ do
 	fi
 
 	# Periodic status review message for each node
-	if [ -n "`cat COOJA.testlog | grep ":$node_count:\[PS\]"`" ]
-	then
+#	if [ -n "`cat COOJA.testlog | grep ":$node_count:\[PS\]"`" ]
+#	then
 		#echo "PS $node_count"
-		cat COOJA.testlog | grep ":$node_count:\[PS\]" > parsing/PS$node_count.txt
-	fi
+#		cat COOJA.testlog | grep ":$node_count:\[PS\]" > parsing/PS$node_count.txt
+#	fi
 	
 	# Tx, Rx statistic for each node
 	if [ -n "`cat COOJA.testlog | grep "Contiki_$node_count "`" ]
@@ -55,11 +55,11 @@ do
 done
 
 # Lifetime end node status review
-if [ -n "`cat COOJA.testlog | grep "\[LT\]"`" ]
-then
-	#echo "LT"
-	cat COOJA.testlog | grep "\[LT\]" > parsing/LT.txt
-fi
+# if [ -n "`cat COOJA.testlog | grep "\[LT\]"`" ]
+# then
+# 	#echo "LT"
+# 	cat COOJA.testlog | grep "\[LT\]" > parsing/LT.txt
+# fi
 
 
 if [ -n "`cat COOJA.testlog | grep "AVG"`" ]

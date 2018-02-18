@@ -1,4 +1,6 @@
 #!/bin/bash
+app=${10}
+
 echo "#ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
@@ -221,4 +223,4 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 #define COOJA_CONF_SIMULATE_TURNAROUND 0
 #endif /* CONTIKI_TARGET_COOJA */
 
-#endif /* __PROJECT_CONF_H__ */" > ../../project-conf.h
+#endif /* __PROJECT_CONF_H__ */" > ../../../lanada_$app/project-conf.h
