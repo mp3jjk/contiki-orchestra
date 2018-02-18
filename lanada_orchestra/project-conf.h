@@ -20,12 +20,12 @@
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	60 /* jk */
+#define PERIOD	10 /* jk */
 #else	// If event driven (assume poisson)
 #define INTENSITY 0 // lambda /* jk */
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0 /* jk */
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
 
 #define HARD_CODED_n_SBS	1 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 

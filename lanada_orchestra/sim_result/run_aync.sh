@@ -4,11 +4,11 @@ TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
 RBS_SBS=0 # Whether RBS(0) or SBS(1)
 TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
-ADAPTIVE_MODE=0 # Whether basic(0) or adaptive(1)
-VAR_PERIOD=(10) # T
+ADAPTIVE_MDOE=0 # Whether basic(0) or adaptive(1)
+VAR_PERIOD=(5) # T
 VAR_ARRIVAL=(1) # lambda
-VAR_TOPOLOGY=("child_2" "child_4" "child_6") # tree_c2_31 tree_c3_40 grid_36 random_50
-LABEL="bench"
+VAR_TOPOLOGY=("grid_36") # tree_c2_31 tree_c3_40 grid_36 random_50
+LABEL="test"
 SEED_NUMBER=("1")
 VAR_N_SBS=("1") # Hard coded n-SBS
 VAR_CHECK_RATE=(8)
@@ -64,7 +64,7 @@ then
 		    do
 			for check in "${VAR_CHECK_RATE[@]}"
 			do
-			    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs
+			    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_SBS
 			done
 		    done
 		done
@@ -81,7 +81,7 @@ then
 		    do
 			for check in "${VAR_CHECK_RATE[@]}"
 			do
-			    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs
+			    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_SBS
 			done
 		    done
 		done

@@ -308,7 +308,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(7200000, log.log("last message: " + msg + "\n"));
+TIMEOUT(18000000, log.log("last message: " + msg + "\n"));
 
 var count = 0;
 
