@@ -22,21 +22,23 @@ CHECK=$6
 SEED_NUMBER=$7
 TSCH=$8
 
-sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\.csc 
+sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_async/sim_script/$topology\_async\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then
-    DIR=$LABEL\_TSCH$TSCH\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_seed$SEED_NUMBER
 else
-    DIR=$LABEL\_TSCH$TSCH\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_seed$SEED_NUMBER
 fi
-
-mkdir $DIR
+if [ ! -e $DIR ]
+then
+    mkdir $DIR
+fi
 cd $DIR
 
-../param.sh 
+../async_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $CHECK
 
-IN_DIR=check$CHECK
+IN_DIR=tsch$TSCH\_check$CHECK
 if [ ! -e $IN_DIR ]
 then
     mkdir $IN_DIR
@@ -47,13 +49,13 @@ cd $IN_DIR
 echo "#########################  We are in $PWD  ########################"
 
 HERE=$PWD
-cd $CONTIKI/lanada_orchestra
+cd $CONTIKI/lanada_async
 make clean TARGET=cooja
 cd $HERE
 
 if [ ! -e COOJA.testlog ]
 then
-    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\.csc -contiki="$CONTIKI"
+    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_async/sim_script/$topology\_async\.csc -contiki="$CONTIKI"
 	#	java -mx512m -classpath $CONTIKI/tools/cooja/apps/mrm/lib/mrm.jar: -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada/sim_scripts/scripts/0729_$topology\_$LR_range\.csc -contiki="$CONTIKI"
 		# ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc -Ddir=$PWD
 	#	ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc

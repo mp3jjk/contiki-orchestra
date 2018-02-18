@@ -1,33 +1,34 @@
-#ifndef __PROJECT_CONF_H__
+#!/bin/bash
+echo "#ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
-#define TSCH_ENABLED	1
+#define TSCH_ENABLED	$4
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 1 /* jk */
+#define WITH_ORCHESTRA $5 /* jk */
 #endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra /* jk */
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL $6 // For 6TiSCH minimal configuration without orchestra /* jk */
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled /* jk */
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$8 // Traffic adaptive mode is enabled /* jk */
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
+#define TRAFFIC_PATTERN $1	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	60 /* jk */
+#define PERIOD	$2 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 0 // lambda /* jk */
+#define INTENSITY $3 // lambda /* jk */
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0 /* jk */
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	$7 /* jk */
 
-#define HARD_CODED_n_SBS	1 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
+#define HARD_CODED_n_SBS	$9 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -210,12 +211,14 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 
 #endif /* CONTIKI_TARGET_Z1 */
 
-#if CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL ||   CONTIKI_TARGET_OPENMOTE_CC2538
+#if CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL || \
+  CONTIKI_TARGET_OPENMOTE_CC2538
 #define TSCH_CONF_HW_FRAME_FILTERING    0
-#endif /* CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL        || CONTIKI_TARGET_OPENMOTE_CC2538 */
+#endif /* CONTIKI_TARGET_CC2538DK || CONTIKI_TARGET_ZOUL \
+       || CONTIKI_TARGET_OPENMOTE_CC2538 */
 
 #if CONTIKI_TARGET_COOJA
 #define COOJA_CONF_SIMULATE_TURNAROUND 0
 #endif /* CONTIKI_TARGET_COOJA */
 
-#endif /* __PROJECT_CONF_H__ */
+#endif /* __PROJECT_CONF_H__ */" > ../../project-conf.h

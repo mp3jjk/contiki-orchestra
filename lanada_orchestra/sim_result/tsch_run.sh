@@ -24,22 +24,31 @@ TSCH=$8
 ORCHESTRA=$9
 RBS_SBS=${10}
 ADAPTIVE=${11}
+n_SBS=${12}
 
 sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then
-    DIR=$LABEL\_TSCH$TSCH\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_seed$SEED_NUMBER
 else
-    DIR=$LABEL\_TSCH$TSCH\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_seed$SEED_NUMBER
 fi
 
-mkdir $DIR
+if [ ! -e $DIR ]
+then
+    mkdir $DIR
+fi
 cd $DIR
 
-../param.sh 
+if [ $ORCHESTRA -eq 0 ]
+then
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_SBS
+else
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_SBS
+fi
 
-IN_DIR=check$CHECK
+IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_sbs$n_SBS
 if [ ! -e $IN_DIR ]
 then
     mkdir $IN_DIR
@@ -77,10 +86,10 @@ fi
 # fi
 
 
-if [ ! -e report_summary.txt ]
-then
-    ../../pp.sh
-fi
+# if [ ! -e report_summary.txt ]
+# then
+#     ../../pp.sh
+# fi
 cd ../..
 
 echo "Simulation finished"

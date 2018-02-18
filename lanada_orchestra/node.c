@@ -273,6 +273,17 @@ print_network_status(void)
 }
 /*---------------------------------------------------------------------------*/
 static void
+print_init_status(void) {
+#if TRAFFIC_PATTERN == 0
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, PERIOD: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+			HARD_CODED_n_SBS, TRAFFIC_PATTERN, PERIOD, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
+#elif TRAFFIC_PATTERN == 1
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, RATE: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+			HARD_CODED_n_SBS, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
+#endif
+}
+/*---------------------------------------------------------------------------*/
+static void
 net_init(uip_ipaddr_t *br_prefix)
 {
   uip_ipaddr_t global_ipaddr;
@@ -325,6 +336,7 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 
   PROCESS_BEGIN();
+  print_init_status();
   state_traffic_adaptive_TX = 0; // Init state as a TX
   state_traffic_adaptive_RX = 0; // Init state as a RX
   n_SBS = 1; // In the init state, operate in n_SBS = 1
