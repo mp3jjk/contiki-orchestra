@@ -264,7 +264,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(1);
+TIMEOUT(3600000);
 
 var count = 0;
 

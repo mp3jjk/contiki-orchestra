@@ -5,15 +5,15 @@
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 0 /* jk */
+#define WITH_ORCHESTRA 1 /* jk */
 #endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1 // For 6TiSCH minimal configuration without orchestra /* jk */
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra /* jk */
 #endif
 
 #if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 11
+#define ORCHESTRA_CONF_UNICAST_PERIOD 17
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
 #define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
 #endif
@@ -26,7 +26,7 @@
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	10 /* jk */
+#define PERIOD	5 /* jk */
 #else	// If event driven (assume poisson)
 #define INTENSITY 0 // lambda /* jk */
 #endif
