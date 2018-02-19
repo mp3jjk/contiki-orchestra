@@ -275,11 +275,16 @@ print_network_status(void)
 static void
 print_init_status(void) {
 #if TRAFFIC_PATTERN == 0
-	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, PERIOD: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, PERIOD: %d, CHECK: %d,",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
 			HARD_CODED_n_SBS, TRAFFIC_PATTERN, PERIOD, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
 #elif TRAFFIC_PATTERN == 1
-	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, RATE: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, RATE: %d, CHECK: %d,",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
 			HARD_CODED_n_SBS, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
+#endif
+#if WITH_ORACHESTRA == 1
+	printf("UNI_PERIOD: %d\n",ORCHESTRA_CONF_UNICAST_PERIOD);
+#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
+	printf("MINI_PERIOD: %d\n",TSCH_SCHEDULE_CONF_DEFAULT_LENGTH);
 #endif
 }
 /*---------------------------------------------------------------------------*/
@@ -420,7 +425,6 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
 
-#if 0
   /* Wait until the node joins the network */
   static struct ctimer poll_timer;
   while(tsch_is_associated == 0) {
@@ -428,12 +432,11 @@ PROCESS_THREAD(node_process, ev, data)
 	  PROCESS_YIELD();
   }
   ctimer_stop(&poll_timer);
-#endif
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic
 	  packet_interval = CLOCK_SECOND * PERIOD;
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0
 	  if(PERIOD <= (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000) {
 		  prob_packet_gen = 1; /* If Period is less than or equal to slotframe length (in second) */
 	  }
@@ -443,12 +446,12 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 #else // Event-driven traffic
 	  random_num = random_rand() / (float)RANDOM_RAND_MAX;
-	  packet_interval = (-1.0/INTENSITY) * logf(random_num) * CLOCK_SECOND;
+	  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
 	  if(packet_interval == 0) {
 		  packet_interval = 1;
 	  }
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-	  prob_packet_gen = 1 - exp(-1*INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0
+	  prob_packet_gen = 1 - exp(-1*1.0/INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
 #endif
 #endif
   if(!is_coordinator) {
@@ -489,7 +492,7 @@ PROCESS_THREAD(node_process, ev, data)
 		  etimer_reset(&gen);
 #else
 		  random_num = random_rand() / (float)RANDOM_RAND_MAX;
-		  packet_interval = (-1.0/INTENSITY) * logf(random_num) * CLOCK_SECOND;
+		  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
 		  if(packet_interval == 0) {
 			  packet_interval = 1;
 		  }
