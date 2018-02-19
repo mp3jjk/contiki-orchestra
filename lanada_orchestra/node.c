@@ -446,12 +446,12 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 #else // Event-driven traffic
 	  random_num = random_rand() / (float)RANDOM_RAND_MAX;
-	  packet_interval = (-1.0/INTENSITY) * logf(random_num) * CLOCK_SECOND;
+	  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
 	  if(packet_interval == 0) {
 		  packet_interval = 1;
 	  }
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0
-	  prob_packet_gen = 1 - exp(-1*INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
+	  prob_packet_gen = 1 - exp(-1*1.0/INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
 #endif
 #endif
   if(!is_coordinator) {
@@ -492,7 +492,7 @@ PROCESS_THREAD(node_process, ev, data)
 		  etimer_reset(&gen);
 #else
 		  random_num = random_rand() / (float)RANDOM_RAND_MAX;
-		  packet_interval = (-1.0/INTENSITY) * logf(random_num) * CLOCK_SECOND;
+		  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
 		  if(packet_interval == 0) {
 			  packet_interval = 1;
 		  }

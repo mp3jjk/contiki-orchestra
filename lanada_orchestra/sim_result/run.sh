@@ -2,20 +2,20 @@
 
 TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
-RBS_SBS=0 # Whether RBS(0) or SBS(1)
+RBS_SBS=1 # Whether RBS(0) or SBS(1)
 TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
-ADAPTIVE_MODE=0 # Whether basic(0) or adaptive(1)
+ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
 VAR_PERIOD=(1 2 3 5) # T
 VAR_ARRIVAL=(1) # lambda
-VAR_TOPOLOGY=("child_3" "child_4" "child_5" "child_6" "child_7" "child_8") # tree_c2_31 tree_c3_40 grid_36 random_50
+VAR_TOPOLOGY=("child_7" "child_8") # tree_c2_31 tree_c3_40 grid_36 random_50
 LABEL="MB"
 SEED_NUMBER=("1")
-VAR_N_SBS=("0") # Hard coded n-SBS
+VAR_N_SBS=("6") # Hard coded n-SBS
 VAR_CHECK_RATE=(8)
 VAR_UNICAST_PERIOD=(17)
 VAR_MINIMAL_PERIOD=(7)
 SIM_TIME=(3600000)
-APP=1
+APP=2
 
 # Async sim
 
