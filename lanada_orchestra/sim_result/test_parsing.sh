@@ -3,10 +3,10 @@
 #TOPOLOGY=("grid_36" "tree_c2_31" "tree_c3_40" "random_50")
 TOPOLOGY=("xxx")
 
-#for topo in "${TOPOLOGY[@]}" do
+for topo in "${TOPOLOGY[@]}"; do
     for dir in */ ; do
-#	if [ -d $dir -a -n "`echo "$dir" | grep $topo`"]
-#	then
+	if [ -d $dir -a -n "`echo "$dir" | grep $topo`" ]
+	then
 	    cd $dir
 	    for indir in */ ; do
 		cd $indir
@@ -18,6 +18,6 @@ TOPOLOGY=("xxx")
 		cd ..
 	    done
 	    cd ..
-#	fi
+	fi
     done
-#done
+done
