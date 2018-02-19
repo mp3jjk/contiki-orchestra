@@ -87,11 +87,11 @@ fi
 # 	fi
 # fi
 
-
-# if [ ! -e report_summary.txt ]
-# then
-#     ../../pp.sh
-# fi
+sed -i '/last message/d' COOJA.testlog
+if [ ! -e report_summary.txt ]
+then
+    ../../pp_test.sh
+fi
 cd ../..
 
 echo "Simulation finished"
