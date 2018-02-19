@@ -28,8 +28,10 @@ n_SBS=${12}
 UNICAST=${13}
 MINIMAL=${14}
 APP=${15}
+SIM_TIME=${16}
 
 sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
+sed -i "s/TIMEOUT([[:digit:]]*);/TIMEOUT($SIM_TIME);/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then

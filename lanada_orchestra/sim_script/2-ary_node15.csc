@@ -456,7 +456,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(3600000);
+TIMEOUT(1);
 
 while (true) {
   log.log(time + ":" + id + ":" + msg + "\n");

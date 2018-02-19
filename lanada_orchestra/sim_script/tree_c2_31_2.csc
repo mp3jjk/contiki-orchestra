@@ -833,7 +833,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(3600000);
+TIMEOUT(1);
 
 var count = 0;
 

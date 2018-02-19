@@ -22,8 +22,10 @@ CHECK=$6
 SEED_NUMBER=$7
 TSCH=$8
 APP=$9
+SIM_TIME=${10}
 
-sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_async/sim_script/$topology\_async\.csc 
+sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_async/sim_script/$topology\_async\_$APP\.csc 
+sed -i "s/TIMEOUT([[:digit:]]*);/TIMEOUT($SIM_TIME);/" $CONTIKI/lanada_async/sim_script/$topology\_async\_$APP\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then
@@ -57,7 +59,7 @@ cd $HERE
 
 if [ ! -e COOJA.testlog ]
 then
-    java -mx512m -jar $CONTIKI/tools/cooja_$APP/dist/cooja.jar -nogui=$CONTIKI/lanada_async/sim_script/$topology\_async\.csc -contiki="$CONTIKI"
+    java -mx512m -jar $CONTIKI/tools/cooja_$APP/dist/cooja.jar -nogui=$CONTIKI/lanada_async/sim_script/$topology\_async\_$APP\.csc -contiki="$CONTIKI"
 #    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_async/sim_script/$topology\_async\.csc -contiki="$CONTIKI"
 	#	java -mx512m -classpath $CONTIKI/tools/cooja/apps/mrm/lib/mrm.jar: -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada/sim_scripts/scripts/0729_$topology\_$LR_range\.csc -contiki="$CONTIKI"
 		# ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc -Ddir=$PWD
@@ -86,3 +88,4 @@ fi
 cd ../..
 
 echo "Simulation finished"
+
