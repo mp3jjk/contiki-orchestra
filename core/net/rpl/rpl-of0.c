@@ -55,7 +55,7 @@
 #define RANK_FACTOR        1 /* Must be in the range [1;4] */
 
 #define MIN_STEP_OF_RANK   1
-#define MAX_STEP_OF_RANK   9
+#define MAX_STEP_OF_RANK   15
 
 /* OF0 computes rank increase as follows:
  * rank_increase = (RANK_FACTOR * STEP_OF_RANK + RANK_STRETCH) * min_hop_rank_increase
