@@ -4,15 +4,17 @@ TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
 RBS_SBS=1 # Whether RBS(0) or SBS(1)
 TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
-ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
-VAR_PERIOD=(1 2 3 5 10 30) # T
+ADAPTIVE_MODE=0 # Whether basic(0) or adaptive(1)
+VAR_PERIOD=(1) # T
 VAR_ARRIVAL=(1) # lambda
-VAR_TOPOLOGY=("child_2" "child_3" "child_4" "child_5" "child_6" "child_7" "child_8") # tree_c2_31 tree_c3_40 grid_36 random_50
+VAR_TOPOLOGY=("child_2") # tree_c2_31 tree_c3_40 grid_36 random_50
 LABEL="bench"
 SEED_NUMBER=("1")
-VAR_N_SBS=("2") # Hard coded n-SBS
+VAR_N_SBS=("0") # Hard coded n-SBS
 VAR_CHECK_RATE=(8)
-APP=3
+VAR_UNICAST_PERIOD=(11)
+VAR_MINIMAL_PERIOD=(7)
+APP=1
 
 # Async sim
 
@@ -65,7 +67,13 @@ then
 		    do
 			for check in "${VAR_CHECK_RATE[@]}"
 			do
-			    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $APP
+			    for uni in "${VAR_UNICAST_PERIOD[@]}"
+			    do
+				for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				do
+				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP
+				done
+			    done
 			done
 		    done
 		done
@@ -82,7 +90,13 @@ then
 		    do
 			for check in "${VAR_CHECK_RATE[@]}"
 			do
-			    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $APP
+			    for uni in "${VAR_UNICAST_PERIOD[@]}"
+			    do
+				for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				do
+				    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP
+				done
+			    done
 			done
 		    done
 		done

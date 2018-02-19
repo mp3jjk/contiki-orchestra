@@ -1,5 +1,5 @@
 #!/bin/bash
-app=${10}
+app=${12}
 
 echo "#ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
@@ -13,6 +13,12 @@ echo "#ifndef __PROJECT_CONF_H__
 
 #if WITH_ORACHESTRA == 0
 #define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL $6 // For 6TiSCH minimal configuration without orchestra /* jk */
+#endif
+
+#if WITH_ORCHESTRA == 1
+#define ORCHESTRA_CONF_UNICAST_PERIOD ${10}
+#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH ${11}
 #endif
 
 /* Orchestra Options */
