@@ -330,6 +330,6 @@ fi
 # 	echo "<Energy $percent %>" >> energy/percent_energy.txt
 # done < energy/final_energy.txt
 
-temp=`tail -n 4 parsing/AVG.txt`
-paste temp delay/avg_packet_delay.txt PRR/PRR.txt > report_summary.txt
+tail -n 4 parsing/AVG.txt > temp
+paste delay/avg_packet_delay.txt PRR/PRR.txt temp > report_summary.txt
 # collision/collision_ratio.txt
