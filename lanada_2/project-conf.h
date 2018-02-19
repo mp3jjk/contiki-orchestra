@@ -20,7 +20,7 @@
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	1 /* jk */
+#define PERIOD	5 /* jk */
 #else	// If event driven (assume poisson)
 #define INTENSITY 0 // lambda /* jk */
 #endif
