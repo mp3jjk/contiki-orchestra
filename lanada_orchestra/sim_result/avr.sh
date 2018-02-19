@@ -3,9 +3,9 @@
 MODE=$1
 ARG=$2
 
-if [ $MODE == "lifetime" ]
+if [ $MODE == "duty" ]
 then
-	./lifetime.sh $ARG > temp.txt
+	./duty.sh $ARG > temp.txt
 elif [ $MODE == "delay" ]
 then
 	./delay.sh $ARG > temp.txt
@@ -50,11 +50,16 @@ do
 		if [ $count -ge 0 ]
 		then
 			# Save value in add
-			add=`echo $line | cut -d ' ' -f4`
+			if [ $MODE == "duty" ]
+			then
+				add=`echo $line | cut -d ' ' -f7`
+			else
+				add=`echo $line | cut -d ' ' -f4`
+			fi
 			# echo Add: $add
 
 			# Save the value name
-			if [ $MODE == "lifetime" ]
+			if [ $MODE == "duty" ]
 			then
 				base=`echo $line | cut -d ' ' -f1`
 			else
@@ -63,7 +68,7 @@ do
 			y[$count]=$base
 
 			# Sum values 
-			if [ $MODE == "prr" ]
+			if [ $MODE == "prr" ] || [ $MODE == "duty" ]
 			then
 				if [ -z ${x[$count]} ]
 				then
@@ -86,7 +91,7 @@ do
 	do
 		# Taking the average
 		# echo Total sum value: ${x[$count]}
-		if [ $MODE == "prr" ]
+		if [ $MODE == "prr" ] || [ $MODE == "duty" ]
 		then
 			x[$count]=`echo "scale=3;${x[$count]}/$cat_count"|bc`
 		else
