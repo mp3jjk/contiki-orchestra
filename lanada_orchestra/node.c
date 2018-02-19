@@ -425,7 +425,6 @@ PROCESS_THREAD(node_process, ev, data)
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
 
-#if 0
   /* Wait until the node joins the network */
   static struct ctimer poll_timer;
   while(tsch_is_associated == 0) {
@@ -433,7 +432,6 @@ PROCESS_THREAD(node_process, ev, data)
 	  PROCESS_YIELD();
   }
   ctimer_stop(&poll_timer);
-#endif
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic

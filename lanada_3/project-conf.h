@@ -12,6 +12,12 @@
 #define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra /* jk */
 #endif
 
+#if WITH_ORCHESTRA == 1
+#define ORCHESTRA_CONF_UNICAST_PERIOD 17
+#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
+#endif
+
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
@@ -27,7 +33,7 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
 
-#define HARD_CODED_n_SBS	5 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
+#define HARD_CODED_n_SBS	8 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
