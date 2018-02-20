@@ -82,7 +82,7 @@
 #ifdef TSCH_CONF_MAX_JOIN_PRIORITY
 #define TSCH_MAX_JOIN_PRIORITY TSCH_CONF_MAX_JOIN_PRIORITY
 #else
-#define TSCH_MAX_JOIN_PRIORITY 32
+#define TSCH_MAX_JOIN_PRIORITY 50
 #endif
 
 /* Start TSCH automatically after init? If not, the upper layers

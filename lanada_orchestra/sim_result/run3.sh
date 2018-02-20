@@ -1,18 +1,18 @@
 #!/bin/bash
 
 TSCH=1 # Whether Async(0) or TSCH(1)
-ORCHESTRA=0 # Whether Minimal(0) or Orchestra(1)
-RBS_SBS=0 # Whether RBS(0) or SBS(1)
-TRAFFIC=1 # Whether Periodic(0) or Poisson(1)
-ADAPTIVE_MODE=0 # Whether basic(0) or adaptive(1)
-VAR_PERIOD=(1) # T
-VAR_ARRIVAL=(1 5 25) # lambda
-VAR_TOPOLOGY=("tree_c4_21") # tree_c2_31 tree_c3_40 grid_36 random_50
-LABEL="G2"
-SEED_NUMBER=("1" "2")
-VAR_N_SBS=("0") # Hard coded n-SBS
+ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
+RBS_SBS=1 # Whether RBS(0) or SBS(1)
+TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
+ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
+VAR_PERIOD=(1 2 3 5) # T
+VAR_ARRIVAL=(1 2 3 5) # lambda
+VAR_TOPOLOGY=("child_3" "child_4" "child_5" "child_6" "child_7" "child_8") # tree_c2_31 tree_c3_40 grid_36 random_50
+LABEL="MB"
+SEED_NUMBER=("2" "3" "4" "5")
+VAR_N_SBS=("2") # Hard coded n-SBS
 VAR_CHECK_RATE=(8)
-VAR_UNICAST_PERIOD=(11)
+VAR_UNICAST_PERIOD=(17)
 VAR_MINIMAL_PERIOD=(7)
 SIM_TIME=(3600000)
 APP=3
@@ -102,16 +102,16 @@ then
 			    do
 				for mini in "${VAR_MINIMAL_PERIOD[@]}"
 				do
-				    if [ $arrival = 1 ]
-				    then
-					SIM_TIME=3600000
-				    elif [ $arrival = 5 ]
-				    then
-					SIM_TIME=7200000
-				    elif [ $arrival = 25]
-				    then
-					SIM_TIME=10800000
-				    fi
+				    # if [ $arrival = 1 ]
+				    # then
+				    # 	SIM_TIME=3600000
+				    # elif [ $arrival = 5 ]
+				    # then
+				    # 	SIM_TIME=7200000
+				    # elif [ $arrival = 25]
+				    # then
+				    # 	SIM_TIME=10800000
+				    # fi
 				    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
 				done
 			    done
