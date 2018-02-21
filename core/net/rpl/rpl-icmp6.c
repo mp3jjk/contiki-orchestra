@@ -481,16 +481,19 @@ dio_input(void)
 
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
-  	  uint8_t i, timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
+  	  uint8_t timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
+  	  uint8_t slot_assigned = 0;
   	  /* Remove current installed TX slot */
   	  RPL_CALLBACK_REMOVE_LINK(-1, 1); // timeslot = -1 with flag = 1 means remove TX slot to the preferred parent
-  	  for(i = timeslot; i >= 1; i--) {
+//  	  for(i = timeslot; i >= 0; i--) {
+  	  while(slot_assigned == 0) {
 //  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
-  		  if((recv_TX_slot_assignment & (1 << i)) != 0) {
+  		  if((recv_TX_slot_assignment & (1 << timeslot)) != 0) {
 //  			  printf("ADD link\n");
-  			  RPL_CALLBACK_ADD_LINK(i, 1);
-  			  break;
+  			  RPL_CALLBACK_ADD_LINK(timeslot, 1);
+  			  slot_assigned = 1;
   		  }
+  		  timeslot = (timeslot - 1) % ORCHESTRA_UNICAST_PERIOD;
   	  }
   	  recv_TX_slot_changed = 0;
   }

@@ -24,11 +24,11 @@
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled /* jk */
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
+#define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	2 /* jk */
+#define PERIOD	0 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 0 // lambda /* jk */
+#define INTENSITY 5 // lambda /* jk */
 #endif
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
