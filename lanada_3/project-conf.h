@@ -22,18 +22,18 @@
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled /* jk */
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled /* jk */
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	0 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 5 // lambda /* jk */
+#define INTENSITY 1 // lambda /* jk */
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0 /* jk */
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
 
-#define HARD_CODED_n_SBS	0 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
+#define HARD_CODED_n_SBS	5 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 

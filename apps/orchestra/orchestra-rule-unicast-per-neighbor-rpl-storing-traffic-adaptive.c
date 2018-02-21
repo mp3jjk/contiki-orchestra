@@ -98,7 +98,7 @@ add_uc_link(const linkaddr_t *linkaddr)
     uint16_t timeslot = get_node_timeslot(linkaddr);
     uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
 
-    if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+    if(timeslot == current_TX_slot) { // Should compare with current TX slot
       /* This is also our timeslot, add necessary flags */
       link_options |= ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
     }
@@ -125,7 +125,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
     return;
   }
   /* Does our current parent need this timeslot? */
-  if(timeslot == get_node_timeslot(&orchestra_parent_linkaddr)) {
+  if(timeslot == get_node_timeslot(&orchestra_parent_linkaddr)) { // Is it correct?
     /* Yes, this timeslot is being used, return */
     return;
   }
@@ -142,7 +142,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
   }
 
   /* Do we need this timeslot? */
-  if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+  if(timeslot == current_TX_slot) {
     /* This is our link, keep it but update the link options */
     uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
     tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
@@ -160,7 +160,7 @@ add_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 	if(flag == 0) {
 		uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
 
-		if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+		if(timeslot == current_TX_slot) {
 			/* This is also our timeslot, add necessary flags */
 			link_options |= ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
 		}
@@ -206,7 +206,7 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 	}*/
 
 		/* Do we need this timeslot? */
-		if(timeslot == get_node_timeslot(&linkaddr_node_addr)) {
+		if(timeslot == current_TX_slot) {
 			/* This is our link, keep it but update the link options */
 			uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG: LINK_OPTION_RX;
 			tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
@@ -224,6 +224,8 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 				return;
 			}
 			tsch_schedule_remove_link(sf_unicast, l);
+			prev_TX_slot = current_TX_slot;
+			current_TX_slot = -1;
 		}
 		else {
 //			printf("remove TX_slot: %d\n",timeslot);
@@ -232,6 +234,8 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 				return;
 			}
 			tsch_schedule_remove_link(sf_unicast, l);
+			prev_TX_slot = current_TX_slot;
+			current_TX_slot = -1;
 		}
 	}
 }
