@@ -7,7 +7,7 @@ TRAFFIC=1 # Whether Periodic(0) or Poisson(1)
 ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
 VAR_PERIOD=(1 2 3 5) # T
 VAR_ARRIVAL=(1 2 3 5) # lambda
-VAR_TOPOLOGY=("child_5" "child_6" "child_7" "child_8") # tree_c2_31 tree_c3_40 grid_36 random_50
+VAR_TOPOLOGY=("child_5" "child_6" "child_7" "child_8") # tree_c4_21 grid_36 random_50
 LABEL="MB2"
 SEED_NUMBER=("1" "2" "3" "4" "5")
 VAR_N_SBS=("4") # Hard coded n-SBS
@@ -16,6 +16,9 @@ VAR_UNICAST_PERIOD=(17)
 VAR_MINIMAL_PERIOD=(7)
 SIM_TIME=(3600000)
 APP=3
+BOTH_TRAFFIC=0
+MICROBENCH=1
+
 
 # Async sim
 
@@ -53,6 +56,12 @@ then
     fi
 fi
 
+if [ $BOTH_TRAFFIC - eq ]
+then
+    TRAFFIC=0
+    LABEL="G1"
+fi
+
 # TSCH sim
 if [ $TSCH -eq 1 ]
 then
@@ -72,14 +81,17 @@ then
 			    do
 				for mini in "${VAR_MINIMAL_PERIOD[@]}"
 				do
-				    if [ $period = 1 ]
+				    if [ $MICROBENCH -eq 0 ]
 				    then
-					SIM_TIME=3600000
-				    elif [ $period = 2 ]
-				    then
-					SIM_TIME=7200000
+					if [ $period = 10 ]
+					then
+				    	    SIM_TIME=10800000
+					elif [ $period = 30 ]
+					then
+				    	    SIM_TIME=32400000
+					fi
 				    fi
-				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
+p				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
 				done
 			    done
 			done
@@ -87,7 +99,14 @@ then
 		done
 	    done
 	done
-    else
+    fi
+    if [ $BOTH_TRAFFIC -eq 1 ]
+    then
+	TRAFFIC=1
+	LABEL="G2"
+    fi
+    if [ $TRAFFIC -eq 1 ]
+    then
 	for seed in "${SEED_NUMBER[@]}"
 	do
 	    for arrival in "${VAR_ARRIVAL[@]}"
@@ -102,16 +121,19 @@ then
 			    do
 				for mini in "${VAR_MINIMAL_PERIOD[@]}"
 				do
-				    # if [ $arrival = 1 ]
-				    # then
-				    # 	SIM_TIME=3600000
-				    # elif [ $arrival = 5 ]
-				    # then
-				    # 	SIM_TIME=7200000
-				    # elif [ $arrival = 25]
-				    # then
-				    # 	SIM_TIME=10800000
-				    # fi
+				    if [ $MICROBENCH -eq 0 ]
+				    then
+					if [ $arrival = 1 ]
+					then
+				    	    SIM_TIME=3600000
+					elif [ $arrival = 5 ]
+					then
+				    	    SIM_TIME=7200000
+					elif [ $arrival = 25]
+					then
+				    	    SIM_TIME=10800000
+					fi
+				    fi
 				    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
 				done
 			    done
