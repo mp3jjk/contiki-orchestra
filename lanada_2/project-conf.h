@@ -28,7 +28,7 @@
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	0 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 2 // lambda /* jk */
+#define INTENSITY 3 // lambda /* jk */
 #endif
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
