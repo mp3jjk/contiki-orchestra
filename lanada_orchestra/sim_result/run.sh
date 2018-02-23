@@ -56,12 +56,6 @@ then
     fi
 fi
 
-if [ $BOTH_TRAFFIC - eq ]
-then
-    TRAFFIC=0
-    LABEL="G1"
-fi
-
 # TSCH sim
 if [ $TSCH -eq 1 ]
 then
@@ -129,7 +123,7 @@ then
 					elif [ $arrival = 5 ]
 					then
 				    	    SIM_TIME=7200000
-					elif [ $arrival = 25]
+					elif [ $arrival = 25 ]
 					then
 				    	    SIM_TIME=10800000
 					fi
