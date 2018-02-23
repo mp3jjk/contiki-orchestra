@@ -91,7 +91,7 @@ then
 				    	    SIM_TIME=32400000
 					fi
 				    fi
-p				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
+				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
 				done
 			    done
 			done

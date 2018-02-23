@@ -334,6 +334,7 @@ PROCESS_THREAD(node_process, ev, data)
 {
   static struct etimer et;
   static struct etimer gen; // Packet generation timer
+  static struct ctimer backoff;
   static clock_time_t packet_interval;
   static double prob_packet_gen;
 #if TRAFFIC_PATTERN == 1
@@ -487,10 +488,11 @@ PROCESS_THREAD(node_process, ev, data)
 		  etimer_reset(&et);
 	  }*/
 	  else if(etimer_expired(&gen)) {
-		  send_packet(NULL);
 #if TRAFFIC_PATTERN == 0
 		  etimer_reset(&gen);
+		  ctimer_set(&backoff,random_rand()%(PERIOD*CLOCK_SECOND/2),send_packet,NULL);
 #else
+		  send_packet(NULL);
 		  random_num = random_rand() / (float)RANDOM_RAND_MAX;
 		  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
 		  if(packet_interval == 0) {

@@ -170,7 +170,14 @@ add_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 				timeslot, channel_offset);
 	}
 	else {
+		struct tsch_link *l;
 		uint8_t link_options = LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;
+		l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
+		if(l != NULL) {
+			if(l->link_options & LINK_OPTION_RX) { // If it is RX slot
+				link_options |= LINK_OPTION_RX;
+			}
+		}
 		/* Add/update link */
 		tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
 				timeslot, channel_offset);
