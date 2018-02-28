@@ -3,12 +3,12 @@
 TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
 RBS_SBS=1 # Whether RBS(0) or SBS(1)
-TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
+TRAFFIC=1 # Whether Periodic(0) or Poisson(1)
 ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
 VAR_PERIOD=(10 30) # T
-VAR_ARRIVAL=(5 25) # lambda
-VAR_TOPOLOGY=("grid_36") # tree_c4_21 grid_36 random_50
-LABEL="0228"
+VAR_ARRIVAL=(10 25 50) # lambda
+VAR_TOPOLOGY=("random_40_2X") # tree_c4_21 grid_36 random_50
+LABEL="0228_rand"
 SEED_NUMBER=("1" "2")
 VAR_N_SBS=("2") # Hard coded n-SBS
 VAR_CHECK_RATE=(8)
@@ -123,9 +123,15 @@ then
 					elif [ $arrival = 5 ]
 					then
 				    	    SIM_TIME=7200000
+					elif [ $arrival = 10 ]
+					then
+				    	    SIM_TIME=7200000
 					elif [ $arrival = 25 ]
 					then
 				    	    SIM_TIME=10800000
+					elif [ $arrival = 50 ]
+					then
+				    	    SIM_TIME=18000000
 					fi
 				    fi
 				    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME

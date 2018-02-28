@@ -8,12 +8,12 @@
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
     <title>random_t50</title>
-    <randomseed>123456</randomseed>
+    <randomseed>1</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
-      <transmitting_range>100.0</transmitting_range>
-      <interference_range>100.0</interference_range>
+      <transmitting_range>50.0</transmitting_range>
+      <interference_range>50.0</interference_range>
       <success_ratio_tx>1.0</success_ratio_tx>
       <success_ratio_rx>1.0</success_ratio_rx>
     </radiomedium>
@@ -1226,7 +1226,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(1);
+TIMEOUT(10800000);
 
 var count = 0;
 

@@ -24,11 +24,11 @@
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled /* jk */
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
+#define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven /* jk */
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	10 /* jk */
+#define PERIOD	0 /* jk */
 #else	// If event driven (assume poisson)
-#define INTENSITY 5 // lambda /* jk */
+#define INTENSITY 10 // lambda /* jk */
 #endif
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
@@ -140,7 +140,7 @@ uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started w
 /* TSCH logging. 0: disabled. 1: basic log. 2: with delayed
  * log messages from interrupt */
 #undef TSCH_LOG_CONF_LEVEL
-#define TSCH_LOG_CONF_LEVEL 2
+#define TSCH_LOG_CONF_LEVEL 0
 
 /* IEEE802.15.4 PANID */
 #undef IEEE802154_CONF_PANID

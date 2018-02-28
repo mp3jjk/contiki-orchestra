@@ -473,10 +473,10 @@ PROCESS_THREAD(node_process, ev, data)
   n_SBS = 1; // For debug
 #else
   n_SBS = HARD_CODED_n_SBS;
-  if(node_id == 2 || node_id == 3 || node_id = 7 || node_id == 8 || 
-     node_id == 9 ||  node_id == 13 ) {
-    n_SBS = 1;
-  }
+  /* if(node_id == 2 || node_id == 3 || node_id == 7 || node_id == 8 ||  */
+  /*    node_id == 9 ||  node_id == 13 ) { */
+  /*   n_SBS = 1; */
+  /* } */
 #endif
 
   /* Print out routing tables every minute */
