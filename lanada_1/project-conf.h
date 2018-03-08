@@ -33,7 +33,7 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
 
-#define HARD_CODED_n_SBS	2 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
+#define HARD_CODED_n_SBS	0 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
 
 uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
 
@@ -43,6 +43,17 @@ uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not im
 
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
+
+#define TRAFFIC_INTENSITY_WINDOW_SIZE	512
+uint32_t accumulated_traffic_intensity;
+//uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
+double averaged_traffic_intensity;
+
+#define NUM_TRAFFIC_INTENSITY	10
+double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
+double measured_traffic_intensity;
+
+#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 

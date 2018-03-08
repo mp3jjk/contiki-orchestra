@@ -1265,11 +1265,19 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
 		  recv_TX_slot_changed = 1;
 	  }
   }
+#if HARD_CODED_n_SBS != 0
   if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
 	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("current num_sibling %d\n",num_sibling);
 	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
   }
-  printf("current num_sibling %d\n",num_sibling);
+#else
+  if(recv_TX_slot_assignment != 0 && state_traffic_adaptive_TX == 0) {
+	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("current recv TX slot %d\n", recv_TX_slot_assignment);
+	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
+  }
+#endif
 #endif
   PRINTF("succeeded\n");
 
@@ -1752,11 +1760,19 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
 		  recv_TX_slot_changed = 1;
 	  }
   }
+#if HARD_CODED_n_SBS != 0
   if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
 	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("current num_sibling %d\n",num_sibling);
 	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
   }
-  printf("current num_sibling %d\n",num_sibling);
+#else
+  if(recv_TX_slot_assignment != 0 && state_traffic_adaptive_TX == 0) {
+	  state_traffic_adaptive_TX = 1; // After RX non-zero num_sibling start to TRAFFIC ADAPTIVE MODE as a TX
+	  printf("current recv TX slot %d\n", recv_TX_slot_assignment);
+	  printf("Start TRAFFIC ADAPTIVE of Transmitter\n");
+  }
+#endif
 
 #endif
 

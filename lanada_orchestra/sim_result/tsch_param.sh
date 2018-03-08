@@ -47,6 +47,17 @@ uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not im
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
+#define TRAFFIC_INTENSITY_WINDOW_SIZE	512
+uint32_t accumulated_traffic_intensity;
+//uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
+double averaged_traffic_intensity;
+
+#define NUM_TRAFFIC_INTENSITY	10
+double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
+double measured_traffic_intensity;
+
+#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
+
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment

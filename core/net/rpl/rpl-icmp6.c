@@ -61,6 +61,14 @@
 #include <limits.h>
 #include <string.h>
 
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#include <math.h>
+#define MIN(a,b) \
+	( { __typeof__ (a) _a = (a); \
+			__typeof__ (b) _b = (b); \
+			_a < _b ? _a : _b; })
+#endif
+
 #define DEBUG DEBUG_NONE
 
 #include "net/ip/uip-debug.h"
@@ -480,26 +488,29 @@ dio_input(void)
   rpl_process_dio(&from, &dio);
 
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
-  if(recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
+  if(state_traffic_adaptive_TX && recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
   	  uint8_t timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
   	  uint8_t slot_assigned = 0, index = 1;
   	  uint8_t my_id = uip_ds6_get_link_local(-1)->ipaddr.u8[15];
   	  /* Remove current installed TX slot */
   	  RPL_CALLBACK_REMOVE_LINK(-1, 1); // timeslot = -1 with flag = 1 means remove TX slot to the preferred parent
 //  	  for(i = timeslot; i >= 0; i--) {
-  	  while(slot_assigned == 0 && index < MAX_NUMBER_CHILD) {
+  	  while(slot_assigned == 0 && index < ORCHESTRA_UNICAST_PERIOD) {
 //  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
   		  if((recv_TX_slot_assignment & (1 << timeslot)) != 0) {
 //  			  printf("ADD link\n");
   			  RPL_CALLBACK_ADD_LINK(timeslot, 1);
   			  slot_assigned = 1;
   		  }
-  		  timeslot = (uip_ds6_get_link_local(-1)->ipaddr.u8[15] - index++) % ORCHESTRA_UNICAST_PERIOD;
+  		  timeslot = (uip_ds6_get_link_local(-1)->ipaddr.u8[15] + index++) % ORCHESTRA_UNICAST_PERIOD;
   	  }
-  	  if(slot_assigned == 0) {
+  	  if(slot_assigned == 0) { // Fail to find proper slot in recv TX_slot
   		timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
 		  RPL_CALLBACK_ADD_LINK(timeslot, 1);
   	  }
+/*  	  if(current_TX_slot != timeslot) { // If current_TX_slot is different from the new timeslot remove it
+  		RPL_CALLBACK_REMOVE_LINK(-1, 1);
+  	  }*/
   	  recv_TX_slot_changed = 0;
   }
 
@@ -598,12 +609,39 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  buffer[pos++] = 0;
   }
   buffer[pos++] = my_child_number; /* my_child_number */
+#if HARD_CODED_n_SBS != 0
   if(my_child_number != 0 && state_traffic_adaptive_RX == 0) {
 	  state_traffic_adaptive_RX = 1; // After TX non-zero my_child_number start to TRAFFIC ADAPTIVE MODE as a RX
+	  n_SBS = HARD_CODED_n_SBS;
+	  printf("Hardcoded n_SBS: %d\n",n_SBS);
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
+#else
+  if(measured_traffic_intensity != 0 && state_traffic_adaptive_RX == 0) {
+	  state_traffic_adaptive_RX = 1; // After getting measured_traffic_intensity start to TRAFFIC ADAPTIVE MODE as a RX
+	  // Calculate n_SBS based on our analysis
+	  // Not implemented yet
+	  uint8_t i;
+	  for(i = my_child_number; i >= 1; i--) {
+		  double function_f;
+
+		  function_f = 1 - (i * measured_traffic_intensity + 1 - measured_traffic_intensity)*pow(1-measured_traffic_intensity,i - 1);
+		  printf("calculated function_f %f\n",function_f);
+		  if(function_f <= 1 - RELIABILITY_CONSTRAINT / 100.0) {
+			  n_SBS = MIN(i, 1/measured_traffic_intensity);
+			  break;
+		  }
+	  }
+	  if(i < 1) {
+		  n_SBS = 1;
+	  }
+//	  n_SBS = 1; // Test
+	  printf("obtained n_SBS: %d\n",n_SBS);
+	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
+  }
+#endif
 #if ORCHESTRA_RANDOMIZED_TX_SLOT == 0
-  if(child_changed == 1) { // Child list is changed
+  if(child_changed == 1 && state_traffic_adaptive_RX) { // Child list is changed
 	  rpl_get_child_all(list_ordered_child); // Get ordered child list
 	  child_changed = 0;
 	  TX_slot_assignment = 0; // Initialize slot assignment due to child change

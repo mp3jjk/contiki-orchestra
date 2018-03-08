@@ -59,6 +59,10 @@
 #include "sys/cooja_mt.h"
 #endif /* CONTIKI_TARGET_COOJA || CONTIKI_TARGET_COOJA_IP64 */
 
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#include "apps/orchestra/orchestra-conf.h"
+#endif
+
 #if TSCH_LOG_LEVEL >= 1
 #define DEBUG DEBUG_PRINT
 #else /* TSCH_LOG_LEVEL */
@@ -173,6 +177,11 @@ struct tsch_link *current_link = NULL;
 static struct tsch_link *backup_link = NULL;
 static struct tsch_packet *current_packet = NULL;
 static struct tsch_neighbor *current_neighbor = NULL;
+
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+static uint8_t is_rx_packet;
+static uint8_t is_average_needed;
+#endif
 
 /* Protothread for association */
 PT_THREAD(tsch_scan(struct pt *pt));
@@ -879,6 +888,9 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
                 TSCH_DEBUG_RX_EVENT();
                 NETSTACK_RADIO.transmit(ack_len);
                 tsch_radio_off(TSCH_RADIO_CMD_OFF_WITHIN_TIMESLOT);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+                is_rx_packet = 1;
+#endif
               }
             }
 
@@ -940,6 +952,10 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 {
   TSCH_DEBUG_INTERRUPT();
   PT_BEGIN(&slot_operation_pt);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+  uint16_t index_traffic_intensity;
+  uint8_t index_list = 0;
+#endif
 
   /* Loop over all active slots */
   while(tsch_is_associated) {
@@ -959,6 +975,31 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       int is_active_slot;
       TSCH_DEBUG_SLOT_START();
       tsch_in_slot_operation = 1;
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+      index_traffic_intensity = (tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD) % TRAFFIC_INTENSITY_WINDOW_SIZE;
+      if(index_traffic_intensity == 0 && is_average_needed == 1) {
+    	  averaged_traffic_intensity = accumulated_traffic_intensity / (double)TRAFFIC_INTENSITY_WINDOW_SIZE;
+//    	  printf("averaged traffic intensity: %f\n",averaged_traffic_intensity);
+    	  if(index_list < NUM_TRAFFIC_INTENSITY) {
+    		  traffic_intensity_list[index_list++] = averaged_traffic_intensity;
+    	  }
+    	  if(index_list == NUM_TRAFFIC_INTENSITY) {
+    		  uint8_t i;
+    		  for(i=0;i<NUM_TRAFFIC_INTENSITY;i++) {
+    			  measured_traffic_intensity += traffic_intensity_list[i];
+    		  }
+    		  measured_traffic_intensity /= NUM_TRAFFIC_INTENSITY;
+    		  index_list++;
+    		  printf("measured traffic intensity: %f\n", measured_traffic_intensity);
+    	  }
+    	  is_average_needed = 0;
+    	  accumulated_traffic_intensity = 0;
+      }
+      if(index_traffic_intensity == TRAFFIC_INTENSITY_WINDOW_SIZE-1 && is_average_needed == 0) {
+    	  is_average_needed = 1;
+      }
+//      printf("debug: index %d\n",index_traffic_intensity);
+#endif
       /* Reset drift correction */
       drift_correction = 0;
       is_drift_correction_used = 0;
@@ -998,6 +1039,15 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
           PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
         }
       }
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+//      traffic_intensity[(index_traffic_intensity+1)%TRAFFIC_INTENSITY_WINDOW_SIZE] = 0; // Emptying the next traffic intensity
+      if(is_rx_packet == 1 && current_link->slotframe_handle == 1) { // Receive something in unicast Slotframe
+//    	  traffic_intensity[index_traffic_intensity]++;
+    	  accumulated_traffic_intensity++;
+//    	  printf("traffic intensity at %d: %d\n",index_traffic_intensity,accumulated_traffic_intensity);
+      }
+      is_rx_packet = 0;
+#endif
       TSCH_DEBUG_SLOT_END();
     }
 

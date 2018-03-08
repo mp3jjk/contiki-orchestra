@@ -456,28 +456,22 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 #endif
   if(!is_coordinator) {
-	  printf("Ppkt= %f\n",prob_packet_gen);
-//	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
-	  printf("n_SBS: %d\n",n_SBS);
-
 //	  /* For test packet_interval is fixed 30 seconds */
 //	  packet_interval = 30 * CLOCK_SECOND;
 	  etimer_set(&gen,packet_interval);
   }
-  else {
-	  printf("Ppkt= %f\n",prob_packet_gen);
-//	  n_SBS = round(1/prob_packet_gen); // Calculate n using Ppkt
-	  printf("n_SBS: %d\n",n_SBS);
-  }
+
+/*
 #if HARD_CODED_n_SBS == 0
   n_SBS = 1; // For debug
 #else
   n_SBS = HARD_CODED_n_SBS;
-  /* if(node_id == 2 || node_id == 3 || node_id == 7 || node_id == 8 ||  */
-  /*    node_id == 9 ||  node_id == 13 ) { */
-  /*   n_SBS = 1; */
-  /* } */
+   if(node_id == 2 || node_id == 3 || node_id == 7 || node_id == 8 ||
+      node_id == 9 ||  node_id == 13 ) {
+     n_SBS = 1;
+   }
 #endif
+*/
 
   /* Print out routing tables every minute */
 //  etimer_set(&et, CLOCK_SECOND * 60);

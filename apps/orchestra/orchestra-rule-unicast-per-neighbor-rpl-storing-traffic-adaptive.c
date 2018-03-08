@@ -230,7 +230,15 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 			if(l == NULL) {
 				return;
 			}
-			tsch_schedule_remove_link(sf_unicast, l);
+			if(l->link_options & LINK_OPTION_RX) { // If the link is also RX slot, remove and add again
+				tsch_schedule_remove_link(sf_unicast, l);
+				uint8_t link_options = LINK_OPTION_RX;
+				tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
+						current_TX_slot, channel_offset);
+			}
+			else {
+				tsch_schedule_remove_link(sf_unicast, l);
+			}
 			prev_TX_slot = current_TX_slot;
 			current_TX_slot = -1;
 		}
@@ -240,7 +248,15 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 			if(l == NULL) {
 				return;
 			}
-			tsch_schedule_remove_link(sf_unicast, l);
+			if(l->link_options & LINK_OPTION_RX) { // If the link is also RX slot, remove and add again
+				tsch_schedule_remove_link(sf_unicast, l);
+				uint8_t link_options = LINK_OPTION_RX;
+				tsch_schedule_add_link(sf_unicast, link_options, LINK_TYPE_NORMAL, &tsch_broadcast_address,
+						timeslot, channel_offset);
+			}
+			else {
+				tsch_schedule_remove_link(sf_unicast, l);
+			}
 			prev_TX_slot = current_TX_slot;
 			current_TX_slot = -1;
 		}

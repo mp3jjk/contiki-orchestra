@@ -1,59 +1,48 @@
-[15:36:43 - AWT-EventQueue-0] [Cooja.java:2856] [INFO] - External tools default settings: /external_tools_linux.config
-[15:36:43 - AWT-EventQueue-0] [Cooja.java:2886] [INFO] - External tools user settings: /home/user/.cooja.user.properties
-[15:36:46 - Thread-0] [Simulation.java:422] [INFO] - Simulation random seed: 1
-[15:36:47 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
-[15:36:49 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib1 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_1/obj_cooja/mtype68.cooja'
-[15:36:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x36020 ( 848 == 0x350 bytes)
-[15:36:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x36380 ( 83248 == 0x14530 bytes)
-[15:36:49 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype68.cooja: offsetting Cooja mote address space: 0x86e0a000
-[15:36:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86e40020 ( 848 == 0x350 bytes)
-[15:36:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x86e40380 ( 83248 == 0x14530 bytes)
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
-[15:36:49 - Thread-0] [Visualizer.java:256] [INFO] - Registered external visualizer: org.contikios.cooja.plugins.skins.DGRMVisualizerSkin
-[15:36:50 - Thread-0] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
-[15:36:51 - Thread-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
-[15:36:51 - Thread-5] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1519799811951
-[15:37:08 - Thread-5] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1519799828320	Duration: 16369 ms	Simulated time 81884 ms	Ratio 5.002076970067196
-[15:37:12 - Thread-6] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1519799832308
-[15:37:18 - Thread-6] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1519799838523	Duration: 6215 ms	Simulated time 145949 ms	Ratio 23.48334674175382
-[15:37:22 - Thread-7] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1519799842677
-[15:37:27 - Thread-7] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1519799847085	Duration: 4408 ms	Simulated time 190649 ms	Ratio 43.25068058076225
+[08:53:33 - AWT-EventQueue-0] [Cooja.java:2856] [INFO] - External tools default settings: /external_tools_linux.config
+[08:53:33 - AWT-EventQueue-0] [Cooja.java:2886] [INFO] - External tools user settings: /home/user/.cooja.user.properties
+[08:53:37 - Thread-0] [Simulation.java:422] [INFO] - Simulation random seed: 1
+[08:53:38 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[08:53:49 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib1 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_1/obj_cooja/mtype965.cooja'
+[08:53:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x38020 ( 912 == 0x390 bytes)
+[08:53:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x383c0 ( 84912 == 0x14bb0 bytes)
+[08:53:49 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype965.cooja: offsetting Cooja mote address space: 0x445b3000
+[08:53:49 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x445eb020 ( 912 == 0x390 bytes)
+[08:53:50 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x445eb3c0 ( 84912 == 0x14bb0 bytes)
+[08:53:51 - AWT-EventQueue-0] [CompileContiki.java:140] [INFO] - > make node.cooja TARGET=cooja 
+[08:53:51 - Thread-0] [ContikiMoteType.java:404] [INFO] - Creating core communicator between Java class Lib2 and Contiki library '/media/user/Harddisk/contiki-orchestra/lanada_1/obj_cooja/mtype44.cooja'
+[08:53:52 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x38020 ( 912 == 0x390 bytes)
+[08:53:52 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x383c0 ( 84912 == 0x14bb0 bytes)
+[08:53:52 - Thread-0] [ContikiMoteType.java:500] [INFO] - mtype44.cooja: offsetting Cooja mote address space: 0x4440c000
+[08:53:52 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x44444020 ( 912 == 0x390 bytes)
+[08:53:52 - Thread-0] [ContikiMoteType.java:573] [INFO] - Parsed section at 0x444443c0 ( 84912 == 0x14bb0 bytes)
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [ContikiRadio.java:397] [INFO] - Radio bitrate reconfigured to (kbps): 250.0
+[08:53:52 - Thread-0] [Visualizer.java:256] [INFO] - Registered external visualizer: org.contikios.cooja.plugins.skins.DGRMVisualizerSkin
+[08:53:53 - Thread-0] [TimeLine.java:567] [INFO] - Zoom level: 500.0 microseconds/pixel 
+[08:53:53 - Thread-0] [ScriptRunner.java:430] [INFO] - Test script deactivated
+[08:53:53 - Thread-0] [LogScriptEngine.java:265] [INFO] - Script timeout in 10800000 ms
+[08:53:53 - Thread-0] [ScriptRunner.java:387] [INFO] - Test script activated
+[08:53:55 - Thread-9] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1520466835424
+[08:54:35 - Thread-9] [LogScriptEngine.java:389] [INFO] - Test script at 5.00%, done in 787.5 sec
+[08:54:51 - Thread-9] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1520466891500	Duration: 56076 ms	Simulated time 864431 ms	Ratio 15.415347029032027
+[09:03:01 - Thread-10] [Simulation.java:253] [INFO] - Simulation main loop started, system time: 1520467381890
+[09:03:04 - Thread-10] [Simulation.java:312] [INFO] - Simulation main loop stopped, system time: 1520467384483	Duration: 2593 ms	Simulated time 918619 ms	Ratio 354.2688006170459

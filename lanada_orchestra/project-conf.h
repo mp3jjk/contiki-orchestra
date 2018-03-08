@@ -38,6 +38,9 @@ uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not im
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
+#define TRAFFIC_INTENSITY_WINDOW_SIZE	512
+uint8_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
+
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment
