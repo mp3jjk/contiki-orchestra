@@ -5,19 +5,20 @@ APP=$1
 TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1) **
 RBS_SBS=1 # Whether RBS(0) or SBS(1) **
-TRAFFIC=0 # Whether Periodic(0) or Poisson(1) **
-ADAPTIVE_MODE=0 # Whether basic(0) or PAAS(1) **
+TRAFFIC=1 # Whether Periodic(0) or Poisson(1) **
+ADAPTIVE_MODE=1 # Whether basic(0) or PAAS(1) **
 VAR_PERIOD=(15 30 60) # T **
-VAR_ARRIVAL=(10) # lambda **
+VAR_ARRIVAL=(10 50 100) # lambda **
 VAR_TOPOLOGY=("tree_c4_21") # tree_c4_21 grid_36 random_50 child_4 **
-LABEL="G3" #**
-SEED_NUMBER=("5" "6") #**
-VAR_N_PBS=("1") # Hard coded n-PBS **
+LABEL="G4" #**
+SEED_NUMBER=("1" "2" "3" "4" "5") #**
+VAR_N_PBS=("0") # Hard coded n-PBS **
 VAR_N_SF=("0") # Hard coded n-SF
 VAR_CHECK_RATE=(8)
 VAR_UNICAST_PERIOD=(23) # SlotFrame length for Orchestra and PAAS **
 VAR_MINIMAL_PERIOD=(23) # SlotFrame length for Minimal **
 VAR_MAX_RT=("1" "3")
+VAR_REQ=("95")
 
 # SIM_TIME=(10800000) #**
 
@@ -84,7 +85,7 @@ then
 					do
 					    let SIM_TIME=$period*1000*1000
 					    echo $SIM_TIME
-					    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT
+					    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ
 					done
 				    done
 				done
@@ -120,7 +121,7 @@ then
 					for maxRT in "${VAR_MAX_RT[@]}"
 					do
 					    let SIM_TIME=$arrival*1000*1000
-					    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT
+					    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ
 					done
 				    done
 				done

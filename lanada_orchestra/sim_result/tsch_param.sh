@@ -62,7 +62,7 @@ double averaged_traffic_intensity;
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT ${15} // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
