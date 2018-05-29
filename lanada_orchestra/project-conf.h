@@ -41,7 +41,7 @@ uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = P
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define HARD_CODED_n_SF		0 // Hard coded nSF
+#define HARD_CODED_n_SF		2 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
 

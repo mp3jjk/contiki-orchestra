@@ -1019,7 +1019,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       if((slotframe_number % n_SF != my_SF) && (current_link->slotframe_handle == 1)) {
       	/* Skip this slot */
     	  if(current_packet != NULL) {
-         	printf("Skipped slot\n");
+//         	printf("Skipped slot\n");
   	      	current_packet = NULL;
     	  }
       }
