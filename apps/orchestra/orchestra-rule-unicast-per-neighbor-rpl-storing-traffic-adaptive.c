@@ -93,7 +93,10 @@ neighbor_has_uc_link(const linkaddr_t *linkaddr)
 static void
 add_uc_link(const linkaddr_t *linkaddr)
 {
-//	printf("add_uc_link\n");
+	if(TX_slot_changed == 0) {
+		TX_slot_changed = 1;
+	}
+//	printf("add_uc_link %d\n",linkaddr->u8[0]);
   if(linkaddr != NULL) {
     uint16_t timeslot = get_node_timeslot(linkaddr);
     uint8_t link_options = ORCHESTRA_UNICAST_SENDER_BASED ? LINK_OPTION_RX : LINK_OPTION_TX | UNICAST_SLOT_SHARED_FLAG;

@@ -317,9 +317,9 @@ tsch_packet_create_eb(uint8_t *buf, int buf_size,
   }
   curr_len += ret;
 
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0 // Not implemented yet
-  memcpy(buf + curr_len, &n_SBS, sizeof(n_SBS));
-  curr_len += sizeof(n_SBS);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0// Not implemented yet refer to above create functions
+  memcpy(buf + curr_len, &n_PBS, sizeof(n_PBS));
+  curr_len += sizeof(n_PBS);
 #endif
 
   ies.ie_mlme_len = curr_len - mlme_ie_offset - 2;

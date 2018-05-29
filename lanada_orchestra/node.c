@@ -36,7 +36,7 @@
  * \author Simon Duquennoy <simonduq@sics.se>
  *
  *  Modified by Jinhwan Jung <jhjung@lanada.kaist.ac.kr>
- *  Traffic Adaptive Orchestra with generalized slot type: n-SBS
+ *  Traffic Adaptive Orchestra with generalized slot type: n-PBS
  *
  */
 
@@ -275,11 +275,11 @@ print_network_status(void)
 static void
 print_init_status(void) {
 #if TRAFFIC_PATTERN == 0
-	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, PERIOD: %d, CHECK: %d,",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
-			HARD_CODED_n_SBS, TRAFFIC_PATTERN, PERIOD, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_PBS: %d, n_SF: %d, TRAFFIC: %d, PERIOD: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+			HARD_CODED_n_PBS, HARD_CODED_n_SF, TRAFFIC_PATTERN, PERIOD, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
 #elif TRAFFIC_PATTERN == 1
-	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_SBS: %d, TRAFFIC: %d, RATE: %d, CHECK: %d,",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
-			HARD_CODED_n_SBS, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
+	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_PBS: %d, n_SF: %d, TRAFFIC: %d, RATE: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
+			HARD_CODED_n_PBS, HARD_CODED_n_SF, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
 #endif
 #if WITH_ORACHESTRA == 1
 	printf("UNI_PERIOD: %d\n",ORCHESTRA_CONF_UNICAST_PERIOD);
@@ -345,7 +345,9 @@ PROCESS_THREAD(node_process, ev, data)
   print_init_status();
   state_traffic_adaptive_TX = 0; // Init state as a TX
   state_traffic_adaptive_RX = 0; // Init state as a RX
-  n_SBS = 1; // In the init state, operate in n_SBS = 1
+  n_PBS = 1; // In the init state, operate in n_PBS = 1
+  n_SF = 1;
+  my_SF = 0;
   /* 3 possible roles:
    * - role_6ln: simple node, will join any network, secured or not
    * - role_6dr: DAG root, will advertise (unsecured) beacons
@@ -462,14 +464,12 @@ PROCESS_THREAD(node_process, ev, data)
   }
 
 /*
-#if HARD_CODED_n_SBS == 0
-  n_SBS = 1; // For debug
-#else
-  n_SBS = HARD_CODED_n_SBS;
-   if(node_id == 2 || node_id == 3 || node_id == 7 || node_id == 8 ||
-      node_id == 9 ||  node_id == 13 ) {
-     n_SBS = 1;
-   }
+#if HARD_CODED_n_PBS != 0
+  n_PBS = HARD_CODED_n_PBS;
+#endif
+
+#if HARD_CODED_n_SF != 0
+  n_SF = HARD_CODED_n_SF;
 #endif
 */
 

@@ -5,51 +5,71 @@
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 1 /* jk */
+#define WITH_ORCHESTRA 1
 #endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra /* jk */
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
+#endif
+
+#if WITH_ORCHESTRA == 1
+#define ORCHESTRA_CONF_UNICAST_PERIOD 11
+#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled /* jk */
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven /* jk */
+#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	10 /* jk */
+#define PERIOD	30
 #else	// If event driven (assume poisson)
-#define INTENSITY 0 // lambda /* jk */
+#define INTENSITY 10 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1 /* jk */
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
-#define HARD_CODED_n_SBS	2 // If you want to use hard coded n-SBS value, define it except 0 /* jk */
+/* First parameterization */
+#define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
 
-uint8_t n_SBS; // n denotes the number of TX assigned to a slot, e.g., 1-SBS = SBS, 2-SBS = 2TX per slot, Inf(-1 in the code)-SBS = RBS
+uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
-uint8_t received_n_SBS; // For practical scenario, received_n_SBS from EB Not implemented yet
+uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
-#define ORCHESTRA_RANDOMIZED_TX_SLOT	0 // Mode for randomized TX slot assignment 1 otherwise deterministic mode
+/* Second parameterization */
+#define HARD_CODED_n_SF		0 // Hard coded nSF
+uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
+uint8_t my_SF; // The Slotframe that a node belongs to
 
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
 #define TRAFFIC_INTENSITY_WINDOW_SIZE	512
-uint8_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
+uint32_t accumulated_traffic_intensity;
+//uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
+double averaged_traffic_intensity;
+
+#define NUM_TRAFFIC_INTENSITY	10
+double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
+double measured_traffic_intensity;
+
+#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment
-#define MAX_NUMBER_CHILD	10
+#define MAX_NUMBER_CHILD	8
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
 	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
 	uint8_t recv_TX_slot_changed; // To check change of received assignment
 	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
+	uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD]; // Received list of child nodes
+	uint8_t recv_n_SF; // Received n_SF
 	uint8_t child_changed; // Notifying the change of child list
 	uint8_t current_TX_slot; // To store current TX slot
 	uint8_t prev_TX_slot; // To store previous TX slot
@@ -80,7 +100,7 @@ uint8_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
 
-#define	RPL_CONF_OF_OCP RPL_OCP_OF0 /* jk */
+#define	RPL_CONF_OF_OCP RPL_OCP_OF0
 #define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/

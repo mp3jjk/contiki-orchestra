@@ -955,6 +955,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   uint16_t index_traffic_intensity;
   uint8_t index_list = 0;
+  int slotframe_number = 0;
 #endif
 
   /* Loop over all active slots */
@@ -977,6 +978,8 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       tsch_in_slot_operation = 1;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
       index_traffic_intensity = (tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD) % TRAFFIC_INTENSITY_WINDOW_SIZE;
+      slotframe_number = tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD;
+//      printf("Slotframe_number %d\n",slotframe_number);
       if(index_traffic_intensity == 0 && is_average_needed == 1) {
     	  averaged_traffic_intensity = accumulated_traffic_intensity / (double)TRAFFIC_INTENSITY_WINDOW_SIZE;
 //    	  printf("averaged traffic intensity: %f\n",averaged_traffic_intensity);
@@ -1012,6 +1015,16 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         current_link = backup_link;
         current_packet = get_packet_and_neighbor_for_link(current_link, &current_neighbor);
       }
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+      if((slotframe_number % n_SF != my_SF) && (current_link->slotframe_handle == 1)) {
+      	/* Skip this slot */
+    	  if(current_packet != NULL) {
+         	printf("Skipped slot\n");
+  	      	current_packet = NULL;
+    	  }
+      }
+#endif
+
       is_active_slot = current_packet != NULL || (current_link->link_options & LINK_OPTION_RX);
       if(is_active_slot) {
 //    	  printf("active_slot\n");
@@ -1020,23 +1033,24 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         if(current_link->slotframe_handle == 0) { // Need to implement properly, for EB with single channel 20
         	current_channel = 20;
         }
+
         NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, current_channel);
         /* Turn the radio on already here if configured so; necessary for radios with slow startup */
         tsch_radio_on(TSCH_RADIO_CMD_ON_START_OF_TIMESLOT);
         /* Decide whether it is a TX/RX/IDLE or OFF slot */
         /* Actual slot operation */
         if(current_packet != NULL) {
-          /* We have something to transmit, do the following:
-           * 1. send
-           * 2. update_backoff_state(current_neighbor)
-           * 3. post tx callback
-           **/
-          static struct pt slot_tx_pt;
-          PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
+        	/* We have something to transmit, do the following:
+        	 * 1. send
+        	 * 2. update_backoff_state(current_neighbor)
+        	 * 3. post tx callback
+        	 **/
+        	static struct pt slot_tx_pt;
+        	PT_SPAWN(&slot_operation_pt, &slot_tx_pt, tsch_tx_slot(&slot_tx_pt, t));
         } else {
-          /* Listen */
-          static struct pt slot_rx_pt;
-          PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
+        	/* Listen */
+        	static struct pt slot_rx_pt;
+        	PT_SPAWN(&slot_operation_pt, &slot_rx_pt, tsch_rx_slot(&slot_rx_pt, t));
         }
       }
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE

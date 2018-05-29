@@ -450,11 +450,11 @@ dio_input(void)
                dio.default_lifetime, dio.lifetime_unit);
         break;
       case RPL_OPTION_PREFIX_INFO:
-//#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0
-//    	if(len != 36)
-//#else
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+    	if(len != 42)
+#else
         if(len != 32)
-//#endif
+#endif
         {
           PRINTF("RPL: Invalid DAG prefix info, len != 32\n");
           RPL_STAT(rpl_stats.malformed_msgs++);
@@ -465,7 +465,7 @@ dio_input(void)
         /* valid lifetime is ingnored for now - at i + 4 */
         /* preferred lifetime stored in lifetime */
         dio.prefix_info.lifetime = get32(buffer, i + 8);
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZES_TX_SLOT == 0 && ORCHESTRA_UNICAST_SENDER_BASED
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
         memcpy(&dio.recv_TX_slot_assignment, &buffer[i + 12], 4);
         PRINTF("received TX_slot: %x\n",dio.recv_TX_slot_assignment);
 #else
@@ -473,6 +473,14 @@ dio_input(void)
 #endif
         PRINTF("RPL: Copying prefix information\n");
         memcpy(&dio.prefix_info.prefix, &buffer[i + 16], 16);
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
+        memcpy(&dio.recv_list_ordered_child, &buffer[i + 32], 8);
+        dio.recv_n_SF = buffer[i + 40];
+        /* 1 byte reserved at i + 41 */
+        PRINTF("received TX_slot: %x\n",dio.recv_TX_slot_assignment);
+#else
+        /* 32-bit reserved at i + 12 */
+#endif
 
         break;
       default:
@@ -489,13 +497,34 @@ dio_input(void)
 
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(state_traffic_adaptive_TX && recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
-  	  uint8_t timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
-  	  uint8_t slot_assigned = 0, index = 1;
+  	  uint8_t slot_assigned = 0, index = 0;
   	  uint8_t my_id = uip_ds6_get_link_local(-1)->ipaddr.u8[15];
+  	  uint8_t my_SF_index = 0;
+  	  uint8_t timeslot = my_id % ORCHESTRA_UNICAST_PERIOD;
+
   	  /* Remove current installed TX slot */
   	  RPL_CALLBACK_REMOVE_LINK(-1, 1); // timeslot = -1 with flag = 1 means remove TX slot to the preferred parent
 //  	  for(i = timeslot; i >= 0; i--) {
-  	  while(slot_assigned == 0 && index < ORCHESTRA_UNICAST_PERIOD) {
+  	  for(index=0; index < num_sibling; index++) {
+  		  if(recv_list_ordered_child[index] == my_id) {
+  			  break;
+  		  }
+  	  }
+//  	  printf("my_id %d in list %d\n",my_id, recv_list_ordered_childss[index]);
+  	  uint8_t i;
+  	  for(i = 0; i < num_sibling; i++) {
+//  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
+  		  if((recv_TX_slot_assignment & (1 << timeslot)) != 0) {
+//  			  printf("ADD link\n");
+  			  RPL_CALLBACK_ADD_LINK(timeslot, 1);
+  			  slot_assigned = 1;
+  			  break;
+  		  }
+  		  my_SF_index++;
+  		  index = (index+1) % num_sibling;
+  		  timeslot = (recv_list_ordered_child[index]) % ORCHESTRA_UNICAST_PERIOD;
+  	  }
+/*  	  while(slot_assigned == 0 && index < ORCHESTRA_UNICAST_PERIOD) {
 //  		  printf("test %d\n",recv_TX_slot_assignment & (1 << i));
   		  if((recv_TX_slot_assignment & (1 << timeslot)) != 0) {
 //  			  printf("ADD link\n");
@@ -503,15 +532,18 @@ dio_input(void)
   			  slot_assigned = 1;
   		  }
   		  timeslot = (uip_ds6_get_link_local(-1)->ipaddr.u8[15] + index++) % ORCHESTRA_UNICAST_PERIOD;
-  	  }
+  	  }*/
   	  if(slot_assigned == 0) { // Fail to find proper slot in recv TX_slot
   		timeslot = uip_ds6_get_link_local(-1)->ipaddr.u8[15] % ORCHESTRA_UNICAST_PERIOD;
 		  RPL_CALLBACK_ADD_LINK(timeslot, 1);
+		  my_SF_index = 0;
   	  }
 /*  	  if(current_TX_slot != timeslot) { // If current_TX_slot is different from the new timeslot remove it
   		RPL_CALLBACK_REMOVE_LINK(-1, 1);
   	  }*/
   	  recv_TX_slot_changed = 0;
+  	  my_SF = my_SF_index % n_SF;
+  	  printf("my_SF %d\n",my_SF);
   }
 
   rpl_child_t *c;
@@ -609,52 +641,57 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  buffer[pos++] = 0;
   }
   buffer[pos++] = my_child_number; /* my_child_number */
-#if HARD_CODED_n_SBS != 0
+#if HARD_CODED_n_PBS != 0
   if(my_child_number != 0 && state_traffic_adaptive_RX == 0) {
 	  state_traffic_adaptive_RX = 1; // After TX non-zero my_child_number start to TRAFFIC ADAPTIVE MODE as a RX
-	  n_SBS = HARD_CODED_n_SBS;
-	  printf("Hardcoded n_SBS: %d\n",n_SBS);
+	  n_PBS = HARD_CODED_n_PBS;
+	  printf("Hardcoded n_PBS: %d\n",n_PBS);
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
 #else
   if(measured_traffic_intensity != 0 && state_traffic_adaptive_RX == 0) {
 	  state_traffic_adaptive_RX = 1; // After getting measured_traffic_intensity start to TRAFFIC ADAPTIVE MODE as a RX
-	  // Calculate n_SBS based on our analysis
+	  // Calculate n_PBS based on our analysis
 	  // Not implemented yet
 	  uint8_t i;
 	  for(i = my_child_number; i >= 1; i--) {
 		  double function_f;
 
-		  function_f = 1 - (i * measured_traffic_intensity + 1 - measured_traffic_intensity)*pow(1-measured_traffic_intensity,i - 1);
+//		  function_f = 1 - (i * measured_traffic_intensity + 1 - measured_traffic_intensity)*pow(1-measured_traffic_intensity,i - 1);
+		  function_f = 1 - pow(1-measured_traffic_intensity,i - 1);
+
 		  printf("calculated function_f %f\n",function_f);
 		  if(function_f <= 1 - RELIABILITY_CONSTRAINT / 100.0) {
-			  n_SBS = MIN(i, 1/measured_traffic_intensity);
+			  n_PBS = MIN(i, 1/measured_traffic_intensity);
 			  break;
 		  }
 	  }
 	  if(i < 1) {
-		  n_SBS = 1;
+		  n_PBS = 1;
 	  }
-//	  n_SBS = 1; // Test
-	  printf("obtained n_SBS: %d\n",n_SBS);
+//	  n_PBS = 1; // Test
+	  printf("obtained n_PBS: %d\n",n_PBS);
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
-#endif
-#if ORCHESTRA_RANDOMIZED_TX_SLOT == 0
+#endif /* HARD_CODED_n_PBS */
+#if HARD_CODED_n_SF != 0
+  n_SF = HARD_CODED_n_SF;
+#else
+  n_SF = 1; // Not implemented yet; Given by some ways
+#endif /* HARD_CODED_n_SF */
   if(child_changed == 1 && state_traffic_adaptive_RX) { // Child list is changed
 	  rpl_get_child_all(list_ordered_child); // Get ordered child list
 	  child_changed = 0;
 	  TX_slot_assignment = 0; // Initialize slot assignment due to child change
 	  uint8_t i, id_child;
-	  printf("my_child_number: %d n_SBS: %d\n",my_child_number,n_SBS);
-	  for(i = 0; i < my_child_number; i+=n_SBS) {
+	  printf("my_child_number: %d n_PBS: %d\n",my_child_number,n_PBS);
+	  for(i = 0; i < my_child_number; i+=n_PBS) {
 		  id_child = list_ordered_child[i];
 		  TX_slot_assignment |= 1 << (id_child % ORCHESTRA_UNICAST_PERIOD);
 	  }
 //	  printf("TX_slot: %x\n",TX_slot_assignment);
 	  TX_slot_changed = 1;
   }
-#endif
 #else
   /* reserved 2 bytes */
   buffer[pos++] = 0; /* flags */
@@ -711,18 +748,18 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   /* Check if we have a prefix to send also. */
   if(dag->prefix_info.length > 0) {
     buffer[pos++] = RPL_OPTION_PREFIX_INFO;
-//#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZED_TX_SLOT == 0
-//    buffer[pos++] = 34; /* always 30 bytes + 2 long + 4 bytes TX_slot_assignment */
-//#else
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+    buffer[pos++] = 40; /* always 30 bytes + 2 long + 10 bytes child list */
+#else
     buffer[pos++] = 30; /* always 30 bytes + 2 long */
-//#endif
+#endif
     buffer[pos++] = dag->prefix_info.length;
     buffer[pos++] = dag->prefix_info.flags;
     set32(buffer, pos, dag->prefix_info.lifetime);
     pos += 4;
     set32(buffer, pos, dag->prefix_info.lifetime);
     pos += 4;
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_RANDOMIZED_TX_SLOT == 0
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
     memcpy(&buffer[pos], &TX_slot_assignment, 4);
     pos += 4;
 #else
@@ -735,6 +772,15 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     PRINTF("RPL: Sending prefix info in DIO for ");
     PRINT6ADDR(&dag->prefix_info.prefix);
     PRINTF("\n");
+
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+    memcpy(&buffer[pos], list_ordered_child, 8);
+    pos += 8;
+    buffer[pos++] = n_SF;
+    buffer[pos++] = 0; /* reserved */
+#else
+    memcpy(&buffer[pos], 0, 10);
+#endif
   } else {
     PRINTF("RPL: No prefix to announce (len %d)\n",
            dag->prefix_info.length);
