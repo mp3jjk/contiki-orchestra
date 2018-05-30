@@ -1266,6 +1266,9 @@ rpl_join_instance(uip_ipaddr_t *from, rpl_dio_t *dio)
 		  recv_TX_slot_assignment = dio->recv_TX_slot_assignment;
 		  recv_TX_slot_changed = 1;
 	  }
+	  if(dio->recv_TX_slot_changed) {
+		  recv_TX_slot_changed = 1;
+	  }
   }
 #if HARD_CODED_n_PBS != 0
   if(num_sibling != 0 && state_traffic_adaptive_TX == 0) {
@@ -1765,6 +1768,9 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
 	  n_SF = dio->recv_n_SF;
 	  if(dio->recv_TX_slot_assignment != recv_TX_slot_assignment) {
 		  recv_TX_slot_assignment = dio->recv_TX_slot_assignment;
+		  recv_TX_slot_changed = 1;
+	  }
+	  if(dio->recv_TX_slot_changed) {
 		  recv_TX_slot_changed = 1;
 	  }
   }

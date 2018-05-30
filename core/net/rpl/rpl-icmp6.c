@@ -476,6 +476,7 @@ dio_input(void)
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
         memcpy(&dio.recv_list_ordered_child, &buffer[i + 32], 8);
         dio.recv_n_SF = buffer[i + 40];
+        dio.recv_TX_slot_changed = buffer[i + 41];
         /* 1 byte reserved at i + 41 */
         PRINTF("received TX_slot: %x\n",dio.recv_TX_slot_assignment);
 #else
@@ -777,7 +778,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     memcpy(&buffer[pos], list_ordered_child, 8);
     pos += 8;
     buffer[pos++] = n_SF;
-    buffer[pos++] = 0; /* reserved */
+    buffer[pos++] = TX_slot_changed;
 #else
     memcpy(&buffer[pos], 0, 10);
 #endif

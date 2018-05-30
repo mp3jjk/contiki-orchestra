@@ -34,14 +34,14 @@
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	4 // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define HARD_CODED_n_SF		2 // Hard coded nSF
+#define HARD_CODED_n_SF		1 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
 

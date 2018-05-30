@@ -313,6 +313,7 @@ struct rpl_dio {
   int recv_TX_slot_assignment;
   uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD];
   uint8_t recv_n_SF;
+  uint8_t recv_TX_slot_changed;
 #endif
   struct rpl_metric_container mc;
 };

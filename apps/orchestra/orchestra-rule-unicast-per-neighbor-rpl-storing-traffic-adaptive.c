@@ -122,6 +122,8 @@ remove_uc_link(const linkaddr_t *linkaddr)
     return;
   }
 
+
+
   timeslot = get_node_timeslot(linkaddr);
   l = tsch_schedule_get_link_by_timeslot(sf_unicast, timeslot);
   if(l == NULL) {
@@ -142,6 +144,10 @@ remove_uc_link(const linkaddr_t *linkaddr)
       return;
     }
     item = nbr_table_next(nbr_routes, item);
+  }
+
+  if(TX_slot_changed == 0) {
+	  TX_slot_changed = 1;
   }
 
   /* Do we need this timeslot? */
