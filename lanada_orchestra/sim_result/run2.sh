@@ -3,19 +3,20 @@
 TSCH=1 # Whether Async(0) or TSCH(1)
 ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
 RBS_SBS=1 # Whether RBS(0) or SBS(1)
-TRAFFIC=1 # Whether Periodic(0) or Poisson(1)
+TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
 ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
-VAR_PERIOD=(1 2 3 5) # T
-VAR_ARRIVAL=(1 2 3 5) # lambda
-VAR_TOPOLOGY=("child_4" "child_5" "child_6" "child_7" "child_8") # tree_c4_21 grid_36 random_50
-LABEL="MB2"
-SEED_NUMBER=("1" "2" "3" "4" "5")
-VAR_N_SBS=("3") # Hard coded n-SBS
+VAR_PERIOD=(30) # T
+VAR_ARRIVAL=(10) # lambda
+VAR_TOPOLOGY=("child_4") # tree_c4_21 grid_36 random_50 child_4
+LABEL="MB"
+SEED_NUMBER=("1")
+VAR_N_PBS=("1") # Hard coded n-PBS
+VAR_N_SF=("1") # Hard coded n-SF
 VAR_CHECK_RATE=(8)
-VAR_UNICAST_PERIOD=(17)
+VAR_UNICAST_PERIOD=(11)
 VAR_MINIMAL_PERIOD=(7)
-SIM_TIME=(3600000)
-APP=2
+SIM_TIME=(30000000)
+APP=1
 BOTH_TRAFFIC=0
 MICROBENCH=1
 
@@ -56,12 +57,6 @@ then
     fi
 fi
 
-if [ $BOTH_TRAFFIC - eq ]
-then
-    TRAFFIC=0
-    LABEL="G1"
-fi
-
 # TSCH sim
 if [ $TSCH -eq 1 ]
 then
@@ -73,25 +68,28 @@ then
 	    do
 		for topology in "${VAR_TOPOLOGY[@]}"
 		do
-		    for n_sbs in "${VAR_N_SBS[@]}"
+		    for n_pbs in "${VAR_N_PBS[@]}"
 		    do
-			for check in "${VAR_CHECK_RATE[@]}"
+			for n_sf in "${VAR_N_SF[@]}"
 			do
-			    for uni in "${VAR_UNICAST_PERIOD[@]}"
+			    for check in "${VAR_CHECK_RATE[@]}"
 			    do
-				for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				for uni in "${VAR_UNICAST_PERIOD[@]}"
 				do
-				    if [ $MICROBENCH -eq 0 ]
-				    then
-					if [ $period = 10 ]
+				    for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				    do
+					if [ $MICROBENCH -eq 0 ]
 					then
-				    	    SIM_TIME=10800000
-					elif [ $period = 30 ]
-					then
-				    	    SIM_TIME=32400000
+					    if [ $period = 10 ]
+					    then
+				    		SIM_TIME=10800000
+					    elif [ $period = 30 ]
+					    then
+				    		SIM_TIME=32400000
+					    fi
 					fi
-				    fi
-				    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
+					./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME
+				    done
 				done
 			    done
 			done
@@ -113,28 +111,37 @@ then
 	    do
 		for topology in "${VAR_TOPOLOGY[@]}"
 		do
-		    for n_sbs in "${VAR_N_SBS[@]}"
+		    for n_pbs in "${VAR_N_PBS[@]}"
 		    do
-			for check in "${VAR_CHECK_RATE[@]}"
+			for n_sf in "${VAR_N_SF[@]}"
 			do
-			    for uni in "${VAR_UNICAST_PERIOD[@]}"
+			    for check in "${VAR_CHECK_RATE[@]}"
 			    do
-				for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				for uni in "${VAR_UNICAST_PERIOD[@]}"
 				do
-				    if [ $MICROBENCH -eq 0 ]
-				    then
-					if [ $arrival = 1 ]
+				    for mini in "${VAR_MINIMAL_PERIOD[@]}"
+				    do
+					if [ $MICROBENCH -eq 0 ]
 					then
-				    	    SIM_TIME=3600000
-					elif [ $arrival = 5 ]
-					then
-				    	    SIM_TIME=7200000
-					elif [ $arrival = 25]
-					then
-				    	    SIM_TIME=10800000
+					    if [ $arrival = 1 ]
+					    then
+				    		SIM_TIME=3600000
+					    elif [ $arrival = 5 ]
+					    then
+				    		SIM_TIME=7200000
+					    elif [ $arrival = 10 ]
+					    then
+				    		SIM_TIME=7200000
+					    elif [ $arrival = 25 ]
+					    then
+				    		SIM_TIME=10800000
+					    elif [ $arrival = 50 ]
+					    then
+				    		SIM_TIME=18000000
+					    fi
 					fi
-				    fi
-				    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_sbs $uni $mini $APP $SIM_TIME
+					./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME
+				    done
 				done
 			    done
 			done
