@@ -74,6 +74,9 @@
 #include "lib/random.h"
 #include <math.h>
 
+/* Initial waiting for scheduling */
+#define INIT_WAIT_TIME 60
+
 struct uip_udp_conn *app_conn;
 static uip_ipaddr_t server_ipaddr;
 /*---------------------------------------------------------------------------*/
@@ -440,6 +443,9 @@ PROCESS_THREAD(node_process, ev, data)
 	  PROCESS_YIELD();
   }
   ctimer_stop(&poll_timer);
+
+  etimer_set(&et, CLOCK_SECOND * INIT_WAIT_TIME);
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic

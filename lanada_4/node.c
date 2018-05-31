@@ -74,6 +74,9 @@
 #include "lib/random.h"
 #include <math.h>
 
+/* Initial waiting for scheduling */
+#define INIT_WAIT_TIME 60
+
 struct uip_udp_conn *app_conn;
 static uip_ipaddr_t server_ipaddr;
 /*---------------------------------------------------------------------------*/
@@ -165,7 +168,7 @@ send_packet(void *ptr)
 	PRINTF("app: DATA id:%04d from:%03d\n",
          seq_id,myaddr);
 //  printf("send_packet!\n");
-#if ZOUL_MOTE
+#if ZOUL_MOTE && 0
 	rpl_parent_t *p2 = nbr_table_head(rpl_parents);
 
 	if (p2 != NULL) {
@@ -369,6 +372,11 @@ PROCESS_THREAD(node_process, ev, data)
   coordinator_candidate = (memcmp(node_mac, coordinator_mac, 8) == 0);
 #elif CONTIKI_TARGET_COOJA
   coordinator_candidate = (node_id == 1); // Node id 1 becomes coordinator
+#elif ZOUL_MOTE
+#if IEEE_ADDR_NODE_ID
+  uint8_t node_id = IEEE_ADDR_NODE_ID;
+  coordinator_candidate = (node_id == 1);
+#endif
 #endif
 
   myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)
@@ -435,6 +443,9 @@ PROCESS_THREAD(node_process, ev, data)
 	  PROCESS_YIELD();
   }
   ctimer_stop(&poll_timer);
+
+  etimer_set(&et, CLOCK_SECOND * INIT_WAIT_TIME);
+  PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&et));
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic
