@@ -1086,13 +1086,24 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       rtimer_clock_t time_to_next_active_slot;
       /* Schedule next wakeup skipping slots if missed deadline */
       do {
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+          if(current_link != NULL
+              && current_link->link_options & LINK_OPTION_TX
+              && current_link->link_options & LINK_OPTION_SHARED
+  			&& slotframe_number % n_SF == my_SF) {
+            /* Decrement the backoff window for all neighbors able to transmit over
+             * this Tx, Shared link. */
+            tsch_queue_update_all_backoff_windows(&current_link->addr);
+          }
+#else
         if(current_link != NULL
             && current_link->link_options & LINK_OPTION_TX
-            && current_link->link_options & LINK_OPTION_SHARED) {
+			&& current_link->link_options & LINK_OPTION_SHARED) {
           /* Decrement the backoff window for all neighbors able to transmit over
            * this Tx, Shared link. */
           tsch_queue_update_all_backoff_windows(&current_link->addr);
         }
+#endif
 
         /* Get next active link */
         current_link = tsch_schedule_get_next_active_link(&tsch_current_asn, &timeslot_diff, &backup_link);
