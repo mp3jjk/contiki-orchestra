@@ -165,7 +165,7 @@ send_packet(void *ptr)
 	PRINTF("app: DATA id:%04d from:%03d\n",
          seq_id,myaddr);
 //  printf("send_packet!\n");
-#if ZOUL_MOTE
+#if ZOUL_MOTE && 0
 	rpl_parent_t *p2 = nbr_table_head(rpl_parents);
 
 	if (p2 != NULL) {
@@ -369,6 +369,11 @@ PROCESS_THREAD(node_process, ev, data)
   coordinator_candidate = (memcmp(node_mac, coordinator_mac, 8) == 0);
 #elif CONTIKI_TARGET_COOJA
   coordinator_candidate = (node_id == 1); // Node id 1 becomes coordinator
+#elif ZOUL_MOTE
+#if IEEE_ADDR_NODE_ID
+  uint8_t node_id = IEEE_ADDR_NODE_ID;
+  coordinator_candidate = (node_id == 1);
+#endif
 #endif
 
   myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)

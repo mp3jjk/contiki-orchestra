@@ -45,6 +45,8 @@
 #ifndef CONTIKI_CONF_H_
 #define CONTIKI_CONF_H_
 
+#define ZOUL_MOTE 1
+
 #include <stdint.h>
 #include <string.h>
 /*---------------------------------------------------------------------------*/
