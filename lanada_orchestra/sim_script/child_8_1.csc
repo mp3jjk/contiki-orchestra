@@ -23,8 +23,8 @@
     <motetype>
       org.contikios.cooja.contikimote.ContikiMoteType
       <identifier>mtype232</identifier>
-      <description>Cooja Mote Type #2</description>
-      <source>[CONTIKI_DIR]/lanada_orchestra/node.c</source>
+      <description>Cooja Mote Type #1</description>
+      <source>[CONTIKI_DIR]/lanada_1/node.c</source>
       <commands>make node.cooja TARGET=cooja</commands>
       <moteinterface>org.contikios.cooja.interfaces.Position</moteinterface>
       <moteinterface>org.contikios.cooja.interfaces.Battery</moteinterface>
