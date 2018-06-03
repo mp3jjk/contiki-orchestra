@@ -94,7 +94,7 @@
 #ifdef TSCH_CONF_MAC_MAX_FRAME_RETRIES
 #define TSCH_MAC_MAX_FRAME_RETRIES TSCH_CONF_MAC_MAX_FRAME_RETRIES
 #else
-#define TSCH_MAC_MAX_FRAME_RETRIES 8
+#define TSCH_MAC_MAX_FRAME_RETRIES 0
 #endif
 
 /*********** Callbacks *********/
