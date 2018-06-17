@@ -474,19 +474,6 @@ PROCESS_THREAD(node_process, ev, data)
 	  etimer_set(&gen,packet_interval);
   }
 
-/*
-#if HARD_CODED_n_PBS != 0
-  n_PBS = HARD_CODED_n_PBS;
-#endif
-
-#if HARD_CODED_n_SF != 0
-  n_SF = HARD_CODED_n_SF;
-#endif
-*/
-
-  /* Print out routing tables every minute */
-//  etimer_set(&et, CLOCK_SECOND * 60);
-
   while(1) {
 	  PROCESS_YIELD();
 	  if(ev == tcpip_event) {

@@ -59,9 +59,6 @@ double measured_traffic_intensity;
 
 #define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
 
-#if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
-
-#else 								// Deterministic TX slot assignment
 #define MAX_NUMBER_CHILD	8
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
@@ -73,7 +70,6 @@ double measured_traffic_intensity;
 	uint8_t child_changed; // Notifying the change of child list
 	uint8_t current_TX_slot; // To store current TX slot
 	uint8_t prev_TX_slot; // To store previous TX slot
-#endif
 
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
