@@ -1,25 +1,25 @@
 #!/bin/bash
 
-TSCH=1 # Whether Async(0) or TSCH(1)
-ORCHESTRA=1 # Whether Minimal(0) or Orchestra(1)
-RBS_SBS=1 # Whether RBS(0) or SBS(1)
-TRAFFIC=0 # Whether Periodic(0) or Poisson(1)
-ADAPTIVE_MODE=1 # Whether basic(0) or adaptive(1)
-VAR_PERIOD=(20) # T
-VAR_ARRIVAL=(10) # lambda
-VAR_TOPOLOGY=("tree_c4_21") # tree_c4_21 grid_36 random_50 child_4
-LABEL="MB6"
-SEED_NUMBER=("1" "2" "3" "4" "5")
-VAR_N_PBS=("1") # Hard coded n-PBS
-VAR_N_SF=("1") # Hard coded n-SF
-VAR_CHECK_RATE=(8)
-VAR_UNICAST_PERIOD=(31)
-VAR_MINIMAL_PERIOD=(7)
-SIM_TIME=(10800000)
-APP=1
-BOTH_TRAFFIC=0
-MICROBENCH=1
+APP=$1
 
+TSCH=1 # Whether Async(0) or TSCH(1)
+ORCHESTRA=0 # Whether Minimal(0) or Orchestra(1) **
+RBS_SBS=1 # Whether RBS(0) or SBS(1) **
+TRAFFIC=0 # Whether Periodic(0) or Poisson(1) **
+ADAPTIVE_MODE=0 # Whether basic(0) or PAAS(1) **
+VAR_PERIOD=(20) # T **
+VAR_ARRIVAL=(10) # lambda **
+VAR_TOPOLOGY=("tree_c4_21") # tree_c4_21 grid_36 random_50 child_4 **
+LABEL="MB6" #**
+SEED_NUMBER=("1" "2" "3" "4" "5") #**
+VAR_N_PBS=("1") # Hard coded n-PBS **
+VAR_N_SF=("0") # Hard coded n-SF
+VAR_CHECK_RATE=(8)
+VAR_UNICAST_PERIOD=(31) # SlotFrame length for Orchestra and PAAS **
+VAR_MINIMAL_PERIOD=(7) # SlotFrame length for Minimal **
+SIM_TIME=(10800000) #**
+
+BOTH_TRAFFIC=0
 
 # Async sim
 
@@ -78,16 +78,6 @@ then
 				do
 				    for mini in "${VAR_MINIMAL_PERIOD[@]}"
 				    do
-					if [ $MICROBENCH -eq 0 ]
-					then
-					    if [ $period = 10 ]
-					    then
-				    		SIM_TIME=10800000
-					    elif [ $period = 30 ]
-					    then
-				    		SIM_TIME=32400000
-					    fi
-					fi
 					./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME
 				    done
 				done
@@ -121,25 +111,6 @@ then
 				do
 				    for mini in "${VAR_MINIMAL_PERIOD[@]}"
 				    do
-					if [ $MICROBENCH -eq 0 ]
-					then
-					    if [ $arrival = 1 ]
-					    then
-				    		SIM_TIME=3600000
-					    elif [ $arrival = 5 ]
-					    then
-				    		SIM_TIME=7200000
-					    elif [ $arrival = 10 ]
-					    then
-				    		SIM_TIME=7200000
-					    elif [ $arrival = 25 ]
-					    then
-				    		SIM_TIME=10800000
-					    elif [ $arrival = 50 ]
-					    then
-				    		SIM_TIME=18000000
-					    fi
-					fi
 					./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME
 				    done
 				done
