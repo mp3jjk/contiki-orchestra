@@ -1015,15 +1015,6 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         current_link = backup_link;
         current_packet = get_packet_and_neighbor_for_link(current_link, &current_neighbor);
       }
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-      if((slotframe_number % n_SF != my_SF) && (current_link->slotframe_handle == 1)) {
-      	/* Skip this slot */
-    	  if(current_packet != NULL) {
-//         	printf("Skipped slot\n");
-  	      	current_packet = NULL;
-    	  }
-      }
-#endif
 
       is_active_slot = current_packet != NULL || (current_link->link_options & LINK_OPTION_RX);
       if(is_active_slot) {
@@ -1086,16 +1077,6 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       rtimer_clock_t time_to_next_active_slot;
       /* Schedule next wakeup skipping slots if missed deadline */
       do {
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-          if(current_link != NULL
-              && current_link->link_options & LINK_OPTION_TX
-              && current_link->link_options & LINK_OPTION_SHARED
-  			&& slotframe_number % n_SF == my_SF) {
-            /* Decrement the backoff window for all neighbors able to transmit over
-             * this Tx, Shared link. */
-            tsch_queue_update_all_backoff_windows(&current_link->addr);
-          }
-#else
         if(current_link != NULL
             && current_link->link_options & LINK_OPTION_TX
 			&& current_link->link_options & LINK_OPTION_SHARED) {
@@ -1103,7 +1084,6 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
            * this Tx, Shared link. */
           tsch_queue_update_all_backoff_windows(&current_link->addr);
         }
-#endif
 
         /* Get next active link */
         current_link = tsch_schedule_get_next_active_link(&tsch_current_asn, &timeslot_diff, &backup_link);
