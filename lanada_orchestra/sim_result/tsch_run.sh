@@ -6,7 +6,7 @@ if [ $JOONKI -eq 0 ]
 then
     CONTIKI=/media/user/Harddisk/contiki-orchestra/
 else
-    CONTIKI=~/Desktop/contiki-orchestra/
+    CONTIKI=~/contiki-orchestra/
 fi
 
 echo "TSCH simulation"

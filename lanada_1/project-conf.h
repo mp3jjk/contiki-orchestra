@@ -13,20 +13,22 @@
 #endif
 
 #if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 11
+#define ORCHESTRA_CONF_UNICAST_PERIOD 23
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
+
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES  // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	30
+#define PERIOD	15
 #else	// If event driven (assume poisson)
 #define INTENSITY 0 // lambda
 #endif
@@ -41,7 +43,7 @@ uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = P
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define HARD_CODED_n_SF		1 // Hard coded nSF
+#define HARD_CODED_n_SF		0 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
 

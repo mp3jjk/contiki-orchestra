@@ -27,6 +27,8 @@ echo "#ifndef __PROJECT_CONF_H__
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$8 // Traffic adaptive mode is enabled
 
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES ${14} // Maximum number of retransmission in TSCH
+
 #define TRAFFIC_PATTERN $1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	$2
