@@ -787,8 +787,6 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     pos += 8;
     buffer[pos++] = n_SF;
     buffer[pos++] = TX_slot_changed;
-#else
-    memcpy(&buffer[pos], 0, 10);
 #endif
   } else {
     PRINTF("RPL: No prefix to announce (len %d)\n",
