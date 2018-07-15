@@ -5,17 +5,17 @@
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 1
+#define WITH_ORCHESTRA 0
 #endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1 // For 6TiSCH minimal configuration without orchestra
 #endif
 
 #if WITH_ORCHESTRA == 1
 #define ORCHESTRA_CONF_UNICAST_PERIOD 23
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
 #endif
 
 /* Orchestra Options */
@@ -167,8 +167,6 @@ double measured_traffic_intensity;
 
 /* 6TiSCH minimal schedule length.
  * Larger values result in less frequent active slots: reduces capacity and saves energy. */
-#undef TSCH_SCHEDULE_CONF_DEFAULT_LENGTH
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 3
 
 #if WITH_SECURITY
 
