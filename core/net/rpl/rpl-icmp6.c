@@ -669,7 +669,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 //		  function_f = 1 - (i * measured_traffic_intensity + 1 - measured_traffic_intensity)*pow(1-measured_traffic_intensity,i - 1);
 		  function_f = 1 - pow(1-measured_traffic_intensity,i - 1);
 
-		  printf("calculated function_f %f\n",function_f);
+//		  printf("calculated function_f %f\n",function_f);
 		  if(function_f <= 1 - RELIABILITY_CONSTRAINT / 100.0) {
 			  n_PBS = MIN(i, 1/measured_traffic_intensity);
 			  break;

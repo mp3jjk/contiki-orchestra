@@ -5,11 +5,11 @@
 
 /* Set to run orchestra */
 #ifndef WITH_ORCHESTRA
-#define WITH_ORCHESTRA 0
+#define WITH_ORCHESTRA 1
 #endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1 // For 6TiSCH minimal configuration without orchestra
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 #endif
 
 #if WITH_ORCHESTRA == 1
@@ -22,18 +22,18 @@
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 1 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	10
+#define PERIOD	30
 #else	// If event driven (assume poisson)
 #define INTENSITY 0 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
@@ -55,11 +55,11 @@ uint32_t accumulated_traffic_intensity;
 //uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
 double averaged_traffic_intensity;
 
-#define NUM_TRAFFIC_INTENSITY	10
+#define NUM_TRAFFIC_INTENSITY	5
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
