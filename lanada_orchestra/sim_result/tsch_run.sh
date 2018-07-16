@@ -30,6 +30,7 @@ UNICAST=${14}
 MINIMAL=${15}
 APP=${16}
 SIM_TIME=${17}
+MAXRT=${18}
 
 sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
 sed -i "s/TIMEOUT([[:digit:]]*);/TIMEOUT($SIM_TIME);/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
@@ -49,19 +50,18 @@ cd $DIR
 
 if [ $ORCHESTRA -eq 0 ]
 then
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT
 else
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT
 fi
 
-IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_pbs$n_PBS\_n_sf$n_SF\_uni$UNICAST\_mini$MINIMAL
+IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_pbs$n_PBS\_maxRT$MAXRT\_uni$UNICAST\_mini$MINIMAL
 if [ ! -e $IN_DIR ]
 then
     mkdir $IN_DIR
-#    mkdir sr\_strobe$STROBE_CNT\_$LR_range\_$CHECK\_rou$ROUTING_NO_ENERGY
 fi
 cd $IN_DIR
-#cd sr\_strobe$STROBE_CNT\_$LR_range\_$CHECK\_rou$ROUTING_NO_ENERGY
+
 echo "#########################  We are in $PWD  ########################"
 
 HERE=$PWD
