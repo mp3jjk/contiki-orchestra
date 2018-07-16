@@ -372,14 +372,15 @@ PROCESS_THREAD(node_process, ev, data)
   coordinator_candidate = (memcmp(node_mac, coordinator_mac, 8) == 0);
 #elif CONTIKI_TARGET_COOJA
   coordinator_candidate = (node_id == 1); // Node id 1 becomes coordinator
+  myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)
 #elif ZOUL_MOTE
 #if IEEE_ADDR_NODE_ID
-  uint8_t node_id = IEEE_ADDR_NODE_ID;
-  coordinator_candidate = (node_id == 1);
+  myaddr = IEEE_ADDR_NODE_ID;
+  coordinator_candidate = (myaddr == 1);
 #endif
 #endif
 
-  myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)
+
 
   if(coordinator_candidate) {
     if(LLSEC802154_ENABLED) {

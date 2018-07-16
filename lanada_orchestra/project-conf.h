@@ -13,37 +13,37 @@
 #endif
 
 #if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 23
+#define ORCHESTRA_CONF_UNICAST_PERIOD 11
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 11
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE 0 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 1 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	15
+#define PERIOD	10
 #else	// If event driven (assume poisson)
-#define INTENSITY 10 // lambda
+#define INTENSITY 0 // lambda
 #endif
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	8 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define HARD_CODED_n_SF		8 // Hard coded nSF
+#define HARD_CODED_n_SF		0 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
 
@@ -61,6 +61,9 @@ double measured_traffic_intensity;
 
 #define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
 
+#if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
+
+#else 								// Deterministic TX slot assignment
 #define MAX_NUMBER_CHILD	8
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
@@ -72,6 +75,7 @@ double measured_traffic_intensity;
 	uint8_t child_changed; // Notifying the change of child list
 	uint8_t current_TX_slot; // To store current TX slot
 	uint8_t prev_TX_slot; // To store previous TX slot
+#endif
 
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
