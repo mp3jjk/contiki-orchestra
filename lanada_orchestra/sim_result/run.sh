@@ -20,6 +20,8 @@ VAR_MINIMAL_PERIOD=(23) # SlotFrame length for Minimal **
 VAR_MAX_RT=("1" "3")
 VAR_REQ=("95")
 
+VAR_HETERO=0
+
 # SIM_TIME=(10800000) #**
 
 BOTH_TRAFFIC=0
@@ -85,7 +87,7 @@ then
 					do
 					    let SIM_TIME=$period*1000*1000
 					    echo $SIM_TIME
-					    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ
+					    ./tsch_run.sh $topology $TRAFFIC $period 0 "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ $VAR_HETERO
 					done
 				    done
 				done
@@ -121,7 +123,7 @@ then
 					for maxRT in "${VAR_MAX_RT[@]}"
 					do
 					    let SIM_TIME=$arrival*1000*1000
-					    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ
+					    ./tsch_run.sh $topology $TRAFFIC 0 $arrival "${LABEL}" $check $seed $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE_MODE $n_pbs $n_sf $uni $mini $APP $SIM_TIME $maxRT $VAR_REQ $VAR_HETERO
 					done
 				    done
 				done

@@ -33,6 +33,8 @@
 #define INTENSITY 0 // lambda
 #endif
 
+#define HETEROGENEOUS_TRAFFIC 0
+
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 /* First parameterization */

@@ -36,6 +36,8 @@ echo "#ifndef __PROJECT_CONF_H__
 #define INTENSITY $3 // lambda
 #endif
 
+#define HETEROGENEOUS_TRAFFIC ${16}
+
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	$7
 
 /* First parameterization */

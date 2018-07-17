@@ -32,15 +32,16 @@ APP=${16}
 SIM_TIME=${17}
 MAXRT=${18}
 REQ=${19}
+HETERO=${20}
 
 sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
 sed -i "s/TIMEOUT([[:digit:]]*);/TIMEOUT($SIM_TIME);/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
 
 if [ $TRAFFIC_MODEL -eq 0 ]
 then
-    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_hetero$HETERO\_seed$SEED_NUMBER
 else
-    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_seed$SEED_NUMBER
+    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_hetero$HETERO\_seed$SEED_NUMBER
 fi
 
 if [ ! -e $DIR ]
@@ -51,9 +52,9 @@ cd $DIR
 
 if [ $ORCHESTRA -eq 0 ]
 then
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ $HETERO
 else
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ
+    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ $HETERO
 fi
 
 IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_pbs$n_PBS\_maxRT$MAXRT\_uni$UNICAST\_mini$MINIMAL\_req$REQ

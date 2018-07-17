@@ -450,24 +450,29 @@ PROCESS_THREAD(node_process, ev, data)
 
   /* Start to generate data packets after joining TSCH network */
 #if TRAFFIC_PATTERN == 0 // Periodic traffic
-	  packet_interval = CLOCK_SECOND * PERIOD;
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0
-	  if(PERIOD <= (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000) {
-		  prob_packet_gen = 1; /* If Period is less than or equal to slotframe length (in second) */
-	  }
-	  else {
-		  prob_packet_gen = (ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000 / PERIOD;
-	  }
+#if HETEROGENEOUS_TRAFFIC
+  static int period;
+  period = PERIOD * 3;
+  period = random_rand() % period + PERIOD;
+  PRINTF("Hetero period %d\n",period);
+  packet_interval = CLOCK_SECOND * period;
+#else
+  packet_interval = CLOCK_SECOND * PERIOD;
 #endif
 #else // Event-driven traffic
-	  random_num = random_rand() / (float)RANDOM_RAND_MAX;
-	  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
+  random_num = random_rand() / (float)RANDOM_RAND_MAX;
+#if HETEROGENEOUS_TRAFFIC
+  static int rate;
+  rate = INTENSITY * 4;
+  rate = random_rand() % rate + RATE;
+  PRINTF("Hetero rate %d\n",rate);
+  packet_interval = (-rate) * logf(random_num) * CLOCK_SECOND;
+#else
+  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
+#endif
 	  if(packet_interval == 0) {
 		  packet_interval = 1;
 	  }
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && 0
-	  prob_packet_gen = 1 - exp(-1*1.0/INTENSITY*(ORCHESTRA_UNICAST_PERIOD * TSCH_CONF_DEFAULT_TIMESLOT_LENGTH/1000)/(double)1000);
-#endif
 #endif
   if(!is_coordinator) {
 //	  /* For test packet_interval is fixed 30 seconds */
@@ -487,11 +492,19 @@ PROCESS_THREAD(node_process, ev, data)
 	  else if(etimer_expired(&gen)) {
 #if TRAFFIC_PATTERN == 0
 		  etimer_reset(&gen);
+#if HETEROGENEOUS_TRAFFIC
+		  ctimer_set(&backoff,random_rand()%(period*CLOCK_SECOND/2),send_packet,NULL);
+#else
 		  ctimer_set(&backoff,random_rand()%(PERIOD*CLOCK_SECOND/2),send_packet,NULL);
+#endif
 #else
 		  send_packet(NULL);
 		  random_num = random_rand() / (float)RANDOM_RAND_MAX;
+#if HETEROGENEOUS_TRAFFIC
+		  packet_interval = (-rate) * logf(random_num) * CLOCK_SECOND;
+#else
 		  packet_interval = (-INTENSITY) * logf(random_num) * CLOCK_SECOND;
+#endif
 		  if(packet_interval == 0) {
 			  packet_interval = 1;
 		  }
