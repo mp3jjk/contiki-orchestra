@@ -464,7 +464,7 @@ PROCESS_THREAD(node_process, ev, data)
 #if HETEROGENEOUS_TRAFFIC
   static int rate;
   rate = INTENSITY * 4;
-  rate = random_rand() % rate + RATE;
+  rate = random_rand() % rate + INTENSITY;
   PRINTF("Hetero rate %d\n",rate);
   packet_interval = (-rate) * logf(random_num) * CLOCK_SECOND;
 #else
