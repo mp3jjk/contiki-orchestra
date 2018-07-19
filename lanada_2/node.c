@@ -102,7 +102,7 @@ tcpip_handler(void)
     str = uip_appdata;
     str[uip_datalen()] = '\0';
     reply++;
-    printf("DATA recv '%s'\n", str);
+    printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
   }
 }
 /*---------------------------------------------------------------------------*/

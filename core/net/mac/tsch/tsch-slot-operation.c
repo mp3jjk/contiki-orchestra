@@ -804,6 +804,7 @@ PT_THREAD(tsch_rx_slot(struct pt *pt, struct rtimer *t))
         current_input->len = NETSTACK_RADIO.read((void *)current_input->payload, TSCH_PACKET_MAX_LEN);
         NETSTACK_RADIO.get_value(RADIO_PARAM_LAST_RSSI, &radio_last_rssi);
         current_input->rx_asn = tsch_current_asn;
+        recv_ASN = tsch_current_asn.ls4b;
         current_input->rssi = (signed)radio_last_rssi;
         current_input->channel = current_channel;
         header_len = frame802154_parse((uint8_t *)current_input->payload, current_input->len, &frame);
@@ -976,6 +977,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       int is_active_slot;
       TSCH_DEBUG_SLOT_START();
       tsch_in_slot_operation = 1;
+      tx_ASN = tsch_current_asn.ls4b;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
       index_traffic_intensity = (tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD) % TRAFFIC_INTENSITY_WINDOW_SIZE;
       slotframe_number = tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD;
