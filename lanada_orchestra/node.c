@@ -381,7 +381,6 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 
 
-
   if(coordinator_candidate) {
     if(LLSEC802154_ENABLED) {
       node_role = role_6dr_sec;
@@ -429,7 +428,11 @@ PROCESS_THREAD(node_process, ev, data)
     uip_ip6addr(&prefix, UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0, 0, 0, 0);
     net_init(&prefix);
   } else {
+#if ZOUL_MOTE
+	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0212,0x4b00, 0x1003, 1);
+#else
 	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0201, 1, 1, 1);
+#endif
     net_init(NULL);
   }
 

@@ -13,9 +13,9 @@
 #endif
 
 #if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 11
+#define ORCHESTRA_CONF_UNICAST_PERIOD 17
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 11
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
 #endif
 
 /* Orchestra Options */
@@ -24,16 +24,16 @@
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 1 // Maximum number of retransmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
+#define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	30
+#define PERIOD	0
 #else	// If event driven (assume poisson)
-#define INTENSITY 0 // lambda
+#define INTENSITY 10 // lambda
 #endif
 
-#define HETEROGENEOUS_TRAFFIC 0
+#define HETEROGENEOUS_TRAFFIC 1
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
@@ -57,11 +57,11 @@ uint32_t accumulated_traffic_intensity;
 //uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
 double averaged_traffic_intensity;
 
-#define NUM_TRAFFIC_INTENSITY	5
+#define NUM_TRAFFIC_INTENSITY	10
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 

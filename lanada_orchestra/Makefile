@@ -21,3 +21,8 @@ CFLAGS += -DWITH_SECURITY=1
 endif
 
 include $(CONTIKI)/Makefile.include
+
+LDFLAGS+=-lm
+CFLAGS+=-lm
+TARGET_LIBFILES+=-lm
+AFLAGS+=-lm

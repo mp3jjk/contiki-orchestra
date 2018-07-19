@@ -552,7 +552,7 @@ dio_input(void)
   	  	  recv_TX_slot_changed = 0;
   	  }
   	  my_SF = my_SF_index % n_SF;
-  	  printf("my_SF %d\n",my_SF);
+	  //  	  printf("my_SF %d\n",my_SF);
   }
 
   rpl_child_t *c;

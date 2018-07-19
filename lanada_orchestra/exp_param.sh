@@ -2,7 +2,7 @@
 
 if [ $1 == "h" ]
 then
-    echo "periodic0/poisson1 period rate Minimal0/Orchestra1 RBS0/SBS1 SF"
+    echo "periodic0/poisson1 period rate Minimal0/Orchestra1 RBS0/SBS1 SF PAAS n-PBS"
     exit 1
 fi
 
@@ -12,14 +12,18 @@ then
     ORCHESTRA=0
     RBS_SBS=0
     SF=$6
+    PAAS=$7
+    n_PBS=$8
 fi
 
 if [ $4 == 1 ]
 then
-    MINIMAl=0
+    MINIMAL=0
     ORCHESTRA=1
     RBS_SBS=$5
     SF=$6
+    PAAS=$7
+    n_PBS=$8
 fi
 
 echo "#ifndef __PROJECT_CONF_H__
@@ -46,9 +50,9 @@ echo "#ifndef __PROJECT_CONF_H__
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$PAAS // Traffic adaptive mode is enabled
 
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 1 // Maximum number of retransmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN $1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
@@ -57,10 +61,12 @@ echo "#ifndef __PROJECT_CONF_H__
 #define INTENSITY $3 // lambda
 #endif
 
+#define HETEROGENEOUS_TRAFFIC 0
+
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	$RBS_SBS
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	$n_PBS // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
