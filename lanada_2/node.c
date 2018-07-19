@@ -166,33 +166,33 @@ send_packet(void *ptr)
 	lifetime = get_residual_energy();
 #endif /* PS_COUNT */
 
-//	PRINTF("app: current E: %d\n",get_current_energy());
-	PRINTF("app: DATA id:%04d from:%03d\n",
-         seq_id,myaddr);
-//  printf("send_packet!\n");
-#if ZOUL_MOTE
-	rpl_parent_t *p2 = nbr_table_head(rpl_parents);
+	//	PRINTF("app: current E: %d\n",get_current_energy());
+		PRINTF("app: DATA id:%04d from:%03d ASN:%d\n",
+	         seq_id,myaddr, tx_ASN);
+	//  printf("send_packet!\n");
+	#if ZOUL_MOTE
+		rpl_parent_t *p2 = nbr_table_head(rpl_parents);
 
-	if (p2 != NULL) {
-		rpl_parent_t *preferred_parent2 = p2->dag->preferred_parent;
-		if (preferred_parent2 != NULL) {
-			uip_ds6_nbr_t *nbr2 = rpl_get_nbr(preferred_parent2);
-			parent_temp = nbr2->ipaddr.u8[15];
+		if (p2 != NULL) {
+			rpl_parent_t *preferred_parent2 = p2->dag->preferred_parent;
+			if (preferred_parent2 != NULL) {
+				uip_ds6_nbr_t *nbr2 = rpl_get_nbr(preferred_parent2);
+				parent_temp = nbr2->ipaddr.u8[15];
+			}
+		} else {
+			parent_temp = 0;
 		}
-	} else {
-		parent_temp = 0;
-	}
-  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d",seq_id,myaddr,(int)get_current_energy(),\
-			 parent_temp);
-  uip_udp_packet_sendto(client_conn, buf, 50,
-                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
-#else
+	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
+				 parent_temp, tx_ASN);
+	  uip_udp_packet_sendto(client_conn, buf, 50,
+	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
+	#else
 
-	sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
+		sprintf(buf,"DATA id:%04d from:%03d ASN:%d",seq_id,myaddr,tx_ASN);
 
-	uip_udp_packet_sendto(app_conn, buf, 50,
-                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
-#endif
+		uip_udp_packet_sendto(app_conn, buf, 50,
+	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
+	#endif
 
 }
 

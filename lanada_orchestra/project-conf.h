@@ -57,6 +57,9 @@ uint32_t accumulated_traffic_intensity;
 //uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
 double averaged_traffic_intensity;
 
+uint32_t tx_ASN;
+uint32_t recv_ASN;
+
 #define NUM_TRAFFIC_INTENSITY	10
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
