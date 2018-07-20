@@ -430,7 +430,7 @@ PROCESS_THREAD(node_process, ev, data)
     net_init(&prefix);
   } else {
 #if ZOUL_MOTE
-	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0212,0x4b00, 0x1003, 1);
+	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0212,0x4b00, 0x89ab, 1);
 #else
 	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0201, 1, 1, 1);
 #endif
