@@ -75,6 +75,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#if NETSTACK_CONF_WITH_IPV6
+#include "net/ip/uip.h"
+#include "net/ipv6/uip-ds6.h"
+#endif
 /*---------------------------------------------------------------------------*/
 #if STARTUP_CONF_VERBOSE
 #define PRINTF(...) printf(__VA_ARGS__)
