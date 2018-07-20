@@ -15,7 +15,7 @@
 #if WITH_ORCHESTRA == 1
 #define ORCHESTRA_CONF_UNICAST_PERIOD 17
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 17
 #endif
 
 /* Orchestra Options */
@@ -30,12 +30,14 @@
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	0
 #else	// If event driven (assume poisson)
-#define INTENSITY 10 // lambda
+#define INTENSITY 5 // lambda
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 1
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+
+#define CC2538_RF_CONF_TX_POWER	0xA1
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
@@ -64,7 +66,7 @@ uint32_t recv_ASN;
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 99 // delta in the paper, percent
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
