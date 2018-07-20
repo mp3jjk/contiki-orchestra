@@ -184,8 +184,9 @@ send_packet(void *ptr)
 		}
 	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
 				 parent_temp, tx_ASN);
-	  uip_udp_packet_sendto(client_conn, buf, 50,
+		uip_udp_packet_sendto(app_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
+
 	#else
 
 		sprintf(buf,"DATA id:%04d from:%03d ASN:%d",seq_id,myaddr,tx_ASN);

@@ -1,7 +1,7 @@
 #!/bin/bash
 SKIP=0
 NODE=100
-PORTS=(0 1 2 3 4 5 6 7)
+PORTS=(1 2 3 4 5 6 7)
 
 for opt in $@
 do
