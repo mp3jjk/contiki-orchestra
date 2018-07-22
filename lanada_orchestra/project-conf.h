@@ -24,7 +24,7 @@
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 5 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
@@ -37,7 +37,7 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
-#define CC2538_RF_CONF_TX_POWER	0xA1
+#define CC2538_RF_CONF_TX_POWER	0x00
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
@@ -99,7 +99,7 @@ double measured_traffic_intensity;
 
 /* Modified for Orchestra Traffic Adaptive */
 #undef UIP_CONF_MAX_ROUTES
-#define UIP_CONF_MAX_ROUTES 30 /* No need for routes */
+#define UIP_CONF_MAX_ROUTES 36 /* No need for routes */
 #undef RPL_CONF_MOP
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES

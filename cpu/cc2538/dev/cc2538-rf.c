@@ -511,7 +511,7 @@ init(void)
 
   /* Set TX Power */
   REG(RFCORE_XREG_TXPOWER) = CC2538_RF_TX_POWER;
-
+  printf("RF: Tx power: %d\n",get_tx_power());
   set_channel(rf_channel);
 
   /* Acknowledge all RF Error interrupts */

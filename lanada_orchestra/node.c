@@ -376,8 +376,22 @@ PROCESS_THREAD(node_process, ev, data)
   myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)
 #elif ZOUL_MOTE
 #if IEEE_ADDR_NODE_ID
-  myaddr = IEEE_ADDR_NODE_ID;
-  coordinator_candidate = (myaddr == 1);
+//  myaddr = IEEE_ADDR_NODE_ID;
+  PRINTF("Client IPv6 addresses: ");
+  for(i = 0; i < UIP_DS6_ADDR_NB; i++) {
+	  state = uip_ds6_if.addr_list[i].state;
+	  if(uip_ds6_if.addr_list[i].isused &&
+			  (state == ADDR_TENTATIVE || state == ADDR_PREFERRED)) {
+		  myaddr=uip_ds6_if.addr_list[i].ipaddr.u8[15];
+		  PRINT6ADDR(&uip_ds6_if.addr_list[i].ipaddr);
+		  PRINTF("\n");
+		  /* hack to make address "final" */
+		  if (state == ADDR_TENTATIVE) {
+			  uip_ds6_if.addr_list[i].state = ADDR_PREFERRED;
+		  }
+	  }
+  }
+   coordinator_candidate = (myaddr == 1);
 #endif
 #endif
 
