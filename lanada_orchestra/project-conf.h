@@ -37,7 +37,7 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
-#define CC2538_RF_CONF_TX_POWER	0x00
+#define CC2538_RF_CONF_TX_POWER	0x42
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
@@ -109,7 +109,7 @@ double measured_traffic_intensity;
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
 
-#define	RPL_CONF_OF_OCP RPL_OCP_OF0
+#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF
 #define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/
