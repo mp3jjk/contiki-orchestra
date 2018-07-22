@@ -378,6 +378,7 @@ PROCESS_THREAD(node_process, ev, data)
 #if IEEE_ADDR_NODE_ID
 //  myaddr = IEEE_ADDR_NODE_ID;
   PRINTF("Client IPv6 addresses: ");
+  uint8_t i, state;
   for(i = 0; i < UIP_DS6_ADDR_NB; i++) {
 	  state = uip_ds6_if.addr_list[i].state;
 	  if(uip_ds6_if.addr_list[i].isused &&
