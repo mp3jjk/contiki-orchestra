@@ -55,7 +55,7 @@
 #define RANK_FACTOR        1 /* Must be in the range [1;4] */
 
 #define MIN_STEP_OF_RANK   1
-#define MAX_STEP_OF_RANK   15
+#define MAX_STEP_OF_RANK   30
 
 /* OF0 computes rank increase as follows:
  * rank_increase = (RANK_FACTOR * STEP_OF_RANK + RANK_STRETCH) * min_hop_rank_increase
@@ -64,9 +64,10 @@
  * such as ETX.
  * */
 
-#define RPL_OF0_FIXED_SR      0
-#define RPL_OF0_ETX_BASED_SR  1
+#define RPL_OF0_FIXED_SR      1
+#define RPL_OF0_ETX_BASED_SR  0
 /* Select RPL_OF0_FIXED_SR or RPL_OF0_ETX_BASED_SR */
+#define RPL_OF0_CONF_SR 1
 #ifdef RPL_OF0_CONF_SR
 #define RPL_OF0_SR            RPL_OF0_CONF_SR
 #else /* RPL_OF0_CONF_SR */
@@ -173,7 +174,20 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
 
   p1_is_acceptable = p1 != NULL && parent_is_acceptable(p1);
   p2_is_acceptable = p2 != NULL && parent_is_acceptable(p2);
-
+/*
+#if EXPERIMENT == 1
+  if(p1 != NULL) {
+	  if(rpl_get_nbr(p1)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
+		  return p1;
+	  }
+  }
+  else if(p2 != NULL) {
+	  if(rpl_get_nbr(p2)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
+		  return p2;
+	  }
+  }
+#endif
+*/
   if(!p1_is_acceptable) {
     return p2_is_acceptable ? p2 : NULL;
   }
@@ -184,29 +198,7 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
   dag = p1->dag; /* Both parents are in the same DAG. */
   p1_cost = parent_path_cost(p1);
   p2_cost = parent_path_cost(p2);
-#if EXPERIMENT == 1
-  if(rpl_get_nbr(p1)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
-	  return p1;
-  }
-  else if(rpl_get_nbr(p2)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
-	  return p2;
-  }
-  else {
-	  if(p1_cost != p2_cost) {
-		  /* Pick parent with lowest path cost */
-		  return p1_cost < p2_cost ? p1 : p2;
-	  } else {
-		  /* We have a tie! */
-		  /* Stik to current preferred parent if possible */
-		  if(p1 == dag->preferred_parent || p2 == dag->preferred_parent) {
-			  return dag->preferred_parent;
-		  }
-		  /* None of the nodes is the current preferred parent,
-		   * choose parent with best link metric */
-		  return parent_link_metric(p1) < parent_link_metric(p2) ? p1 : p2;
-	  }
-  }
-#else
+
   /* Paths costs coarse-grained (multiple of min_hoprankinc), we operate without hysteresis */
   if(p1_cost != p2_cost) {
     /* Pick parent with lowest path cost */
@@ -221,7 +213,6 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
      * choose parent with best link metric */
     return parent_link_metric(p1) < parent_link_metric(p2) ? p1 : p2;
   }
-#endif
 }
 /*---------------------------------------------------------------------------*/
 static rpl_dag_t *

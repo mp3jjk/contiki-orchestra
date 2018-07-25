@@ -146,7 +146,7 @@ void
 rpl_get_child_all(uint8_t *list)
 {
 	memset(list,0,MAX_NUMBER_CHILD);
-	printf("rpl_get_child_all: ");
+//	printf("rpl_get_child_all: ");
 	uint8_t index = 0;
 	uint8_t i, j, key;
 	rpl_child_t *c = nbr_table_head(rpl_children);
@@ -166,10 +166,10 @@ rpl_get_child_all(uint8_t *list)
 		memcpy(list+i, list+i+1, sizeof(uint8_t)*(j-i));
 		list[j] = key;
 	}
-	for(i=0; i<index; i++) {
-		printf("%d ",list[i]);
-	}
-	printf("\n");
+//	for(i=0; i<index; i++) {
+//		printf("%d ",list[i]);
+//	}
+//	printf("\n");
 }
 
 uip_ds6_nbr_t *
@@ -986,6 +986,14 @@ best_parent(rpl_dag_t *dag, int fresh_only)
   of = dag->instance->of;
   /* Search for the best parent according to the OF */
   for(p = nbr_table_head(rpl_parents); p != NULL; p = nbr_table_next(rpl_parents, p)) {
+#if EXPERIMENT == 1
+  if(p != NULL && p->dag == dag) {
+	  if(rpl_get_nbr(p)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
+		  best = p;
+		  break;
+	  }
+  }
+#endif
 
     /* Exclude parents from other DAGs or announcing an infinite rank */
     if(p->dag != dag || p->rank == INFINITE_RANK || p->rank < ROOT_RANK(dag->instance)) {
