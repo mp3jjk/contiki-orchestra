@@ -568,7 +568,7 @@ typedef uint32_t rtimer_clock_t;
 #define UIP_CONF_BUFFER_SIZE               108
 #endif
 
-#define RIME_CONF_NO_POLITE_ANNOUCEMENTS     0
+#define RIME_CONF_NO_POLITE_ANNOUCEMENTS     1
 
 #ifndef QUEUEBUF_CONF_NUM
 #define QUEUEBUF_CONF_NUM                    8
