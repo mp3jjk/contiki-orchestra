@@ -451,7 +451,45 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
     net_init(NULL);
   }
-
+#if EXPERIMENT == 1
+routing_topology[0]=0;
+routing_topology[1]=0; // BS
+routing_topology[2]=1;
+routing_topology[3]=2;
+routing_topology[4]=3;
+routing_topology[5]=1;
+routing_topology[6]=1;
+routing_topology[7]=6;
+routing_topology[8]=7;
+routing_topology[9]=5;
+routing_topology[10]=6;
+routing_topology[11]=7;
+routing_topology[12]=7;
+routing_topology[13]=9;
+routing_topology[14]=10;
+routing_topology[15]=11;
+routing_topology[16]=12;
+routing_topology[17]=13;
+routing_topology[18]=13;
+routing_topology[19]=15;
+routing_topology[20]=15;
+routing_topology[21]=17;
+routing_topology[22]=18;
+routing_topology[23]=19;
+routing_topology[24]=20;
+routing_topology[25]=21;
+routing_topology[26]=25;
+routing_topology[27]=26;
+routing_topology[28]=27;
+routing_topology[29]=25;
+routing_topology[30]=26;
+routing_topology[31]=27;
+routing_topology[32]=28;
+routing_topology[33]=29;
+routing_topology[34]=30;
+routing_topology[35]=31;
+routing_topology[36]=32;
+#endif
 #if WITH_ORCHESTRA
   orchestra_init();
 #endif /* WITH_ORCHESTRA */

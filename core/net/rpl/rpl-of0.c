@@ -184,7 +184,29 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
   dag = p1->dag; /* Both parents are in the same DAG. */
   p1_cost = parent_path_cost(p1);
   p2_cost = parent_path_cost(p2);
-
+#if EXPERIMENT == 1
+  if(rpl_get_nbr(p1)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
+	  return p1;
+  }
+  else if(rpl_get_nbr(p2)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
+	  return p2;
+  }
+  else {
+	  if(p1_cost != p2_cost) {
+		  /* Pick parent with lowest path cost */
+		  return p1_cost < p2_cost ? p1 : p2;
+	  } else {
+		  /* We have a tie! */
+		  /* Stik to current preferred parent if possible */
+		  if(p1 == dag->preferred_parent || p2 == dag->preferred_parent) {
+			  return dag->preferred_parent;
+		  }
+		  /* None of the nodes is the current preferred parent,
+		   * choose parent with best link metric */
+		  return parent_link_metric(p1) < parent_link_metric(p2) ? p1 : p2;
+	  }
+  }
+#else
   /* Paths costs coarse-grained (multiple of min_hoprankinc), we operate without hysteresis */
   if(p1_cost != p2_cost) {
     /* Pick parent with lowest path cost */
@@ -199,6 +221,7 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
      * choose parent with best link metric */
     return parent_link_metric(p1) < parent_link_metric(p2) ? p1 : p2;
   }
+#endif
 }
 /*---------------------------------------------------------------------------*/
 static rpl_dag_t *

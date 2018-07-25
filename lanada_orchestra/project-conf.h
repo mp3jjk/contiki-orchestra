@@ -24,13 +24,18 @@
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 5 // Maximum number of retransmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	0
 #else	// If event driven (assume poisson)
 #define INTENSITY 5 // lambda
+#endif
+
+#define EXPERIMENT 1
+#if EXPERIMENT == 1
+uint8_t routing_topology[37];
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 1
