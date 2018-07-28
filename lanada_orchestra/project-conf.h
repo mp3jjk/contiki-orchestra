@@ -42,7 +42,7 @@ uint8_t routing_topology[37];
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
-#define CC2538_RF_CONF_TX_POWER	0x42
+#define CC2538_RF_CONF_TX_POWER	0x00
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
@@ -67,7 +67,7 @@ double averaged_traffic_intensity;
 uint32_t tx_ASN;
 uint32_t recv_ASN;
 
-#define NUM_TRAFFIC_INTENSITY	5
+#define NUM_TRAFFIC_INTENSITY	3
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
