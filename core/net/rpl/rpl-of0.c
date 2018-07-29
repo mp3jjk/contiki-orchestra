@@ -55,7 +55,7 @@
 #define RANK_FACTOR        1 /* Must be in the range [1;4] */
 
 #define MIN_STEP_OF_RANK   1
-#define MAX_STEP_OF_RANK   30
+#define MAX_STEP_OF_RANK   50
 
 /* OF0 computes rank increase as follows:
  * rank_increase = (RANK_FACTOR * STEP_OF_RANK + RANK_STRETCH) * min_hop_rank_increase
@@ -64,10 +64,10 @@
  * such as ETX.
  * */
 
-#define RPL_OF0_FIXED_SR      1
-#define RPL_OF0_ETX_BASED_SR  0
+#define RPL_OF0_FIXED_SR      0
+#define RPL_OF0_ETX_BASED_SR  1
 /* Select RPL_OF0_FIXED_SR or RPL_OF0_ETX_BASED_SR */
-#define RPL_OF0_CONF_SR 1
+//#define RPL_OF0_CONF_SR 1
 #ifdef RPL_OF0_CONF_SR
 #define RPL_OF0_SR            RPL_OF0_CONF_SR
 #else /* RPL_OF0_CONF_SR */

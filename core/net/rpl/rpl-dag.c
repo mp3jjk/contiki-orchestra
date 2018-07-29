@@ -108,6 +108,7 @@ rpl_print_neighbor_list(void)
         default_instance->mop, default_instance->of->ocp, curr_rank, curr_dio_interval, uip_ds6_nbr_num());
     while(p != NULL) {
       const struct link_stats *stats = rpl_get_parent_link_stats(p);
+      if(stats != NULL) {
       printf("RPL: nbr %3u %5u, %5u => %5u -- %2u %c%c (last tx %u min ago)\n",
           rpl_get_parent_ipaddr(p)->u8[15],
           p->rank,
@@ -118,6 +119,7 @@ rpl_print_neighbor_list(void)
           p == default_instance->current_dag->preferred_parent ? 'p' : ' ',
           (unsigned)((clock_now - stats->last_tx_time) / (60 * CLOCK_SECOND))
       );
+      }
       p = nbr_table_next(rpl_parents, p);
     }
     printf("RPL: end of list\n");
@@ -1090,7 +1092,7 @@ rpl_remove_child(rpl_child_t *child)
   PRINTF("RPL: Removing child ");
   PRINT6ADDR(rpl_get_child_ipaddr(child));
   PRINTF("\n");
-
+  child_changed = 1;
   nbr_table_remove(rpl_children, child);
   my_child_number--;
 }

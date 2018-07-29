@@ -309,6 +309,7 @@ dio_input(void)
   dio.lifetime_unit = RPL_DEFAULT_LIFETIME_UNIT;
 
   uip_ipaddr_copy(&from, &UIP_IP_BUF->srcipaddr);
+/*
 #if EXPERIMENT==1
   uint8_t my_get_ip=uip_ds6_get_link_local(-1)->ipaddr.u8[15];
   if(from.u8[15] == routing_topology[my_get_ip] || routing_topology[from.u8[15]] == my_get_ip) {
@@ -318,6 +319,7 @@ dio_input(void)
 	  return;
   }
 #endif
+*/
   /* DAG Information Object */
   PRINTF("RPL: Received a DIO from ");
   PRINT6ADDR(&from);

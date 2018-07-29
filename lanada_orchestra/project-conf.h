@@ -44,6 +44,11 @@ uint8_t routing_topology[37];
 
 #define CC2538_RF_CONF_TX_POWER	0x00
 
+#define RPL_CONF_DAG_LIFETIME 0xFF
+#define RPL_CONF_DEFAULT_ROUTE_INFINITE_LIFETIME 0xFF
+#define RPL_CONF_DEFAULT_LIFETIME 0xFF
+#define RPL_CONF_WITH_PROBING 0
+
 /* First parameterization */
 #define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
 
@@ -106,6 +111,8 @@ double measured_traffic_intensity;
 /*******************************************************/
 
 /* Modified for Orchestra Traffic Adaptive */
+#undef NBR_TABLE_CONF_MAX_NEIGHBORS
+#define NBR_TABLE_CONF_MAX_NEIGHBORS 36
 #undef UIP_CONF_MAX_ROUTES
 #define UIP_CONF_MAX_ROUTES 36 /* No need for routes */
 #undef RPL_CONF_MOP
