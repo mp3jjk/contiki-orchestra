@@ -91,7 +91,6 @@ AUTOSTART_PROCESSES(&node_process);
 /*---------------------------------------------------------------------------*/
 static int seq_id;
 static int reply;
-static uint8_t myaddr;
 
 static void
 tcpip_handler(void)
@@ -102,8 +101,12 @@ tcpip_handler(void)
     str = uip_appdata;
     str[uip_datalen()] = '\0';
     reply++;
+#if ZOUL_MOTE
     printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
-  }
+#else
+    printf("DATA recv '%s'\n", str);
+#endif
+    }
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -167,8 +170,8 @@ send_packet(void *ptr)
 #endif /* PS_COUNT */
 
 	//	PRINTF("app: current E: %d\n",get_current_energy());
-		PRINTF("app: DATA id:%04d from:%03d ASN:%d\n",
-	         seq_id,myaddr, tx_ASN);
+		PRINTF("app: DATA id:%04d from:%03d\n",
+	         seq_id,myaddr);
 	//  printf("send_packet!\n");
 	#if ZOUL_MOTE
 		rpl_parent_t *p2 = nbr_table_head(rpl_parents);
@@ -184,14 +187,12 @@ send_packet(void *ptr)
 		}
 	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
 				 parent_temp, tx_ASN);
-		uip_udp_packet_sendto(app_conn, buf, 50,
+		uip_udp_packet_sendto(app_conn, buf, 70,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 
 	#else
-
-		sprintf(buf,"DATA id:%04d from:%03d ASN:%d",seq_id,myaddr,tx_ASN);
-
-		uip_udp_packet_sendto(app_conn, buf, 50,
+		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
+		uip_udp_packet_sendto(app_conn, buf, 70,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#endif
 

@@ -15,7 +15,7 @@
 #if WITH_ORCHESTRA == 1
 #define ORCHESTRA_CONF_UNICAST_PERIOD 23
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 17
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
 #endif
 
 /* Orchestra Options */
@@ -45,11 +45,14 @@ uint8_t routing_topology[37];
 #define CC2538_RF_CONF_TX_POWER	0x00
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
+
+uint8_t myaddr;
+
 
 /* Second parameterization */
 #define HARD_CODED_n_SF		0 // Hard coded nSF
@@ -76,7 +79,7 @@ double measured_traffic_intensity;
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment
-#define MAX_NUMBER_CHILD	36
+#define MAX_NUMBER_CHILD	8
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
 	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
