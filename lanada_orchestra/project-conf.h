@@ -79,7 +79,7 @@ double measured_traffic_intensity;
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment
-#define MAX_NUMBER_CHILD	8
+#define MAX_NUMBER_CHILD	6
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
 	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
