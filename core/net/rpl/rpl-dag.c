@@ -1019,7 +1019,7 @@ best_parent(rpl_dag_t *dag, int fresh_only)
 #endif /* UIP_ND6_SEND_NS */
 
     /* Now we have an acceptable parent, check if it is the new best */
-    if(myaddr > MAX_NUMBER_CHILD) {
+    /*if(myaddr > MAX_NUMBER_CHILD) {
     	if(rpl_get_nbr(p)->ipaddr.u8[15] < myaddr-MAX_NUMBER_CHILD || rpl_get_nbr(p)->ipaddr.u8[15] > myaddr) {
     		continue;
     	}
@@ -1028,7 +1028,7 @@ best_parent(rpl_dag_t *dag, int fresh_only)
     	if(rpl_get_nbr(p)->ipaddr.u8[15] > myaddr) {
     		continue;
     	}
-    }
+    }*/
     best = of->best_parent(best, p);
   }
 
@@ -1677,7 +1677,7 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
   if(instance == NULL) {
     PRINTF("RPL: New instance detected (ID=%u): Joining...\n", dio->instance_id);
     if(add_nbr_from_dio(from, dio)) {
-    	if(myaddr > MAX_NUMBER_CHILD) {
+    	/*if(myaddr > MAX_NUMBER_CHILD) {
     		if(from->u8[15] < myaddr-MAX_NUMBER_CHILD || from->u8[15] > myaddr) {
     			return;
     		}
@@ -1686,7 +1686,7 @@ rpl_process_dio(uip_ipaddr_t *from, rpl_dio_t *dio)
     		if(from->u8[15] > myaddr) {
     			return;
     		}
-    	}
+    	}*/
       rpl_join_instance(from, dio);
     } else {
       PRINTF("RPL: Not joining since could not add parent\n");
