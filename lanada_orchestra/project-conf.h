@@ -122,7 +122,7 @@ double measured_traffic_intensity;
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
 
-#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF
+#define	RPL_CONF_OF_OCP RPL_OCP_OF0
 #define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/

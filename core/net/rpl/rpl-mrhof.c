@@ -205,6 +205,17 @@ best_parent(rpl_parent_t *p1, rpl_parent_t *p2)
   p1_is_acceptable = p1 != NULL && parent_is_acceptable(p1);
   p2_is_acceptable = p2 != NULL && parent_is_acceptable(p2);
 
+  if(p1 != NULL) {
+	  if(rpl_get_nbr(p1)->ipaddr.u8[15] == 1 || parent_link_metric(p1) < 256) {
+		  return p1;
+	  }
+  }
+  if(p2 != NULL) {
+	  if(rpl_get_nbr(p2)->ipaddr.u8[15] == 1 || parent_link_metric(p2) < 256) {
+		  return p2;
+	  }
+  }
+
   if(!p1_is_acceptable) {
     return p2_is_acceptable ? p2 : NULL;
   }

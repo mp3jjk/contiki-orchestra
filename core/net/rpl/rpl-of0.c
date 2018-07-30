@@ -55,7 +55,7 @@
 #define RANK_FACTOR        1 /* Must be in the range [1;4] */
 
 #define MIN_STEP_OF_RANK   1
-#define MAX_STEP_OF_RANK   50
+#define MAX_STEP_OF_RANK   30
 
 /* OF0 computes rank increase as follows:
  * rank_increase = (RANK_FACTOR * STEP_OF_RANK + RANK_STRETCH) * min_hop_rank_increase
@@ -64,8 +64,8 @@
  * such as ETX.
  * */
 
-#define RPL_OF0_FIXED_SR      0
-#define RPL_OF0_ETX_BASED_SR  1
+#define RPL_OF0_FIXED_SR      1
+#define RPL_OF0_ETX_BASED_SR  0
 /* Select RPL_OF0_FIXED_SR or RPL_OF0_ETX_BASED_SR */
 //#define RPL_OF0_CONF_SR 1
 #ifdef RPL_OF0_CONF_SR
@@ -115,8 +115,8 @@ parent_link_metric(rpl_parent_t *p)
 {
   /* OF0 operates without metric container; the only metric we have is ETX */
   const struct link_stats *stats = rpl_get_parent_link_stats(p);
-//  return stats != NULL ? stats->etx : 0xffff;
-  return stats != NULL ? 256 : 0xffff;
+  return stats != NULL ? stats->etx : 0xffff;
+//  return stats != NULL ? 256 : 0xffff;
 }
 /*---------------------------------------------------------------------------*/
 static uint16_t
