@@ -86,7 +86,7 @@ to the threshold of 96 in the non-squared case) */
 #endif /* !RPL_MRHOF_SQUARED_ETX */
 
 /* Reject parents that have a higher path cost than the following. */
-#define MAX_PATH_COST      32768   /* Eq path ETX of 256 */
+#define MAX_PATH_COST      65280   /* Eq path ETX of 256 */
 
 /*---------------------------------------------------------------------------*/
 static void

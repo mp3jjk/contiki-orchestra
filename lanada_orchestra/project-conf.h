@@ -39,14 +39,12 @@ uint8_t routing_topology[37];
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 1
+#define RPL_CONF_WITH_MC RPL_DAG_MC_ETX
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 #define CC2538_RF_CONF_TX_POWER	0x00
 
-#define RPL_CONF_DAG_LIFETIME 0xFF
-#define RPL_CONF_DEFAULT_ROUTE_INFINITE_LIFETIME 0xFF
-#define RPL_CONF_DEFAULT_LIFETIME 0xFF
 #define RPL_CONF_WITH_PROBING 0
 
 /* First parameterization */
@@ -124,7 +122,7 @@ double measured_traffic_intensity;
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif
 
-#define	RPL_CONF_OF_OCP RPL_OCP_OF0
+#define	RPL_CONF_OF_OCP RPL_OCP_MRHOF
 #define RPL_CONF_SUPPORTED_OFS {&rpl_of0, &rpl_mrhof}
 
 /*******************************************************/
