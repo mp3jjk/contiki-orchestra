@@ -4,25 +4,28 @@
 #define TSCH_ENABLED	1
 
 /* Set to run orchestra */
-#ifndef WITH_ORCHESTRA
 #define WITH_ORCHESTRA 1
-#endif /* WITH_ORCHESTRA */
 
 #if WITH_ORACHESTRA == 0
 #define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 #endif
 
-#if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 11
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+
+#if WITH_ORCHESTRA
+#define ORCHESTRA_CONF_UNICAST_PERIOD 19
+#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
+#define ORCHESTRA_CONF_EBSF_PERIOD 0
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 11
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 13
 #endif
+
+
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 1 // Maximum number of retransmission in TSCH
 
@@ -30,7 +33,7 @@
 #if TRAFFIC_PATTERN == 0 // If periodic
 #define PERIOD	30
 #else	// If event driven (assume poisson)
-#define INTENSITY 0 // lambda
+#define INTENSITY 30 // lambda
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 0
@@ -62,6 +65,13 @@ double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
 #define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
+
+#define TSCH_LENGTH_PHASE 500
+#define TSCH_LENGTH_STAGE 30
+uint32_t slotframe_number;
+uint8_t current_stage_number;
+uint8_t current_phase_number;
+uint8_t is_update_phase;
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
@@ -99,7 +109,7 @@ double measured_traffic_intensity;
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
+#define ORCHESTRA_CONF_RULES { &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
 #else
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
 #endif

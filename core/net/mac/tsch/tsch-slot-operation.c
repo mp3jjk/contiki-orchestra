@@ -334,7 +334,6 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
 {
   struct tsch_packet *p = NULL;
   struct tsch_neighbor *n = NULL;
-
   /* Is this a Tx link? */
   if(link->link_options & LINK_OPTION_TX) {
 //	  printf("tx link option\n");
@@ -349,12 +348,33 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
       if(p == NULL) {
         /* Get neighbor queue associated to the link and get packet from it */
         n = tsch_queue_get_nbr(&link->addr);
+#if ORCHESTRA_EBSF_PERIOD == 0
+				if(current_stage_number == 1 && current_phase_number <2) {
+					p = tsch_queue_get_packet_for_nbr(n, link);
+					if(p == NULL && n == n_broadcast) {
+							p = tsch_queue_get_unicast_packet_for_any(&n, link);
+					}
+				}
+				else {
+					if(link->slotframe_handle == 0) {
+						p = tsch_queue_get_packet_for_nbr(n, link);
+					}
+					else {
+						p = tsch_queue_get_packet_for_nbr(n, link);
+						/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
+						if (p == NULL && n == n_broadcast) {
+							p = tsch_queue_get_unicast_packet_for_any(&n, link);
+						}
+					}
+				}
+#else
         p = tsch_queue_get_packet_for_nbr(n, link);
         /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
         if(p == NULL && n == n_broadcast) {
 //        	printf("pick unicast packet\n");
           p = tsch_queue_get_unicast_packet_for_any(&n, link);
         }
+#endif
       }
     }
   }
@@ -976,6 +996,8 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       int is_active_slot;
       TSCH_DEBUG_SLOT_START();
       tsch_in_slot_operation = 1;
+			current_phase_number = slotframe_number / TSCH_LENGTH_PHASE;
+			current_stage_number = current_phase_number / TSCH_LENGTH_STAGE + 1;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
       index_traffic_intensity = (tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD) % TRAFFIC_INTENSITY_WINDOW_SIZE;
       slotframe_number = tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD;
