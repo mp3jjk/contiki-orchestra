@@ -10,7 +10,7 @@
 #define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 #endif
 
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 
 #if WITH_ORCHESTRA
 #define ORCHESTRA_CONF_UNICAST_PERIOD 19
@@ -108,10 +108,18 @@ uint8_t is_update_phase;
 #undef RPL_CONF_MOP
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-#define ORCHESTRA_CONF_RULES { &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
-#else
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	
+#if ORCHESTRA_CONF_EBSF_PERIOD > 0
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#else
+#define ORCHESTRA_CONF_RULES { &default_common, &unicast_per_neighbor_rpl_storing_traffic_adaptive } /* Orchestra in non-storing */
+#endif
+#else
+#if ORCHESTRA_CONF_EBSF_PERIOD > 0
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#else
+#define ORCHESTRA_CONF_RULES { &default_common, &unicast_per_neighbor_rpl_storing} /* Orchestra in non-storing */
+#endif
 #endif
 
 #define	RPL_CONF_OF_OCP RPL_OCP_OF0
