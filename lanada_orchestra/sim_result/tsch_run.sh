@@ -1,20 +1,7 @@
 #!/bin/bash
 
-JOONKI=0
-
-if [ $JOONKI -eq 0 ]
-then
-    CONTIKI=/media/user/Harddisk/contiki-orchestra/
-else
-    CONTIKI=~/contiki-orchestra/
-fi
-
-echo "TSCH simulation"
-#sed -i 's/\#define DUAL_RADIO 0/\#define DUAL_RADIO 1/g' $CONTIKI/platform/cooja/contiki-conf.h
-sed -i 's/\#define TCPIP_CONF_ANNOTATE_TRANSMISSIONS 1/\#define TCPIP_CONF_ANNOTATE_TRANSMISSIONS 0/g' $CONTIKI/platform/cooja/contiki-conf.h
-
 topology=$1
-TRAFFIC_MODEL=$2
+TRAFFIC_TYPE=$2
 PERIOD=$3
 ARRIVAL_RATE=$4
 LABEL=$5
@@ -34,46 +21,57 @@ MAXRT=${18}
 REQ=${19}
 HETERO=${20}
 
-sed -i "11s/.*/    <randomseed>$SEED_NUMBER<\/randomseed>/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
-sed -i "s/TIMEOUT([[:digit:]]*);/TIMEOUT($SIM_TIME);/" $CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc 
+CONTIKI=/media/user/Harddisk/contiki-orchestra
+DIR_SIM=${CONTIKI}/lanada_orchestra/sim_result
 
-if [ $TRAFFIC_MODEL -eq 0 ]
-then
-    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_period$PERIOD\_hetero$HETERO\_seed$SEED_NUMBER
+declare -a TSCH_STRING=( async tsch )
+declare -a RBS_SBS_STRING=( sbs rbs )
+declare -a TRAFFIC_TYPE_STRING=( periodic poisson )
+declare -a HETERO_STRING=( homo hetero )
+
+if [ $ADAPTIVE -eq 1 ]; then
+	SCHEDULING=paas
+	IN_DIR=${SCHEDULING}_${RBS_SBS_STRING[${RBS_SBS}]}_npbs_${n_PBS}_maxrt_${MAXRT}_sfl_${UNICAST}_relreq_${REQ}
+elif [ $ORCHESTRA -eq 1 ]; then
+	SCHEDULING=orchestra
+	IN_DIR=${SCHEDULING}_${RBS_SBS_STRING[${RBS_SBS}]}_maxrt_${MAXRT}_sfl_${UNICAST}_relreq_${REQ}
+else 
+	SCHEDULING=minimal
+	IN_DIR=${SCHEDULING}_maxrt_${MAXRT}_sfl_${MINIMAL}_relreq_${REQ}
+fi
+
+echo "TSCH simulation"
+#sed -i 's/\#define DUAL_RADIO 0/\#define DUAL_RADIO 1/g' $CONTIKI/platform/cooja/contiki-conf.h
+sed -i 's/\#define TCPIP_CONF_ANNOTATE_TRANSMISSIONS 1/\#define TCPIP_CONF_ANNOTATE_TRANSMISSIONS 0/g' $CONTIKI/platform/cooja/contiki-conf.h
+
+sed -i "11s/.*/    <randomseed>${SEED_NUMBER}<\/randomseed>/" ${CONTIKI}/lanada_orchestra/sim_script/${topology}_${APP}.csc 
+sed -i "s/TIMEOUT([0-9]*);/TIMEOUT(${SIM_TIME});/" ${CONTIKI}/lanada_orchestra/sim_script/${topology}_${APP}.csc 
+
+# when the node id is multiple of slotframe length, it is allocated to the first slot of the slotframe, which is what we don't want.
+# So, change the node id to different one.
+
+
+if [ $TRAFFIC_TYPE -eq 0 ]; then
+	DIR=${LABEL}_${topology}_${TRAFFIC_TYPE_STRING[$TRAFFIC_TYPE]}_${HETERO_STRING[$HETERO]}_${PERIOD}_${SEED_NUMBER}
 else
-    DIR=$LABEL\_topo$topology\_traffic$TRAFFIC_MODEL\_rate$ARRIVAL_RATE\_hetero$HETERO\_seed$SEED_NUMBER
+	DIR=${LABEL}_${topology}_${TRAFFIC_TYPE_STRING[$TRAFFIC_TYPE]}_${HETERO_STRING[$HETERO]}_${ARRIVAL_RATE}_${SEED_NUMBER}
 fi
 
-if [ ! -e $DIR ]
-then
-    mkdir $DIR
-fi
-cd $DIR
+mkdir -p $DIR
+cd ${DIR}
 
-if [ $ORCHESTRA -eq 0 ]
-then
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 1 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ $HETERO
-else
-    ../tsch_param.sh $TRAFFIC_MODEL $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA 0 $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ $HETERO
-fi
+# Update project-conf.h using tsch_param.sh
+bash $DIR_SIM/tsch_param.sh $TRAFFIC_TYPE $PERIOD $ARRIVAL_RATE $TSCH $ORCHESTRA $RBS_SBS $ADAPTIVE $n_PBS $n_SF $UNICAST $MINIMAL $APP $MAXRT $REQ $HETERO
 
-IN_DIR=tsch$TSCH\_orche$ORCHESTRA\_adap$ADAPTIVE\_sbs$RBS_SBS\_n_pbs$n_PBS\_maxRT$MAXRT\_uni$UNICAST\_mini$MINIMAL\_req$REQ
-if [ ! -e $IN_DIR ]
-then
-    mkdir $IN_DIR
-fi
+mkdir -p $IN_DIR
 cd $IN_DIR
 
-echo "#########################  We are in $PWD  ########################"
-
-HERE=$PWD
 cd $CONTIKI/lanada_$APP
 make clean TARGET=cooja
-cd $HERE
+cd -
 
-if [ ! -e COOJA.testlog ]
-then
-    java -mx512m -jar $CONTIKI/tools/cooja_$APP/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\_$APP\.csc -contiki="$CONTIKI"
+if [ ! -e COOJA.testlog ]; then
+    java -mx512m -jar $CONTIKI/tools/cooja_$APP/dist/cooja.jar -nogui=${CONTIKI}/lanada_orchestra/sim_script/${topology}_${APP}.csc -contiki="${CONTIKI}"
 #    java -mx512m -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada_orchestra/sim_script/$topology\.csc -contiki="$CONTIKI"
 	#	java -mx512m -classpath $CONTIKI/tools/cooja/apps/mrm/lib/mrm.jar: -jar $CONTIKI/tools/cooja/dist/cooja.jar -nogui=$CONTIKI/lanada/sim_scripts/scripts/0729_$topology\_$LR_range\.csc -contiki="$CONTIKI"
 		# ant run_nogui -Dargs=/home/user/Desktop/Double-MAC/lanada/sim_scripts/scripts/0729_36grid_2X.csc -Ddir=$PWD

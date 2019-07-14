@@ -1,5 +1,5 @@
 #!/bin/bash
-app=${13}
+app=${12}
 
 echo "#ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
@@ -8,19 +8,16 @@ echo "#ifndef __PROJECT_CONF_H__
 
 /* Set to run orchestra */
 #define WITH_ORCHESTRA $5
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$7 // Traffic adaptive mode is enabled
 
-#if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL $6 // For 6TiSCH minimal configuration without orchestra
-#endif
-
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$8 // Traffic adaptive mode is enabled
-
-#if WITH_ORCHESTRA
-#define ORCHESTRA_CONF_UNICAST_PERIOD $11
+#if WITH_ORACHESTRA
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
+#define ORCHESTRA_CONF_UNICAST_PERIOD ${10}
 #define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
 #define ORCHESTRA_CONF_EBSF_PERIOD 0
-#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH $12
+#else
+#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1
+#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH ${11}
 #endif
 
 
@@ -30,7 +27,7 @@ echo "#ifndef __PROJECT_CONF_H__
 #define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 
-#define TSCH_CONF_MAC_MAX_FRAME_RETRIES $14 // Maximum number of retransmission in TSCH
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES ${13} // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN $1	// 0: Periodic, 1: Event-driven
 #if TRAFFIC_PATTERN == 0 // If periodic
@@ -39,19 +36,19 @@ echo "#ifndef __PROJECT_CONF_H__
 #define INTENSITY $3 // lambda
 #endif
 
-#define HETEROGENEOUS_TRAFFIC $16
+#define HETEROGENEOUS_TRAFFIC ${15}
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	$7
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	$6
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	$9 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	$8 // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define HARD_CODED_n_SF		$10 // Hard coded nSF
+#define HARD_CODED_n_SF		$9 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
 
@@ -67,7 +64,7 @@ double averaged_traffic_intensity;
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT $15 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT ${14} // delta in the paper, percent
 
 #define TSCH_LENGTH_PHASE 500
 #define TSCH_LENGTH_STAGE 30
@@ -212,7 +209,7 @@ uint8_t is_update_phase;
 #if WITH_ORCHESTRA
 
 /* See apps/orchestra/README.md for more Orchestra configuration options */
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
+//#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
 #define TSCH_CONF_WITH_LINK_SELECTOR 1 /* Orchestra requires per-packet link selection */
 /* Orchestra callbacks */
 #define TSCH_CALLBACK_NEW_TIME_SOURCE orchestra_callback_new_time_source
@@ -264,4 +261,4 @@ uint8_t is_update_phase;
 #define COOJA_CONF_SIMULATE_TURNAROUND 0
 #endif /* CONTIKI_TARGET_COOJA */
 
-#endif /* __PROJECT_CONF_H__ */" > ../../lanada_$app/project-conf.h
+#endif /* __PROJECT_CONF_H__ */" > ../../../lanada_${app}/project-conf.h

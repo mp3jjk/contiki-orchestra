@@ -107,13 +107,13 @@ then
 	mkdir collision
 fi
 
-node_count=2
+node_count=1
 while [ $node_count -le $MAX_NODE_NUMBER ]
 do
-
+	let "node_count=$node_count+1"
 	if [ ! -e parsing/node_send$node_count.txt ]
 	then
-		break
+		continue
 	fi
 
 	echo "Working on node number: $node_count"
@@ -273,7 +273,7 @@ do
 		
 	fi
 
-	let "node_count=$node_count+1"
+	
 done
 
 ##########################################################################################
