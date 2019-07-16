@@ -1,6 +1,6 @@
 #!/bin/bash
 
-label=JOO #**
+label=SBS #**
 tsch=1 # Whether Async(0) or TSCH(1)
 orchestra=1 # Whether Minimal(0) or Orchestra(1) **
 sbs=1 # Whether RBS(0) or SBS(1) **
@@ -8,15 +8,15 @@ paas=0 # Whether basic(0) or PAAS(1) **
 hetero=0
 poisson=1 # Whether Periodic(0) or Poisson(1) **
 req=95 # reliability contraint
-sim_time=1100000 #**
+sim_time=36000000 #**
 
 CHECK_RATE=( 8 )
 
-SEED=( 1 2 ) #**
-TRAFFIC_PARAM=( 30 ) # rate or period
-TOPOLOGY=( tree_c4_21 ) # tree_c4_21 grid_36 random_50 child_4 **
+SEED=( 1 2 3 4 5 ) #**
+TRAFFIC_PARAM=( 10 50 100 ) # rate or period
+TOPOLOGY=( random_40 tree_c4_21 ) # tree_c4_21 grid_36 random_50 child_4 **
 SCHED_PARAM=( 0 ) # n-pbs(paas) or n-sf(ours)
-SF_LENGTH=( 23 ) # SlotFrame length for Orchestra and paas **
+SF_LENGTH=( 19 ) # SlotFrame length for Orchestra and paas **
 MAX_RT=( 3 ) # maximum retries
 
 app=$1

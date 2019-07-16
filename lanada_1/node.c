@@ -102,7 +102,11 @@ tcpip_handler(void)
     str = uip_appdata;
     str[uip_datalen()] = '\0';
     reply++;
-    printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
+#if ZOUL_MOTE
+		printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
+#else
+		printf("DATA recv '%s'\n", str);
+#endif
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -188,7 +192,7 @@ send_packet(void *ptr)
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#else
 
-		sprintf(buf,"DATA id:%04d from:%03d ASN:%d",seq_id,myaddr,tx_ASN);
+		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
 
 		uip_udp_packet_sendto(app_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));

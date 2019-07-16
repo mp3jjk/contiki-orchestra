@@ -102,7 +102,11 @@ tcpip_handler(void)
     str = uip_appdata;
     str[uip_datalen()] = '\0';
     reply++;
-    printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
+#if ZOUL_MOTE
+		printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
+#else
+		printf("DATA recv '%s'\n", str);
+#endif
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -188,7 +192,7 @@ send_packet(void *ptr)
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#else
 
-		sprintf(buf,"DATA id:%04d from:%03d ASN:%d",seq_id,myaddr,tx_ASN);
+		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
 
 		uip_udp_packet_sendto(app_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
@@ -284,7 +288,7 @@ print_init_status(void) {
 	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_PBS: %d, n_SF: %d, TRAFFIC: %d, RATE: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
 			HARD_CODED_n_PBS, HARD_CODED_n_SF, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
 #endif
-#if WITH_ORACHESTRA == 1
+#if WITH_ORCHESTRA == 1
 	printf("UNI_PERIOD: %d\n",ORCHESTRA_CONF_UNICAST_PERIOD);
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
 	printf("MINI_PERIOD: %d\n",TSCH_SCHEDULE_CONF_DEFAULT_LENGTH);

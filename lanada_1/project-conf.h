@@ -3,18 +3,19 @@
 
 #define TSCH_ENABLED 1	
 
+#undef ZOUL_MOTE
 /* Set to run orchestra */
 #define WITH_ORCHESTRA 1
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 
 #if WITH_ORCHESTRA
-	#define ORCHESTRA_CONF_UNICAST_PERIOD 23 //If this is inside #if WITH_ORACHESTRA, error occurres 
+	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres 
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
 	#define ORCHESTRA_CONF_EBSF_PERIOD 0
 #else
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1
-	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 23
+	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 19
 #endif
 
 /* Orchestra Options */
@@ -26,9 +27,9 @@
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: poisson
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD 30
+#define PERIOD 10
 #else	// If event driven (assume poisson)
-#define INTENSITY 30 // lambda
+#define INTENSITY 10 // lambda
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 0

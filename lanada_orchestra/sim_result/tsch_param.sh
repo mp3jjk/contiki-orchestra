@@ -6,6 +6,7 @@ echo "#ifndef __PROJECT_CONF_H__
 
 #define TSCH_ENABLED $2	
 
+#undef ZOUL_MOTE
 /* Set to run orchestra */
 #define WITH_ORCHESTRA $3
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	$4 // Traffic adaptive mode is enabled

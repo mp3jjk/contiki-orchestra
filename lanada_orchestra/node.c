@@ -91,6 +91,7 @@ AUTOSTART_PROCESSES(&node_process);
 /*---------------------------------------------------------------------------*/
 static int seq_id;
 static int reply;
+static uint8_t myaddr;
 
 static void
 tcpip_handler(void)
@@ -102,11 +103,11 @@ tcpip_handler(void)
     str[uip_datalen()] = '\0';
     reply++;
 #if ZOUL_MOTE
-    printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
+		printf("DATA recv '%s' ASN: %d\n", str, recv_ASN);
 #else
-    printf("DATA recv '%s'\n", str);
+		printf("DATA recv '%s'\n", str);
 #endif
-    }
+  }
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -170,8 +171,8 @@ send_packet(void *ptr)
 #endif /* PS_COUNT */
 
 	//	PRINTF("app: current E: %d\n",get_current_energy());
-		PRINTF("app: DATA id:%04d from:%03d\n",
-	         seq_id,myaddr);
+		PRINTF("app: DATA id:%04d from:%03d ASN:%d\n",
+	         seq_id,myaddr, tx_ASN);
 	//  printf("send_packet!\n");
 	#if ZOUL_MOTE
 		rpl_parent_t *p2 = nbr_table_head(rpl_parents);
@@ -187,12 +188,13 @@ send_packet(void *ptr)
 		}
 	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
 				 parent_temp, tx_ASN);
-		uip_udp_packet_sendto(app_conn, buf, 70,
+	  uip_udp_packet_sendto(client_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
-
 	#else
+
 		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
-		uip_udp_packet_sendto(app_conn, buf, 70,
+
+		uip_udp_packet_sendto(app_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#endif
 
@@ -286,7 +288,7 @@ print_init_status(void) {
 	printf("INIT STATUS, TSCH: %d, ORCHESTRA: %d, ADAPTIVE: %d, RBS_SBS: %d, n_PBS: %d, n_SF: %d, TRAFFIC: %d, RATE: %d, CHECK: %d\n",TSCH_ENABLED, WITH_ORCHESTRA, ORCHESTRA_TRAFFIC_ADAPTIVE_MODE, ORCHESTRA_CONF_UNICAST_SENDER_BASED,
 			HARD_CODED_n_PBS, HARD_CODED_n_SF, TRAFFIC_PATTERN, INTENSITY, NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE);
 #endif
-#if WITH_ORACHESTRA == 1
+#if WITH_ORCHESTRA == 1
 	printf("UNI_PERIOD: %d\n",ORCHESTRA_CONF_UNICAST_PERIOD);
 #elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
 	printf("MINI_PERIOD: %d\n",TSCH_SCHEDULE_CONF_DEFAULT_LENGTH);
@@ -377,23 +379,8 @@ PROCESS_THREAD(node_process, ev, data)
   myaddr = node_id; // Simply myaddr is set to be the same as node id (last digit of address)
 #elif ZOUL_MOTE
 #if IEEE_ADDR_NODE_ID
-//  myaddr = IEEE_ADDR_NODE_ID;
-  PRINTF("Client IPv6 addresses: ");
-  uint8_t i, state;
-  for(i = 0; i < UIP_DS6_ADDR_NB; i++) {
-	  state = uip_ds6_if.addr_list[i].state;
-	  if(uip_ds6_if.addr_list[i].isused &&
-			  (state == ADDR_TENTATIVE || state == ADDR_PREFERRED)) {
-		  myaddr=uip_ds6_if.addr_list[i].ipaddr.u8[15];
-		  PRINT6ADDR(&uip_ds6_if.addr_list[i].ipaddr);
-		  PRINTF("\n");
-		  /* hack to make address "final" */
-		  if (state == ADDR_TENTATIVE) {
-			  uip_ds6_if.addr_list[i].state = ADDR_PREFERRED;
-		  }
-	  }
-  }
-   coordinator_candidate = (myaddr == 1);
+  myaddr = IEEE_ADDR_NODE_ID;
+  coordinator_candidate = (myaddr == 1);
 #endif
 #endif
 
@@ -446,51 +433,13 @@ PROCESS_THREAD(node_process, ev, data)
     net_init(&prefix);
   } else {
 #if ZOUL_MOTE
-	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0212,0x4b00, 0x89ab, 1);
+	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0212,0x4b00, 0x1003, 1);
 #else
 	uip_ip6addr(&server_ipaddr,UIP_DS6_DEFAULT_PREFIX, 0, 0, 0, 0x0201, 1, 1, 1);
 #endif
     net_init(NULL);
   }
-#if EXPERIMENT == 1
-routing_topology[0]=0;
-routing_topology[1]=0; // BS
-routing_topology[2]=1;
-routing_topology[3]=1;
-routing_topology[4]=2;
-routing_topology[5]=1;
-routing_topology[6]=1;
-routing_topology[7]=2;
-routing_topology[8]=6;
-routing_topology[9]=1;
-routing_topology[10]=2;
-routing_topology[11]=3;
-routing_topology[12]=4;
-routing_topology[13]=5;
-routing_topology[14]=6;
-routing_topology[15]=7;
-routing_topology[16]=8;
-routing_topology[17]=9;
-routing_topology[18]=10;
-routing_topology[19]=11;
-routing_topology[20]=12;
-routing_topology[21]=13;
-routing_topology[22]=14;
-routing_topology[23]=15;
-routing_topology[24]=16;
-routing_topology[25]=17;
-routing_topology[26]=18;
-routing_topology[27]=19;
-routing_topology[28]=20;
-routing_topology[29]=21;
-routing_topology[30]=22;
-routing_topology[31]=23;
-routing_topology[32]=24;
-routing_topology[33]=25;
-routing_topology[34]=26;
-routing_topology[35]=27;
-routing_topology[36]=28;
-#endif
+
 #if WITH_ORCHESTRA
   orchestra_init();
 #endif /* WITH_ORCHESTRA */
