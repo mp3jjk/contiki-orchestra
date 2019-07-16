@@ -12,9 +12,9 @@ sim_time=36000000 #**
 
 CHECK_RATE=( 8 )
 
-SEED=( 1 2 3 4 5 ) #**
+SEED=( 1 2 3 ) #**
 TRAFFIC_PARAM=( 10 50 100 ) # rate or period
-TOPOLOGY=( random_40 tree_c4_21 ) # tree_c4_21 grid_36 random_50 child_4 **
+TOPOLOGY=( random_40 ) # tree_c4_21 grid_36 random_50 child_4 **
 SCHED_PARAM=( 0 ) # n-pbs(paas) or n-sf(ours)
 SF_LENGTH=( 19 ) # SlotFrame length for Orchestra and paas **
 MAX_RT=( 3 ) # maximum retries
