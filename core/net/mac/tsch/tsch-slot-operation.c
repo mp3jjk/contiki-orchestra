@@ -996,11 +996,11 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
       int is_active_slot;
       TSCH_DEBUG_SLOT_START();
       tsch_in_slot_operation = 1;
+      slotframe_number = tsch_current_asn.ls4b / ORCHESTRA_CONF_UNICAST_PERIOD;
 			current_phase_number = slotframe_number / TSCH_LENGTH_PHASE;
 			current_stage_number = current_phase_number / TSCH_LENGTH_STAGE + 1;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
       index_traffic_intensity = (tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD) % TRAFFIC_INTENSITY_WINDOW_SIZE;
-      slotframe_number = tsch_current_asn.ls4b / ORCHESTRA_UNICAST_PERIOD;
 //      printf("Slotframe_number %d\n",slotframe_number);
       if(index_traffic_intensity == 0 && is_average_needed == 1) {
     	  averaged_traffic_intensity = accumulated_traffic_intensity / (double)TRAFFIC_INTENSITY_WINDOW_SIZE;
