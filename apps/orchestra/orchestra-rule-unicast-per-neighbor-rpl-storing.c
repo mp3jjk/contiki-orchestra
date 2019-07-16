@@ -155,6 +155,7 @@ remove_uc_link(const linkaddr_t *linkaddr)
 static void
 child_added(const linkaddr_t *linkaddr)
 {
+//	printf("DEBUG joohyun\n");
   add_uc_link(linkaddr);
 }
 /*---------------------------------------------------------------------------*/
