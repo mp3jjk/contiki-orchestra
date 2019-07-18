@@ -1361,6 +1361,8 @@ dao_output(rpl_parent_t *parent, uint8_t lifetime)
 #endif /* RPL_WITH_DAO_ACK */
 
   /* Sending a DAO with own prefix as target */
+	flag_dao_output = 1;
+	printf("Node 19\n");
   dao_output_target(parent, &prefix, lifetime);
 }
 /*---------------------------------------------------------------------------*/

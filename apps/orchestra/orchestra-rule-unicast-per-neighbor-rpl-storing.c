@@ -69,8 +69,18 @@ static uint16_t
 get_node_timeslot(const linkaddr_t *addr)
 {
   if(addr != NULL && ORCHESTRA_UNICAST_PERIOD > 0) {
-    return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
-  } else {
+#if OUR_ADAPTIVE_AVOID_SLOT0
+    if(ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD == 0) {
+			return 1;
+		}
+		else {
+   		return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
+		}
+#else
+   	return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
+#endif
+	}
+	else {
     return 0xffff;
   }
 }
