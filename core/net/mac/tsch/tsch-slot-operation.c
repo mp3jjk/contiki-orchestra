@@ -349,28 +349,35 @@ get_packet_and_neighbor_for_link(struct tsch_link *link, struct tsch_neighbor **
       if(p == NULL) {
         /* Get neighbor queue associated to the link and get packet from it */
         n = tsch_queue_get_nbr(&link->addr);
+    	p = tsch_queue_get_packet_for_nbr(n, link);
+    	/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
+    	if(p == NULL && n == n_broadcast) {
+    		p = tsch_queue_get_unicast_packet_for_any(&n, link);
+    	}
 //#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
 //        if(current_stage_number <= 2) {
-				if(flag_dao_output == 1) {
-					p = tsch_queue_get_packet_for_nbr(n, link);
-					/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
-					if(p == NULL && n == n_broadcast) {
-						p = tsch_queue_get_unicast_packet_for_any(&n, link);
-						flag_dao_output = 0;
-					}
-        }
-        else {
-        	if(link->slotframe_handle == 0) {
-            	p = tsch_queue_get_packet_for_nbr(n, link);
-        	}
-        	else {
-        		p = tsch_queue_get_packet_for_nbr(n, link);
-        		/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
-        		if(p == NULL && n == n_broadcast) {
-        			p = tsch_queue_get_unicast_packet_for_any(&n, link);
-        		}
-        	}
-        }
+//        if((flag_dao_output == 1 || flag_dio_output == 1) && n == n_broadcast) {
+//        if(link->slotframe_handle == 2 && ((flag_dao_output == 1 || flag_dio_output == 1))) {
+//        	p = tsch_queue_get_packet_for_nbr(n, link);
+//        	/* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */
+//        	if(p == NULL && n == n_broadcast) {
+//        		p = tsch_queue_get_unicast_packet_for_any(&n, link);
+//        		if(flag_dao_output == 1) {
+//        			flag_dao_output = 0;
+//        		}
+//        		else {
+//        			flag_dio_output = 0;
+//        		}
+//        	}
+//        }
+//        else if(link->slotframe_handle == 1 && (flag_dao_output == 0 && flag_dio_output == 0)){
+//        	if(link->slotframe_handle == 0) {
+//            	p = tsch_queue_get_packet_for_nbr(n, link);
+//        	}
+//        	else {
+
+//        	}
+//        }
 //#else
  //       p = tsch_queue_get_packet_for_nbr(n, link);
         /* if it is a broadcast slot and there were no broadcast packets, pick any unicast packet */

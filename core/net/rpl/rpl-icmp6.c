@@ -614,7 +614,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     return;
   }
 #endif /* RPL_LEAF_ONLY */
-
+//  printf("DEBUG2: DIO output\n");
   /* DAG Information Object */
   pos = 0;
 
@@ -829,6 +829,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     uip_icmp6_send(uc_addr, ICMP6_RPL, RPL_CODE_DIO, pos);
   }
 #endif /* RPL_LEAF_ONLY */
+//  flag_dio_output = 1;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(TX_slot_changed == 1) {
 	  uint8_t i, timeslot = 0;
@@ -1361,8 +1362,8 @@ dao_output(rpl_parent_t *parent, uint8_t lifetime)
 #endif /* RPL_WITH_DAO_ACK */
 
   /* Sending a DAO with own prefix as target */
-	flag_dao_output = 1;
-	printf("Node 19\n");
+//	flag_dao_output = 1;
+//	printf("DEBUG2: DAO output\n");
   dao_output_target(parent, &prefix, lifetime);
 }
 /*---------------------------------------------------------------------------*/

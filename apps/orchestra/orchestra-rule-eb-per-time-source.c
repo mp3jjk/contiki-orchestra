@@ -115,8 +115,7 @@ init(uint16_t sf_handle)
   tsch_schedule_add_link(sf_eb,
                          LINK_OPTION_TX,
                          LINK_TYPE_ADVERTISING_ONLY, &tsch_broadcast_address,
-												 //get_node_timeslot(&linkaddr_node_addr), 0);
-												 0, 0);
+												 get_node_timeslot(&linkaddr_node_addr), 0);
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule eb_per_time_source = {

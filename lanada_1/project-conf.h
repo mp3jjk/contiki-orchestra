@@ -8,7 +8,7 @@
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 
 #if WITH_ORCHESTRA
-	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres 
+	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
 	#define ORCHESTRA_CONF_EBSF_PERIOD 10 * ORCHESTRA_CONF_UNICAST_PERIOD
@@ -47,7 +47,8 @@ uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not im
 #define HARD_CODED_n_SF		0 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
-uint8_t flag_dao_output;
+//uint8_t flag_dao_output;
+//uint8_t flag_dio_output;
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
@@ -209,7 +210,7 @@ uint32_t recv_ASN;
 
 /* See apps/orchestra/README.md for more Orchestra configuration options */
 //#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
-#define TSCH_CONF_WITH_LINK_SELECTOR 0 /* Orchestra requires per-packet link selection */
+#define TSCH_CONF_WITH_LINK_SELECTOR 1 /* Orchestra requires per-packet link selection */
 /* Orchestra callbacks */
 #define TSCH_CALLBACK_NEW_TIME_SOURCE orchestra_callback_new_time_source
 #define TSCH_CALLBACK_PACKET_READY orchestra_callback_packet_ready
