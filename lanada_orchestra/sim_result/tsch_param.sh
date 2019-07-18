@@ -112,7 +112,7 @@ uint32_t recv_ASN;
 #undef ORCHESTRA_CONF_RULES
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	
 #if ORCHESTRA_CONF_EBSF_PERIOD > 0
-#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
 #else
 #define ORCHESTRA_CONF_RULES { &default_common, &unicast_per_neighbor_rpl_storing_traffic_adaptive } /* Orchestra in non-storing */
 #endif

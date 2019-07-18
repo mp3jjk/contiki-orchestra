@@ -310,7 +310,7 @@ struct rpl_dio {
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
   uint8_t parent_id;
   uint8_t received_child_num;
-  //int recv_TX_slot_assignment;
+  int recv_TX_slot_assignment;
   uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD];
   uint8_t recv_n_SF;
   uint8_t recv_TX_slot_changed;
