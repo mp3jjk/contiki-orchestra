@@ -22,6 +22,8 @@ avoid=$1; shift
 sf_eb=$1; shift
 sf_common=$1; shift
 replace=$1; shift
+static=$1;
+
 
 SBS_STRING=( rbs sbs )
 POISSON_STRING=( periodic poisson )
@@ -61,7 +63,7 @@ mkdir -p $IN_DIR; cd $IN_DIR
 ../../tsch_param.sh $app 1 $orchestra $paas $sf_length \
 									 $sf_length $max_rt $poisson $traffic_param $traffic_param \
 									 $hetero $sbs $sched_param $sched_param $req \
-									 $avoid $sf_eb $sf_common
+									 $avoid $sf_eb $sf_common $static
 
 cd $CONTIKI/lanada_$app
 make clean TARGET=cooja

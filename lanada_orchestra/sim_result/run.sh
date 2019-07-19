@@ -5,7 +5,7 @@ label=PAASLXAX #**
 tsch=1 # Whether Async(0) or TSCH(1)
 orchestra=1 # Whether Minimal(0) or Orchestra(1) **
 sbs=1 # Whether RBS(0) or SBS(1) **
-paas=1 # Whether basic(0) or PAAS(1) **
+paas=0 # Whether basic(0) or PAAS(1) **
 hetero=0
 poisson=1 # Whether Periodic(0) or Poisson(1) **
 req=95 # reliability contraint
@@ -15,16 +15,17 @@ avoid=1 # Avoid the situation that node id is multiple of slotframe length
 CHECK_RATE=( 8 )
 
 SEED=( 1 2 ) #**
-TRAFFIC_PARAM=( 10 ) # rate or period
-TOPOLOGY=( random_40 ) # tree_c4_21 grid_36 random_50 child_4 **
+TRAFFIC_PARAM=( 20 ) # rate or period
+TOPOLOGY=( random_40 ) # tree_c4_21 grid_36 random_40 child_4 **
 SCHED_PARAM=( 0 ) # n-pbs(paas) or n-sf(ours)
 SF_LENGTH=( 19 ) # SlotFrame length for Orchestra and paas **
-SF_EB=( 10 ) # How many times the length of EB slotframe is the length of unicast slotframe.
+SF_EB=( 10 20 ) # How many times the length of EB slotframe is the length of unicast slotframe.
 SF_COMMON=( 2 ) # How many times the length of EB slotframe is the length of unicast slotframe.
 MAX_RT=( 3 ) # maximum retries
+STATIC=( 0 1 )
 
-app=$1
-replace=$2
+app=${1:-1} # Defualt 1
+replace=${2:-0} # Default 0.
 
 # Async sim
 
@@ -47,10 +48,12 @@ else
 						for max_rt in "${MAX_RT[@]}";	do
 							for sf_eb in "${SF_EB[@]}"; do
 								for sf_common in "${SF_COMMON[@]}"; do
-									./tsch_run.sh $label $orchestra $sbs $paas $hetero \
-																$poisson $req $sim_time $seed $traffic_param \
-																$topology $sched_param $sf_length $max_rt $app \
-																$avoid $sf_eb $sf_common $replace
+									for static in "${STATIC[@]}"; do
+										./tsch_run.sh $label $orchestra $sbs $paas $hetero \
+																	$poisson $req $sim_time $seed $traffic_param \
+																	$topology $sched_param $sf_length $max_rt $app \
+																	$avoid $sf_eb $sf_common $replace $static 
+									done
 								done
 							done
 						done
