@@ -826,6 +826,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   uip_icmp6_send(uc_addr, ICMP6_RPL, RPL_CODE_DIO, pos);
 #else /* RPL_LEAF_ONLY */
   /* Unicast requests get unicast replies! */
+  uc_addr = NULL;
   if(uc_addr == NULL) {
     PRINTF("RPL: Sending a multicast-DIO with rank %u\n",
            (unsigned)instance->current_dag->rank);
@@ -1493,7 +1494,6 @@ dao_output_target_seq(rpl_parent_t *parent, uip_ipaddr_t *prefix,
   PRINTF(" , parent ");
   PRINT6ADDR(parent_ipaddr);
   PRINTF("\n");
-
   if(dest_ipaddr != NULL) {
     uip_icmp6_send(dest_ipaddr, ICMP6_RPL, RPL_CODE_DAO, pos);
   }
