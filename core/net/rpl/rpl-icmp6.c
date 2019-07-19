@@ -711,9 +711,9 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 		  id_child = list_ordered_child[i];
 #if OUR_ADAPTIVE_AVOID_SLOT0
 		  if(id_child % ORCHESTRA_UNICAST_PERIOD == 0) {
-			  avoid_slot0 = 1;
+			  avoid_slot0++;
 		  }
-		  TX_slot_assignment |= 1 << (id_child + avoid_slot0 % ORCHESTRA_UNICAST_PERIOD);
+		  TX_slot_assignment |= 1 << ((id_child + avoid_slot0) % ORCHESTRA_UNICAST_PERIOD);
 #else
 		  TX_slot_assignment |= 1 << (id_child % ORCHESTRA_UNICAST_PERIOD);
 #endif
