@@ -699,6 +699,9 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   n_SF = 1; // Not implemented yet; Given by some ways
 #endif /* HARD_CODED_n_SF */
   if(child_changed == 1 && state_traffic_adaptive_RX) { // Child list is changed
+#if OUR_ADAPTIVE_AVOID_SLOT0
+	  uint8_t avoid_slot0 = 0;
+#endif
 	  rpl_get_child_all(list_ordered_child); // Get ordered child list
 	  child_changed = 0;
 	  TX_slot_assignment = 0; // Initialize slot assignment due to child change
@@ -706,7 +709,14 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  printf("my_child_number: %d n_PBS: %d\n",my_child_number,n_PBS);
 	  for(i = 0; i < my_child_number; i+=n_PBS) {
 		  id_child = list_ordered_child[i];
+#if OUR_ADAPTIVE_AVOID_SLOT0
+		  if(id_child % ORCHESTRA_UNICAST_PERIOD == 0) {
+			  avoid_slot0 = 1;
+		  }
+		  TX_slot_assignment |= 1 << (id_child + avoid_slot0 % ORCHESTRA_UNICAST_PERIOD);
+#else
 		  TX_slot_assignment |= 1 << (id_child % ORCHESTRA_UNICAST_PERIOD);
+#endif
 	  }
 //	  printf("TX_slot: %x\n",TX_slot_assignment);
 	  TX_slot_changed = 1;

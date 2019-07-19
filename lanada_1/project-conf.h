@@ -19,7 +19,8 @@
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
-#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
+//#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
+#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
@@ -43,7 +44,7 @@ uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = P
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
 /* Second parameterization */
-#define OUR_ADAPTIVE_AVOID_SLOT0 0
+#define OUR_ADAPTIVE_AVOID_SLOT0 1
 #define HARD_CODED_n_SF		0 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
