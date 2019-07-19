@@ -6,6 +6,7 @@
 /* Set to run orchestra */
 #define WITH_ORCHESTRA 1
 #define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define OUR_STATIC_ROUTING	0 // Make routing static from stage 2
 
 #if WITH_ORCHESTRA
 	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres 

@@ -1561,6 +1561,12 @@ rpl_process_parent_event(rpl_instance_t *instance, rpl_parent_t *p)
   old_rank = instance->current_dag->rank;
 #endif /* DEBUG */
 
+#if OUR_STATIC_ROUTING
+  if(current_stage_number >= 2) {
+	  return 0;
+  }
+#endif
+
   return_value = 1;
 
   if(RPL_IS_STORING(instance)
