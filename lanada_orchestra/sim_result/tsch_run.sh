@@ -18,10 +18,10 @@ sf_length=$1; shift
 max_rt=$1; shift
 app=$1; shift
 
-replace=$1; shift
 avoid=$1; shift
 sf_eb=$1; shift
 sf_common=$1; shift
+replace=$1; shift
 
 SBS_STRING=( rbs sbs )
 POISSON_STRING=( periodic poisson )
