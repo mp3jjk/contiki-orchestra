@@ -30,16 +30,16 @@ POISSON_STRING=( periodic poisson )
 HETERO_STRING=( homo hetero )
 
 CONTIKI=/media/user/Harddisk/contiki-orchestra
-DIR=${label}_${topology}_${POISSON_STRING[$poisson]}_${HETERO_STRING[$hetero]}_${traffic_param}_${seed}
+DIR=${label}_${topology}_${HETERO_STRING[$hetero]}_${POISSON_STRING[$poisson]}${traffic_param}_${seed}
 
 if [ $orchestra -eq 1 ]; then
 	if [ $paas -eq 1 ]; then # paas
-		IN_DIR=paas_${SBS_STRING[${sbs}]}_n_pbs_${sched_param}_sf_length_${sf_length}_max_rt_${max_rt}_req_${req}
+		IN_DIR=paas_n_pbs${sched_param}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}
 	else # orchestra
-		IN_DIR=orchestra_${SBS_STRING[${sbs}]}_sf_length_${sf_length}_max_rt_${max_rt}_req_${req}
+		IN_DIR=orchestra_${SBS_STRING[${sbs}]}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}
 	fi
 else #minimal
-	IN_DIR=minimal_sf_length_${sf_length}_max_rt_${max_rt}_req_${req}
+	IN_DIR=minimal_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}
 fi
 
 echo "tsch simulation"
