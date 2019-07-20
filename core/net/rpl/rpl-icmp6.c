@@ -531,6 +531,7 @@ dio_input(void)
 //  			  printf("ADD link\n");
   			  RPL_CALLBACK_ADD_LINK(timeslot, 1);
   			  slot_assigned = 1;
+  			  my_SF = timeslot;
   			  break;
   		  }
   		  my_SF_index++;
@@ -560,7 +561,7 @@ dio_input(void)
   	  else {
   	  	  recv_TX_slot_changed = 0;
   	  }
-  	  my_SF = my_SF_index % n_SF;
+//  	  my_SF = my_SF_index % n_SF;
 	  //  	  printf("my_SF %d\n",my_SF);
   }
 
