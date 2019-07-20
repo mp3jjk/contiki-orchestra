@@ -5,7 +5,7 @@
 
 /* Set to run orchestra */
 #define WITH_ORCHESTRA 1
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 #define OUR_STATIC_ROUTING  0 // Make routing static from stage 2
 
 #if WITH_ORCHESTRA
@@ -35,7 +35,7 @@
 
 #define HETEROGENEOUS_TRAFFIC 0
 
-#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
+#define ORCHESTRA_CONF_UNICAST_SENDER_BASED	0
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0

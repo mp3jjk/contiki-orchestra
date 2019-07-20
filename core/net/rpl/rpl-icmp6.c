@@ -281,7 +281,6 @@ dis_output(uip_ipaddr_t *addr)
   PRINTF("RPL: Sending a DIS to ");
   PRINT6ADDR(addr);
   PRINTF("\n");
-
   uip_icmp6_send(addr, ICMP6_RPL, RPL_CODE_DIS, 2);
 }
 /*---------------------------------------------------------------------------*/
@@ -614,7 +613,6 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
     return;
   }
 #endif /* RPL_LEAF_ONLY */
-//  printf("DEBUG2: DIO output\n");
   /* DAG Information Object */
   pos = 0;
 
@@ -1374,7 +1372,6 @@ dao_output(rpl_parent_t *parent, uint8_t lifetime)
 
   /* Sending a DAO with own prefix as target */
 //	flag_dao_output = 1;
-//	printf("DEBUG2: DAO output\n");
   dao_output_target(parent, &prefix, lifetime);
 }
 /*---------------------------------------------------------------------------*/
