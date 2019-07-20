@@ -377,7 +377,12 @@ tsch_queue_get_packet_for_nbr(const struct tsch_neighbor *n, struct tsch_link *l
           return NULL;
         }
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
-
+        if(packet_attr_timeslot != 0xffff && (packet_attr_timeslot != link->timeslot && packet_attr_timeslot != (int)prev_TX_slot)) {
+          return NULL;
+        }
+        if(packet_attr_timeslot == prev_TX_slot) {
+        	prev_TX_slot = 0xff;
+        }
 #else
         if(packet_attr_timeslot != 0xffff && packet_attr_timeslot != link->timeslot) {
           return NULL;

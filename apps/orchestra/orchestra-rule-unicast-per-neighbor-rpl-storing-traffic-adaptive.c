@@ -259,7 +259,7 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 				tsch_schedule_remove_link(sf_unicast, l);
 			}
 			prev_TX_slot = current_TX_slot;
-			current_TX_slot = -1;
+//			current_TX_slot = -1;
 		}
 		else {
 //			printf("remove TX_slot: %d\n",timeslot);
@@ -277,7 +277,7 @@ remove_uc_link_by_timeslot(uint8_t timeslot, uint8_t flag)
 				tsch_schedule_remove_link(sf_unicast, l);
 			}
 			prev_TX_slot = current_TX_slot;
-			current_TX_slot = -1;
+//			current_TX_slot = -1;
 		}
 	}
 }
@@ -349,7 +349,7 @@ init(uint16_t sf_handle)
             LINK_TYPE_NORMAL, &tsch_broadcast_address,
             timeslot, channel_offset);
   current_TX_slot = timeslot;
-  prev_TX_slot = current_TX_slot;
+  prev_TX_slot = 0xff;
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule unicast_per_neighbor_rpl_storing_traffic_adaptive = {
