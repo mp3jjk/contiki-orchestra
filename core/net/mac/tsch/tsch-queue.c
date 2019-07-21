@@ -380,7 +380,7 @@ tsch_queue_get_packet_for_nbr(const struct tsch_neighbor *n, struct tsch_link *l
         if(packet_attr_timeslot != 0xffff && (packet_attr_timeslot != link->timeslot && packet_attr_timeslot != (int)prev_TX_slot)) {
           return NULL;
         }
-        if(packet_attr_timeslot == prev_TX_slot) {
+        if(packet_attr_timeslot == prev_TX_slot && current_stage_number >= 2) {
         	prev_TX_slot = 0xff;
         }
 #else
