@@ -8,7 +8,7 @@
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
     <title>tree_c2_h5_t31</title>
-    <randomseed>1</randomseed>
+    <randomseed>5</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
@@ -327,7 +327,7 @@
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-        <id>14</id>
+        <id>19</id>
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiRadio
@@ -432,7 +432,7 @@
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-        <id>19</id>
+        <id>14</id>
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiRadio
@@ -588,7 +588,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(10800000);
+TIMEOUT(30000000);
 
 var count = 0;
 

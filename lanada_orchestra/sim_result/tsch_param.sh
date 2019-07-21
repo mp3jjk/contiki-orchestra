@@ -47,6 +47,8 @@ uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = P
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
+uint8_t myaddr;
+
 /* Second parameterization */
 #define OUR_ADAPTIVE_AVOID_SLOT0 ${16}
 #define HARD_CODED_n_SF		${14} // Hard coded nSF

@@ -327,7 +327,7 @@
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-        <id>14</id>
+        <id>19</id>
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiRadio
@@ -432,7 +432,7 @@
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiMoteID
-        <id>19</id>
+        <id>14</id>
       </interface_config>
       <interface_config>
         org.contikios.cooja.contikimote.interfaces.ContikiRadio
@@ -588,7 +588,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(1100000);
+TIMEOUT(100000000);
 
 var count = 0;
 

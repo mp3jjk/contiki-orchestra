@@ -12,16 +12,16 @@ avoid=1 # Avoid the situation that node id is multiple of slotframe length
 
 CHECK_RATE=( 8 )
 
-SEED=( 1 2 3 4 5 6 ) #**
-TRAFFIC_PARAM=( 10 20 40 80 ) # rate or period
-TOPOLOGY=( random_40 tree_c4_21 ) # tree_c4_21 grid_36 random_40 child_4 **
+SEED=( 3 ) #**
+TRAFFIC_PARAM=( 10 ) # rate or period
+TOPOLOGY=( random_40 ) # tree_c4_21 grid_36 random_40 child_4 **
 SCHED_PARAM=( 0 ) # n-pbs(paas) or n-sf(ours)
 SF_LENGTH=( 19 ) # SlotFrame length for Orchestra and paas **
 SF_EB=( 20 ) # How many times the length of EB slotframe is the length of unicast slotframe.
 SF_COMMON=( 2 ) # How many times the length of EB slotframe is the length of unicast slotframe.
 MAX_RT=( 3 ) # maximum retries
 STATIC=( 0 )
-REQ=( 95 98 ) # reliability contraint
+REQ=( 98 ) # reliability contraint
 
 app=${1:-1} # Defualt 1
 replace=${2:-0} # Default 0.
