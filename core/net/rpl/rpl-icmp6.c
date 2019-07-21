@@ -507,16 +507,21 @@ dio_input(void)
 
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
   if(state_traffic_adaptive_TX && recv_TX_slot_changed == 1) { // Receive changed TX_slot_assignment, update slots
+	  printf("DEBUG TX update slot\n");
   	  uint8_t slot_assigned = 0, index = 0;
-  	  uint8_t my_id = uip_ds6_get_link_local(-1)->ipaddr.u8[15];
+//  	  uint8_t my_id = uip_ds6_get_link_local(-1)->ipaddr.u8[15];
   	  uint8_t my_SF_index = 0;
-  	  uint8_t timeslot = my_id % ORCHESTRA_UNICAST_PERIOD;
+#if OUR_ADAPTIVE_AVOID_SLOT0
+  	  uint8_t timeslot = myaddr % ORCHESTRA_UNICAST_PERIOD != 0 ? myaddr % ORCHESTRA_UNICAST_PERIOD : 1;
+#else
+  	 uint8_t timeslot = myaddr % ORCHESTRA_UNICAST_PERIOD;
+#endif
   	  uint8_t not_in_list = 0;
   	  /* Remove current installed TX slot */
   	  RPL_CALLBACK_REMOVE_LINK(-1, 1); // timeslot = -1 with flag = 1 means remove TX slot to the preferred parent
 //  	  for(i = timeslot; i >= 0; i--) {
   	  for(index=0; index < num_sibling; index++) {
-  		  if(recv_list_ordered_child[index] == my_id) {
+  		  if(recv_list_ordered_child[index] == myaddr) {
   			  break;
   		  }
   	  }
@@ -667,6 +672,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 	  printf("Start TRAFFIC ADAPTIVE of Receiver\n");
   }
 #else
+//	  printf("TI %f, state %d\n",measured_traffic_intensity, state_traffic_adaptive_RX);
   if(measured_traffic_intensity != 0 && state_traffic_adaptive_RX == 0) {
 	  state_traffic_adaptive_RX = 1; // After getting measured_traffic_intensity start to TRAFFIC ADAPTIVE MODE as a RX
 	  // Calculate n_PBS based on our analysis
@@ -698,6 +704,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
   n_SF = 1; // Not implemented yet; Given by some ways
 #endif /* HARD_CODED_n_SF */
   if(child_changed == 1 && state_traffic_adaptive_RX) { // Child list is changed
+	  printf("DEBUG RX update slot\n");
 #if OUR_ADAPTIVE_AVOID_SLOT0
 	  uint8_t avoid_slot0 = 0;
 #endif
@@ -841,7 +848,7 @@ dio_output(rpl_instance_t *instance, uip_ipaddr_t *uc_addr)
 #endif /* RPL_LEAF_ONLY */
 //  flag_dio_output = 1;
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE && ORCHESTRA_UNICAST_SENDER_BASED
-  if(TX_slot_changed == 1) {
+  if(TX_slot_changed  == 1) {
 	  uint8_t i, timeslot = 0;
 	  for(i = 0; i < my_child_number; i++) {
 		  timeslot = list_ordered_child[i] % ORCHESTRA_UNICAST_PERIOD;

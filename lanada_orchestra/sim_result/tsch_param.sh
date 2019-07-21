@@ -97,6 +97,9 @@ uint32_t recv_ASN;
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
 #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot
 
+/* To enable transmit DIO for some cases */
+#define RPL_CONF_DIO_REDUNDANCY		20
+
 /* Set to enable TSCH security */
 #ifndef WITH_SECURITY
 #define WITH_SECURITY 0

@@ -91,7 +91,7 @@ AUTOSTART_PROCESSES(&node_process);
 /*---------------------------------------------------------------------------*/
 static int seq_id;
 static int reply;
-static uint8_t myaddr;
+//static uint8_t myaddr;
 
 static void
 tcpip_handler(void)

@@ -91,7 +91,7 @@ AUTOSTART_PROCESSES(&node_process);
 /*---------------------------------------------------------------------------*/
 static int seq_id;
 static int reply;
-static uint8_t myaddr;
+//static uint8_t myaddr;
 
 static void
 tcpip_handler(void)
@@ -355,6 +355,8 @@ PROCESS_THREAD(node_process, ev, data)
   n_PBS = 1; // In the init state, operate in n_PBS = 1
   n_SF = 1;
   my_SF = 0;
+//  flag_dao_output = 0;
+//  flag_dio_output = 0;
   /* 3 possible roles:
    * - role_6ln: simple node, will join any network, secured or not
    * - role_6dr: DAG root, will advertise (unsecured) beacons
