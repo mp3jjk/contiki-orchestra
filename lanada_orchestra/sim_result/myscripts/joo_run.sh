@@ -18,16 +18,14 @@ for req in "${REQ[@]}"; do
 										DIR=${label}_${topology}_${HETERO_STRING[$hetero]}_${POISSON_STRING[$poisson]}${traffic_param}
 										if [ $orchestra -eq 1 ]; then
 											if [ $paas -eq 1 ]; then # paas
-
-												IN_DIR=paas_n_pbs${sched_param}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_${seed}
+												IN_DIR=paas_n_pbs${sched_param}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_seed${seed}
 											else # orchestra
-												IN_DIR=orchestra_${SBS_STRING[${sbs}]}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_${seed}
+												IN_DIR=orchestra_${SBS_STRING[${sbs}]}_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_seed${seed}
 											fi
 										else #minimal
-											IN_DIR=minimal_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_${seed}
+											IN_DIR=minimal_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_seed${seed}
 										fi
 										FILE=${DIR}_${IN_DIR}
-
 										echo "tsch simulation"
 
 										#sed -i 's/\#define DUAL_RADIO 0/\#define DUAL_RADIO 1/g' $CONTIKI/platform/cooja/contiki-conf.h
@@ -53,7 +51,7 @@ for req in "${REQ[@]}"; do
 										mv COOJA.testlog $FILE
 
 										
-										./joo_parsing.sh $label $num_node
+										# ./joo_parsing.sh $label $num_node
 
 										echo "Simulation finished"
 									done

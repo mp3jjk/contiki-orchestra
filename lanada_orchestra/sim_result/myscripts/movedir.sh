@@ -28,12 +28,12 @@ for req in "${REQ[@]}"; do
 												IN_DIR=minimal_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}
 											fi
 											dir=${DIR}_${seed}/${IN_DIR}
-											dir2=${DIR}_${IN_DIR}
+											NAME=${DIR}_${IN_DIR}
 											# Check whether logfile exists
 											echo $dir
 											if [ -d ${dir} ]; then
 												print 1
-												cp ${dir}/COOJA.testlog log_${dir2}_${seed}
+												cp ${dir}/COOJA.testlog log_${FILE}_seed${seed}
 											fi
 										done
 									done
