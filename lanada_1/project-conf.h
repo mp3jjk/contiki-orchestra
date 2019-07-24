@@ -5,7 +5,7 @@
 
 /* Set to run orchestra */
 #define WITH_ORCHESTRA 1
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
 #define OUR_STATIC_ROUTING 0 // Make routing static from stage 2
 
 #if WITH_ORCHESTRA
@@ -64,7 +64,7 @@ double averaged_traffic_intensity;
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 98 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
 
 #define TSCH_LENGTH_PHASE 500
 #define TSCH_LENGTH_STAGE 30

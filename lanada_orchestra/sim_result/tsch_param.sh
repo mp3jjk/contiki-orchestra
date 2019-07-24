@@ -270,4 +270,4 @@ uint32_t recv_ASN;
 #define COOJA_CONF_SIMULATE_TURNAROUND 0
 #endif /* CONTIKI_TARGET_COOJA */
 
-#endif /* __PROJECT_CONF_H__ */" > ../../../../lanada_${app}/project-conf.h
+#endif /* __PROJECT_CONF_H__ */" > ../../lanada_${app}/project-conf.h
