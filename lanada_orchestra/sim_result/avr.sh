@@ -16,7 +16,8 @@ fi
 
 # Parse category information to temp3.txt file 
 grep "#" temp.txt | awk '{print $2}' > temp2.txt
-awk -F 'seed' '{print $1}' temp2.txt | awk '!x[$0]++' > temp3.txt 
+# awk -F 'seed' '{print $1}' temp2.txt | awk '!x[$0]++' > temp3.txt 
+awk '{ print substr($1, 1, length($1)-1) }' temp2.txt | awk '!x[$0]++' > temp3.txt 
 # sed 's/_//g' temp.txt | sed '/#/d' > temp4.txt
 
 # Loop with category
