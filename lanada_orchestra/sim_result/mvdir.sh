@@ -6,7 +6,7 @@ old=$2
 for DIR in ${1}*; do
 	cd $DIR
 	for IN_DIR in *; do
-		if [ $old -e 1 ]; then
+		if [ $old -eq 1 ]; then
 			FILE_F=$(echo $DIR | awk -F'_seed' '{print $1}')
 		else
 			seed=$(echo $DIR | awk '{ print substr($1, length($1)) }')

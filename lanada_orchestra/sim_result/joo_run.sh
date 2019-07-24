@@ -5,6 +5,8 @@
 app=${1:-1} # Defualt 1
 replace=${2:-0} # Default 0.
 
+SEED=(1 2)
+
 for req in "${REQ[@]}"; do
 	for traffic_param in "${TRAFFIC_PARAM[@]}";	do
 		for topology in "${TOPOLOGY[@]}";	do
