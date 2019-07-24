@@ -3,9 +3,9 @@
 . var.sh
 
 app=${1:-1} # Defualt 1
-replace=${2:-0} # Default 0.
+#replace=${2:-0} # Default 0.
 
-SEED=(1 2)
+SEED=($2 $3)
 
 for req in "${REQ[@]}"; do
 	for traffic_param in "${TRAFFIC_PARAM[@]}";	do
