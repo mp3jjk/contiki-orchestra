@@ -24,7 +24,6 @@ BEGIN {
 	}
 }
 END {
-	print count[1]
 	for(node_id=1; node_id<=num_node; node_id++) {
 		if (count[node_id]==0) printf("%d ", 0)
 		else printf("%10d", sum_delay[node_id]/count[node_id])
