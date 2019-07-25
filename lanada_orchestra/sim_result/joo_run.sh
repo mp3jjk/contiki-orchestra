@@ -3,9 +3,9 @@
 . var.sh
 
 app=${1:-1} # Defualt 1
-replace=${2:-0} # Default 0.
+#replace=${2:-0} # Default 0.
 
-SEED=(1 2)
+SEED=($2 $3)
 
 for req in "${REQ[@]}"; do
 	for traffic_param in "${TRAFFIC_PARAM[@]}";	do
@@ -28,6 +28,8 @@ for req in "${REQ[@]}"; do
 											IN_DIR=minimal_sf_length${sf_length}_sf_eb${sf_eb}_sf_common${sf_common}_static${static}_avoid${avoid}_max_rt${max_rt}_req${req}_seed${seed}
 										fi
 										FILE=${DIR}_${IN_DIR}
+										mkdir dir_${FILE}
+										
 										echo "tsch simulation"
 
 										#sed -i 's/\#define DUAL_RADIO 0/\#define DUAL_RADIO 1/g' $CONTIKI/platform/cooja/contiki-conf.h
@@ -45,16 +47,15 @@ for req in "${REQ[@]}"; do
 																			 $avoid $sf_eb $sf_common $static
 
 										cd $CONTIKI/lanada_$app && make clean TARGET=cooja && cd -
+										cd dir_${FILE}
 
 										if [ ! -e COOJA.testlog ]; then
 												java -mx512m -jar ${CONTIKI}/tools/cooja_${app}/dist/cooja.jar -nogui=${CONTIKI}/lanada_orchestra/sim_script/${topology}_${app}.csc -contiki="${CONTIKI}"
 										fi
 
-										mv COOJA.testlog $FILE
-
-										
-										# ./joo_parsing.sh $label $num_node
-
+										mv COOJA.testlog ../${FILE}
+										cd ..
+										rm -r dir_${FILE}
 										echo "Simulation finished"
 									done
 								done

@@ -1,50 +1,57 @@
 #ifndef __PROJECT_CONF_H__
 #define __PROJECT_CONF_H__
 
-#define TSCH_ENABLED	1
+#define TSCH_ENABLED 1	
 
 /* Set to run orchestra */
-#ifndef WITH_ORCHESTRA
 #define WITH_ORCHESTRA 1
-#endif /* WITH_ORCHESTRA */
+#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	0 // Traffic adaptive mode is enabled
+#define OUR_STATIC_ROUTING 0 // Make routing static from stage 2
 
-#if WITH_ORACHESTRA == 0
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
-#endif
-
-#if WITH_ORCHESTRA == 1
-#define ORCHESTRA_CONF_UNICAST_PERIOD 11
-#elif TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL == 1
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 7
+#if WITH_ORCHESTRA
+	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres 
+	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
+	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
+	#define ORCHESTRA_CONF_EBSF_PERIOD 20 * ORCHESTRA_CONF_UNICAST_PERIOD
+#else
+	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1
+	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 19
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
-#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
+//#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
+#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
-#define ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	1 // Traffic adaptive mode is enabled
 
-#define TRAFFIC_PATTERN 0	// 0: Periodic, 1: Event-driven
+#define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
+
+#define TRAFFIC_PATTERN 1	// 0: Periodic, 1: poisson
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD	30
+#define PERIOD 10
 #else	// If event driven (assume poisson)
 #define INTENSITY 10 // lambda
 #endif
 
+#define HETEROGENEOUS_TRAFFIC 0
+
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
 /* First parameterization */
-#define HARD_CODED_n_PBS	2 // If you want to use hard coded n-PBS value, define it except 0
+#define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
 
 uint8_t n_PBS; // n denotes the number of TX assigned to a slot, e.g., 1-PBS = PBS, 2-PBS = 2TX per slot, Inf(-1 in the code)-PBS = RBS
 
 uint8_t received_n_PBS; // For practical scenario, received_n_PBS from EB Not implemented yet
 
+uint8_t myaddr;
+
 /* Second parameterization */
-#define HARD_CODED_n_SF		2 // Hard coded nSF
+#define OUR_ADAPTIVE_AVOID_SLOT0 1
+#define HARD_CODED_n_SF		0 // Hard coded nSF
 uint8_t n_SF; // among n TXs in a slot, the number of Slotframes divided into
 uint8_t my_SF; // The Slotframe that a node belongs to
-
+uint8_t flag_dao_output;
 uint8_t state_traffic_adaptive_TX; // Traffic adaptive mode as a TX is started when receive num_sibling
 uint8_t state_traffic_adaptive_RX; // Traffic adaptive mode as a RX is started when transmit my_child_numbersss
 
@@ -53,11 +60,21 @@ uint32_t accumulated_traffic_intensity;
 //uint32_t traffic_intensity[TRAFFIC_INTENSITY_WINDOW_SIZE];
 double averaged_traffic_intensity;
 
-#define NUM_TRAFFIC_INTENSITY	10
+#define NUM_TRAFFIC_INTENSITY	5
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 90 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
+
+#define TSCH_LENGTH_PHASE 500
+#define TSCH_LENGTH_STAGE 30
+uint32_t slotframe_number;
+uint8_t current_stage_number;
+uint16_t current_phase_number;
+uint8_t is_update_phase;
+
+uint32_t tx_ASN;
+uint32_t recv_ASN;
 
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
@@ -79,6 +96,9 @@ double measured_traffic_intensity;
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
 #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot
 
+/* To enable transmit DIO for some cases */
+#define RPL_CONF_DIO_REDUNDANCY		20
+
 /* Set to enable TSCH security */
 #ifndef WITH_SECURITY
 #define WITH_SECURITY 0
@@ -94,10 +114,18 @@ double measured_traffic_intensity;
 #undef RPL_CONF_MOP
 #define RPL_CONF_MOP RPL_MOP_STORING_NO_MULTICAST /* Mode of operation*/
 #undef ORCHESTRA_CONF_RULES
-#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
+#if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE	
+#if ORCHESTRA_CONF_EBSF_PERIOD > 0
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing_traffic_adaptive, &default_common } /* Orchestra in non-storing */
 #else
+#define ORCHESTRA_CONF_RULES { &default_common, &unicast_per_neighbor_rpl_storing_traffic_adaptive } /* Orchestra in non-storing */
+#endif
+#else
+#if ORCHESTRA_CONF_EBSF_PERIOD > 0
 #define ORCHESTRA_CONF_RULES { &eb_per_time_source, &unicast_per_neighbor_rpl_storing, &default_common } /* Orchestra in non-storing */
+#else
+#define ORCHESTRA_CONF_RULES { &default_common, &unicast_per_neighbor_rpl_storing} /* Orchestra in non-storing */
+#endif
 #endif
 
 #define	RPL_CONF_OF_OCP RPL_OCP_OF0
@@ -169,8 +197,6 @@ double measured_traffic_intensity;
 
 /* 6TiSCH minimal schedule length.
  * Larger values result in less frequent active slots: reduces capacity and saves energy. */
-#undef TSCH_SCHEDULE_CONF_DEFAULT_LENGTH
-#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 3
 
 #if WITH_SECURITY
 
@@ -189,7 +215,7 @@ double measured_traffic_intensity;
 #if WITH_ORCHESTRA
 
 /* See apps/orchestra/README.md for more Orchestra configuration options */
-#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
+//#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 /* No 6TiSCH minimal schedule */
 #define TSCH_CONF_WITH_LINK_SELECTOR 1 /* Orchestra requires per-packet link selection */
 /* Orchestra callbacks */
 #define TSCH_CALLBACK_NEW_TIME_SOURCE orchestra_callback_new_time_source
