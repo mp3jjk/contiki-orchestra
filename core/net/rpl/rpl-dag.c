@@ -988,14 +988,7 @@ best_parent(rpl_dag_t *dag, int fresh_only)
   of = dag->instance->of;
   /* Search for the best parent according to the OF */
   for(p = nbr_table_head(rpl_parents); p != NULL; p = nbr_table_next(rpl_parents, p)) {
-#if EXPERIMENT == 1
-  if(p != NULL && p->dag == dag) {
-	  if(rpl_get_nbr(p)->ipaddr.u8[15] == routing_topology[uip_ds6_get_link_local(-1)->ipaddr.u8[15]]) {
-		  best = p;
-		  break;
-	  }
-  }
-#endif
+
 
     /* Exclude parents from other DAGs or announcing an infinite rank */
     if(p->dag != dag || p->rank == INFINITE_RANK || p->rank < ROOT_RANK(dag->instance)) {
@@ -1019,7 +1012,11 @@ best_parent(rpl_dag_t *dag, int fresh_only)
     }
     }
 #endif /* UIP_ND6_SEND_NS */
-
+#if EXPERIMENT
+    if(rpl_get_nbr(p)->ipaddr.u8[15] != topology_parent[myaddr-1]) {
+    	continue;
+    }
+#endif
     /* Now we have an acceptable parent, check if it is the new best */
     /*if(myaddr > MAX_NUMBER_CHILD) {
     	if(rpl_get_nbr(p)->ipaddr.u8[15] < myaddr-MAX_NUMBER_CHILD || rpl_get_nbr(p)->ipaddr.u8[15] > myaddr) {

@@ -186,10 +186,10 @@ send_packet(void *ptr)
 		} else {
 			parent_temp = 0;
 		}
-	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
-				 parent_temp, tx_ASN);
-	  uip_udp_packet_sendto(client_conn, buf, 50,
-	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
+		sprintf(buf,"DATA id:%04u from:%03uX E:%u P:%u ASN:%012uZ",seq_id,myaddr,(int)get_current_energy(),\
+				  parent_temp, tsch_current_asn.ls4b);
+		uip_udp_packet_sendto(app_conn, buf, 50,
+				&server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#else
 
 		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
@@ -384,6 +384,11 @@ PROCESS_THREAD(node_process, ev, data)
   myaddr = IEEE_ADDR_NODE_ID;
   coordinator_candidate = (myaddr == 1);
 #endif
+#endif
+
+#if EXPERIMENT
+  uint8_t temp_parent[NUM_NODES] = {0,1,2,3};
+  memcpy(topology_parent, temp_parent, sizeof(uint8_t)*NUM_NODES);
 #endif
 
 

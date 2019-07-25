@@ -386,6 +386,11 @@ PROCESS_THREAD(node_process, ev, data)
 #endif
 #endif
 
+#if EXPERIMENT
+  uint8_t temp_parent[NUM_NODES] = {0,1,2,3};
+  memcpy(topology_parent, temp_parent, sizeof(uint8_t)*NUM_NODES);
+#endif
+
 
   if(coordinator_candidate) {
     if(LLSEC802154_ENABLED) {

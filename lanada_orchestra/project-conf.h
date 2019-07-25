@@ -37,6 +37,20 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
+#define EXPERIMENT 1
+#if EXPERIMENT == 1
+#define NUM_NODES	4
+uint8_t topology_parent[NUM_NODES];
+#define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 15000
+#define CC1200_CONF_USE_GPIO2 0
+#define NETSTACK_CONF_RADIO cc2538_rf_driver
+#define CC2538_RF_CONF_TX_POWER	0xFF // 0xFF 7dBm ~
+//#define TSCH_LOG_CONF_LEVEL	2
+#else
+#define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 10000
+#endif
+
+
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
 
@@ -95,6 +109,9 @@ uint32_t recv_ASN;
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
 #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot
+
+/* To enable transmit DIO for some cases */
+#define RPL_CONF_DIO_REDUNDANCY		20
 
 /* Set to enable TSCH security */
 #ifndef WITH_SECURITY

@@ -37,6 +37,20 @@
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
+#define EXPERIMENT 1
+#if EXPERIMENT == 1
+#define NUM_NODES	4
+uint8_t topology_parent[NUM_NODES];
+#define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 15000
+#define CC1200_CONF_USE_GPIO2 0
+#define NETSTACK_CONF_RADIO cc2538_rf_driver
+#define CC2538_RF_CONF_TX_POWER	0xFF // 0xFF 7dBm ~
+//#define TSCH_LOG_CONF_LEVEL	2
+#else
+#define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 10000
+#endif
+
+
 /* First parameterization */
 #define HARD_CODED_n_PBS	0 // If you want to use hard coded n-PBS value, define it except 0
 
@@ -64,7 +78,7 @@ double averaged_traffic_intensity;
 double traffic_intensity_list[NUM_TRAFFIC_INTENSITY];
 double measured_traffic_intensity;
 
-#define RELIABILITY_CONSTRAINT 98 // delta in the paper, percent
+#define RELIABILITY_CONSTRAINT 95 // delta in the paper, percent
 
 #define TSCH_LENGTH_PHASE 500
 #define TSCH_LENGTH_STAGE 30
