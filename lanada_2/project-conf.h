@@ -28,9 +28,9 @@
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: poisson
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD 10
+#define PERIOD 80
 #else	// If event driven (assume poisson)
-#define INTENSITY 10 // lambda
+#define INTENSITY 80 // lambda
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 0
