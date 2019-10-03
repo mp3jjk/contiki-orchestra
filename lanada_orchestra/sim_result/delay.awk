@@ -11,15 +11,17 @@ BEGIN {
 }
 ( $3 ~ /app/ ) && ( $5 ~ /DATA/ ) { 
 	node_id=int($9)
-	data_id[node_id]=$7
-	time_send[node_id]=$1 
+	data_id=int($7)
+	time_send=int($1)
+	time_send_array[node_id, data_id]=time_send
 }
 ( $3 ~ /DATA/ ) && ( $4 ~ /recv/ ) { 
 	node_id=int($9) # int() can remove " ' "
-	if (data_id[node_id] == int($7)) {
-		time_recv[node_id]=$1
-		delay[node_id]=time_recv[node_id]-time_send[node_id]
-		sum_delay[node_id]+=delay[node_id]
+	data_id=int($7)
+	if (time_send_array[node_id, data_id] != 0) {
+		time_recv=$1
+		delay=time_recv-time_send_array[node_id, data_id]
+		sum_delay[node_id]+=delay
 		count[node_id]++
 	}
 }

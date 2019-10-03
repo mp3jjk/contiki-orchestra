@@ -62,6 +62,7 @@
 #if ORCHESTRA_TRAFFIC_ADAPTIVE_MODE
 #include "apps/orchestra/orchestra-conf.h"
 #endif
+#include "lib/random.h"
 
 #if TSCH_LOG_LEVEL >= 1
 #define DEBUG DEBUG_PRINT
@@ -1057,7 +1058,7 @@ PT_THREAD(tsch_slot_operation(struct rtimer *t, void *ptr))
         /* Hop channel */
         current_channel = tsch_calculate_channel(&tsch_current_asn, current_link->channel_offset);
         if(current_link->slotframe_handle == 0) { // Need to implement properly, for EB with single channel 20
-        	current_channel = 20;
+        	current_channel = TSCH_JOIN_HOPPING_SEQUENCE[random_rand() % sizeof(TSCH_JOIN_HOPPING_SEQUENCE)];
         }
 
         NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, current_channel);

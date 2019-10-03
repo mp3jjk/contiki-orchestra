@@ -9,35 +9,40 @@
 #define OUR_STATIC_ROUTING 0 // Make routing static from stage 2
 
 #if WITH_ORCHESTRA
-	#define ORCHESTRA_CONF_UNICAST_PERIOD 19 //If this is inside #if WITH_ORACHESTRA, error occurres 
+	#define ORCHESTRA_CONF_UNICAST_PERIOD 38 //If this is inside #if WITH_ORACHESTRA, error occurres 
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
 	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
 	#define ORCHESTRA_CONF_EBSF_PERIOD 20 * ORCHESTRA_CONF_UNICAST_PERIOD
 #else
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1
-	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 19
+	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 38
 #endif
 
 /* Orchestra Options */
 #define TSCH_CONF_JOIN_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1 // Do not hopping in the joining process
-//#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
-#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1
+#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_4_4
+//#define TSCH_CONF_DEFAULT_HOPPING_SEQUENCE TSCH_HOPPING_SEQUENCE_1_1
 #define RPL_MRHOF_CONF_SQUARED_ETX	1 // For reliable link choice, use squared ETX
 
 #define TSCH_CONF_MAC_MAX_FRAME_RETRIES 3 // Maximum number of retransmission in TSCH
 
 #define TRAFFIC_PATTERN 1	// 0: Periodic, 1: poisson
 #if TRAFFIC_PATTERN == 0 // If periodic
-#define PERIOD 10
+#define PERIOD 20
 #else	// If event driven (assume poisson)
-#define INTENSITY 10 // lambda
+#define INTENSITY 20 // lambda
 #endif
 
 #define HETEROGENEOUS_TRAFFIC 0
 
 #define ORCHESTRA_CONF_UNICAST_SENDER_BASED	1
 
-#define EXPERIMENT 1
+#if ZOUL_MOTE == 1 || IOTLAB_MOTE == 1
+#define EXPERIMENT		1
+#else
+#define EXPERIMENT		0
+#endif
+
 #if EXPERIMENT == 1
 #define NUM_NODES	4
 uint8_t topology_parent[NUM_NODES];
@@ -93,7 +98,7 @@ uint32_t recv_ASN;
 #if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
 
 #else 								// Deterministic TX slot assignment
-#define MAX_NUMBER_CHILD	8
+#define MAX_NUMBER_CHILD	30
 	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
 	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
 	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment

@@ -10,7 +10,7 @@ BEGIN { FS=" " }
 	#if (max_on_ratio < on_ratio )	max_on_ratio = on_ratio 
 }
 END {	
-	for (node_id = 1; node_id < num_node; node_id++) {
+	for (node_id = 1; node_id <= num_node; node_id++) {
 		printf("%*.*f", 10, 3, on_ratio[node_id]) 
 	}		
 	printf("\n")

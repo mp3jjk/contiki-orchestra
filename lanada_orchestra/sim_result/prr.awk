@@ -1,8 +1,12 @@
 # prr.awk
 # Input: COOJA.testlog
 # parameters: num_node
-# field: time/(int)/app//DATA/id/(int)/from/(int)/ASN/(int) : 11 fields
-# field: time/1/DATA/recv/'DATA/id/(int)/from/(int)' : 9 fields
+# field: time/(int)/app//DATA/
+#					id/(int)/from/(int)/ASN/
+#				(int) : 11 fields
+# field: time/1/DATA/recv/'DATA/
+#					id/(int)/from/(int)' 
+#          9 fields
 # Use: awk -f prr.awk num_node=40 (or 21) COOJA.testlog
 
 BEGIN { 
@@ -19,9 +23,7 @@ BEGIN {
 }
 ( $3 ~ /DATA/ ) && ( $4 ~ /recv/ ) { 
 	node_id=int($9) # int() can remove " ' "
-	if (data_id[node_id] == int($7)) {
-		count_recv[node_id]++
-	}
+	count_recv[node_id]++
 }
 END {
 	for(node_id=1; node_id<=num_node; node_id++) {
