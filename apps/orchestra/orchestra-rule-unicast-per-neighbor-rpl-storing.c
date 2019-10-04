@@ -70,9 +70,10 @@ get_node_timeslot(const linkaddr_t *addr)
 {
   if(addr != NULL && ORCHESTRA_UNICAST_PERIOD > 0) {
 #if OUR_ADAPTIVE_AVOID_SLOT0
-    if(ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD == 0) {
-			return 1;
-    }
+	  if(ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD == 0
+	      		|| ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD == 1) {
+		  return 2;
+	  }
     else {
    		return ORCHESTRA_LINKADDR_HASH(addr) % ORCHESTRA_UNICAST_PERIOD;
     }

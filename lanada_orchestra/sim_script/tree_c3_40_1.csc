@@ -8,7 +8,7 @@
   <project EXPORT="discard">[APPS_DIR]/powertracker</project>
   <simulation>
     <title>tree_c3_h4_t40</title>
-    <randomseed>123456</randomseed>
+    <randomseed>2</randomseed>
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
@@ -1006,7 +1006,7 @@
  *  Mote mote, int id, String msg
  */
 
-TIMEOUT(1);
+TIMEOUT(54000000);
 
 var count = 0;
 

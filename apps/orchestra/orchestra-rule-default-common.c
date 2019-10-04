@@ -58,7 +58,7 @@ select_packet(uint16_t *slotframe, uint16_t *timeslot)
     *slotframe = slotframe_handle;
   }
   if(timeslot != NULL) {
-    *timeslot = 0;
+    *timeslot = 1;
   }
   return 1;
 }
@@ -74,7 +74,7 @@ init(uint16_t sf_handle)
   tsch_schedule_add_link(sf_common,
       LINK_OPTION_RX | LINK_OPTION_TX | LINK_OPTION_SHARED,
       ORCHESTRA_COMMON_SHARED_TYPE, &tsch_broadcast_address,
-      0, channel_offset);
+      1, channel_offset);
 }
 /*---------------------------------------------------------------------------*/
 struct orchestra_rule default_common = {

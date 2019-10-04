@@ -9,13 +9,13 @@
 #define OUR_STATIC_ROUTING 0 // Make routing static from stage 2
 
 #if WITH_ORCHESTRA
-	#define ORCHESTRA_CONF_UNICAST_PERIOD 38 //If this is inside #if WITH_ORACHESTRA, error occurres 
+	#define ORCHESTRA_CONF_UNICAST_PERIOD 13 //If this is inside #if WITH_ORACHESTRA, error occurres 
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 0 // For 6TiSCH minimal configuration without orchestra
-	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 2 * ORCHESTRA_CONF_UNICAST_PERIOD
+	#define ORCHESTRA_CONF_COMMON_SHARED_PERIOD 1 * ORCHESTRA_CONF_UNICAST_PERIOD
 	#define ORCHESTRA_CONF_EBSF_PERIOD 20 * ORCHESTRA_CONF_UNICAST_PERIOD
 #else
 	#define TSCH_SCHEDULE_CONF_WITH_6TISCH_MINIMAL 1
-	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 38
+	#define TSCH_SCHEDULE_CONF_DEFAULT_LENGTH 13
 #endif
 
 /* Orchestra Options */
@@ -54,6 +54,9 @@ uint8_t topology_parent[NUM_NODES];
 #else
 #define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 10000
 #endif
+
+#define RPL_CONF_WITH_PROBING 0
+#define RPL_CONF_WITH_MC RPL_DAG_MC_ETX
 
 
 /* First parameterization */
@@ -95,21 +98,18 @@ uint8_t is_update_phase;
 uint32_t tx_ASN;
 uint32_t recv_ASN;
 
-#if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
-
-#else 								// Deterministic TX slot assignment
 #define MAX_NUMBER_CHILD	30
-	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
-	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
-	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
-	uint8_t recv_TX_slot_changed; // To check change of received assignment
-	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
-	uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD]; // Received list of child nodes
-	uint8_t recv_n_SF; // Received n_SF
-	uint8_t child_changed; // Notifying the change of child list
-	uint8_t current_TX_slot; // To store current TX slot
-	uint8_t prev_TX_slot; // To store previous TX slot
-#endif
+int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
+int recv_TX_slot_assignment; // Received TX slot assignment from the parent
+uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
+uint8_t recv_TX_slot_changed; // To check change of received assignment
+uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
+uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD]; // Received list of child nodes
+uint8_t recv_n_SF; // Received n_SF
+uint8_t child_changed; // Notifying the change of child list
+uint8_t current_TX_slot; // To store current TX slot
+uint8_t prev_TX_slot; // To store previous TX slot
+
 
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot

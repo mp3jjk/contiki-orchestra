@@ -175,7 +175,7 @@ send_packet(void *ptr)
 #endif /* PS_COUNT */
 
 	//	PRINTF("app: current E: %d\n",get_current_energy());
-		PRINTF("app: DATA id:%04u from:%03d ASN:%d\n",
+		PRINTF("app: DATA id:%04u from:%03u ASN:%d\n",
 	         seq_id,myaddr, tx_ASN);
 	//  printf("send_packet!\n");
 	#if ZOUL_MOTE
@@ -457,9 +457,11 @@ PROCESS_THREAD(node_process, ev, data)
 
   /* Wait until the node joins the network */
   static struct ctimer poll_timer;
-  while(tsch_is_associated == 0) {
-	  ctimer_set(&poll_timer,CLOCK_SECOND,&application_polling,NULL);
-	  PROCESS_YIELD();
+  if(!is_coordinator) {
+	  while(tsch_is_associated == 0 || orchestra_parent_knows_us == 0) {
+		  ctimer_set(&poll_timer,CLOCK_SECOND,&application_polling,NULL);
+		  PROCESS_YIELD();
+	  }
   }
 #if EXPERIMENT
   energest_init(); // Init energy again

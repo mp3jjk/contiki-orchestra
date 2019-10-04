@@ -175,6 +175,8 @@
  * with wake-up intervals that are typically hundreds of milliseconds.
  * ContikiRPL thus sets the default to 2^12 ms = 4.096 s.
  */
+#define RPL_CONF_DIO_INTERVAL_MIN 	12
+
 #ifdef RPL_CONF_DIO_INTERVAL_MIN
 #define RPL_DIO_INTERVAL_MIN        RPL_CONF_DIO_INTERVAL_MIN
 #else
@@ -188,6 +190,9 @@
  * RFC 6550 suggests a default value of 20, which of course would be
  * unsuitable when we start with a minimum interval of 2^12.
  */
+#define RPL_CONF_DIO_INTERVAL_DOUBLINGS 	3
+
+
 #ifdef RPL_CONF_DIO_INTERVAL_DOUBLINGS
 #define RPL_DIO_INTERVAL_DOUBLINGS  RPL_CONF_DIO_INTERVAL_DOUBLINGS
 #else
@@ -201,6 +206,8 @@
  * of this suggestion is. Network operators might attain more efficient
  * operation by tuning this parameter for specific deployments.
  */
+//#define RPL_CONF_DIO_REDUNDANCY 	20 // in project-conf.h
+
 #ifdef RPL_CONF_DIO_REDUNDANCY
 #define RPL_DIO_REDUNDANCY          RPL_CONF_DIO_REDUNDANCY
 #else

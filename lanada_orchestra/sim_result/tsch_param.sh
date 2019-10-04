@@ -58,6 +58,9 @@ uint8_t topology_parent[NUM_NODES];
 #define TSCH_CONF_DEFAULT_TIMESLOT_LENGTH 10000
 #endif
 
+#define RPL_CONF_WITH_PROBING 0
+#define RPL_CONF_WITH_MC RPL_DAG_MC_ETX
+
 
 /* First parameterization */
 #define HARD_CODED_n_PBS	${13} // If you want to use hard coded n-PBS value, define it except 0
@@ -98,21 +101,18 @@ uint8_t is_update_phase;
 uint32_t tx_ASN;
 uint32_t recv_ASN;
 
-#if ORCHESTRA_RANDOMIZED_TX_SLOT	  // Randomized mode
-
-#else 								// Deterministic TX slot assignment
 #define MAX_NUMBER_CHILD	30
-	int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
-	int recv_TX_slot_assignment; // Received TX slot assignment from the parent
-	uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
-	uint8_t recv_TX_slot_changed; // To check change of received assignment
-	uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
-	uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD]; // Received list of child nodes
-	uint8_t recv_n_SF; // Received n_SF
-	uint8_t child_changed; // Notifying the change of child list
-	uint8_t current_TX_slot; // To store current TX slot
-	uint8_t prev_TX_slot; // To store previous TX slot
-#endif
+int	TX_slot_assignment;	// Using 32bits, represent slot assignment from LSB (slot 0) to MSB (slot 31)
+int recv_TX_slot_assignment; // Received TX slot assignment from the parent
+uint8_t TX_slot_changed; // Store slot assignment to check change of assignment
+uint8_t recv_TX_slot_changed; // To check change of received assignment
+uint8_t list_ordered_child[MAX_NUMBER_CHILD]; // List for store child ID's with ordering
+uint8_t recv_list_ordered_child[MAX_NUMBER_CHILD]; // Received list of child nodes
+uint8_t recv_n_SF; // Received n_SF
+uint8_t child_changed; // Notifying the change of child list
+uint8_t current_TX_slot; // To store current TX slot
+uint8_t prev_TX_slot; // To store previous TX slot
+
 
 /* Used for ORCHESTRA_TRAFFIC_ADAPTIVE_MODE */
 #define RPL_CALLBACK_REMOVE_LINK tsch_rpl_remove_link_by_slot
