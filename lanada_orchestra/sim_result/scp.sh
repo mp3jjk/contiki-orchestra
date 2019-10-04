@@ -2,5 +2,8 @@
 
 TARGET=$1
 
-scp allseed_* jhjung@cafe3.kaist.ac.kr:~/infocom_result/${TARGET}
-scp compare_* jhjung@cafe3.kaist.ac.kr:~/infocom_result/${TARGET}
+tar -zcvf ${TARGET}.tar.gz allseed_*
+
+scp ${TARGET}.tar.gz jinhwanjung@143.248.57.148:~/tpsn_result/
+
+# scp allseed_* jhjung@cafe3.kaist.ac.kr:~/infocom_result/${TARGET}

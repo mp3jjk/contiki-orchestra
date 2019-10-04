@@ -66,6 +66,10 @@
 #include "net/ip/uip-udp-packet.h"
 #include <stdio.h>
 
+#if EXPERIMENT
+#include "sys/energest.h"
+#endif
+
 /* Application Layer Connection */
 #define UDP_CLIENT_PORT 8765
 #define UDP_SERVER_PORT 5678
@@ -171,7 +175,7 @@ send_packet(void *ptr)
 #endif /* PS_COUNT */
 
 	//	PRINTF("app: current E: %d\n",get_current_energy());
-		PRINTF("app: DATA id:%04d from:%03d ASN:%d\n",
+		PRINTF("app: DATA id:%04u from:%03u ASN:%d\n",
 	         seq_id,myaddr, tx_ASN);
 	//  printf("send_packet!\n");
 	#if ZOUL_MOTE
@@ -186,13 +190,13 @@ send_packet(void *ptr)
 		} else {
 			parent_temp = 0;
 		}
-	  sprintf(buf,"DATA id:%04d from:%03dX E:%d P:%d ASN:%d",seq_id,myaddr,(int)get_current_energy(),\
-				 parent_temp, tx_ASN);
-	  uip_udp_packet_sendto(client_conn, buf, 50,
-	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
+		sprintf(buf,"DATA id:%04u from:%03uX E:%u P:%u ASN:%012uZ",seq_id,myaddr,(int)get_current_energy(),\
+				  parent_temp, tsch_current_asn.ls4b);
+		uip_udp_packet_sendto(app_conn, buf, 50,
+				&server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
 	#else
 
-		sprintf(buf,"DATA id:%04d from:%03d",seq_id,myaddr);
+		sprintf(buf,"DATA id:%04u from:%03u",seq_id,myaddr);
 
 		uip_udp_packet_sendto(app_conn, buf, 50,
 	                        &server_ipaddr, UIP_HTONS(UDP_SERVER_PORT));
@@ -453,10 +457,16 @@ PROCESS_THREAD(node_process, ev, data)
 
   /* Wait until the node joins the network */
   static struct ctimer poll_timer;
-  while(tsch_is_associated == 0) {
-	  ctimer_set(&poll_timer,CLOCK_SECOND,&application_polling,NULL);
-	  PROCESS_YIELD();
+  if(!is_coordinator) {
+	  while(tsch_is_associated == 0 || orchestra_parent_knows_us == 0) {
+		  ctimer_set(&poll_timer,CLOCK_SECOND,&application_polling,NULL);
+		  PROCESS_YIELD();
+	  }
   }
+#if EXPERIMENT
+  energest_init(); // Init energy again
+#endif
+
   ctimer_stop(&poll_timer);
 
   etimer_set(&et, CLOCK_SECOND * INIT_WAIT_TIME);
