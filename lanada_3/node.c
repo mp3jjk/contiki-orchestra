@@ -519,7 +519,8 @@ PROCESS_THREAD(node_process, ev, data)
 #if HETEROGENEOUS_TRAFFIC
 		  ctimer_set(&backoff,random_rand()%(period*CLOCK_SECOND/2),send_packet,NULL);
 #else
-		  ctimer_set(&backoff,random_rand()%(PERIOD*CLOCK_SECOND/2),send_packet,NULL);
+//		  ctimer_set(&backoff,random_rand()%(PERIOD*CLOCK_SECOND/2),send_packet,NULL);
+		  ctimer_set(&backoff,random_rand()%(CLOCK_SECOND),send_packet,NULL);
 #endif
 #else
 		  send_packet(NULL);
