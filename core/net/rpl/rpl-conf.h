@@ -190,7 +190,7 @@
  * RFC 6550 suggests a default value of 20, which of course would be
  * unsuitable when we start with a minimum interval of 2^12.
  */
-#define RPL_CONF_DIO_INTERVAL_DOUBLINGS 	3
+//#define RPL_CONF_DIO_INTERVAL_DOUBLINGS 	3
 
 
 #ifdef RPL_CONF_DIO_INTERVAL_DOUBLINGS

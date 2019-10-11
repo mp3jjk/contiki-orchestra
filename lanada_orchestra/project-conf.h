@@ -116,7 +116,7 @@ uint8_t prev_TX_slot; // To store previous TX slot
 #define RPL_CALLBACK_ADD_LINK tsch_rpl_add_link_by_slot
 
 /* To enable transmit DIO for some cases */
-#define RPL_CONF_DIO_REDUNDANCY		20
+//#define RPL_CONF_DIO_REDUNDANCY		20
 
 /* Set to enable TSCH security */
 #ifndef WITH_SECURITY
